@@ -42,3 +42,7 @@ application {
     // Define the main class for the application.
     mainClass.set("monopoly.App")
 }
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+}

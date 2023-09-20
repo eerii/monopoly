@@ -1,11 +1,12 @@
 package monopoly;
 
+import consola.Consola;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+    static Consola c;
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        c = new Consola();
+        c.input();
     }
 }
