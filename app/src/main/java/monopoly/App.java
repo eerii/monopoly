@@ -7,6 +7,7 @@ public class App {
 
     public static void main(String[] args) {
         c = new Consola();
-        c.input();
+        while (true)
+            c.input();
     }
 }

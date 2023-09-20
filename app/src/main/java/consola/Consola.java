@@ -3,9 +3,13 @@ package consola;
 import java.util.Scanner;
 
 public class Consola {
-    public void input() {
-        Scanner sc = new Scanner(System.in);
+    public Consola() {
+        sc = new Scanner(System.in);
+    };
 
+    Scanner sc; // TODO: Close
+
+    public void input() {
         System.out.print("> ");
         String line = sc.nextLine();
     
@@ -15,7 +19,5 @@ public class Consola {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-
-        sc.close();
     }
 }
