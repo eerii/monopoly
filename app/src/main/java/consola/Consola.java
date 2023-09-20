@@ -7,10 +7,14 @@ public class Consola {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("> ");
-        String cmd = sc.nextLine();
-
-        // TODO: xestionar comando
-        System.out.println(cmd);
+        String line = sc.nextLine();
+    
+        try {
+            Comando cmd = new Comando(line);
+            cmd.run();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
 
         sc.close();
     }
