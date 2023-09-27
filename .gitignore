@@ -31,3 +31,6 @@ build
 
 .settings
 .DS_Store
+
+.classpath
+.project
