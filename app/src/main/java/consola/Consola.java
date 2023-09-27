@@ -7,7 +7,7 @@ public class Consola {
         sc = new Scanner(System.in);
     };
 
-    Scanner sc; // TODO: Close
+    Scanner sc;
 
     public void input() {
         System.out.print("> ");
