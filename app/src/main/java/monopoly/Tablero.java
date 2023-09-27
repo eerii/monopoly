@@ -1,7 +1,9 @@
 package monopoly;
 
 public class Tablero {
-    public Tablero() {
+    Casilla[] casillas;
 
+    public Tablero() {
+        casillas = new Casilla[40];
     }
 }
