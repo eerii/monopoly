@@ -1,0 +1,66 @@
+@startuml
+skinparam dpi 300
+'skinparam linetype ortho
+skinparam nodesep 100
+skinparam ranksep 100
+
+skinparam default{
+  FontName SF Mono
+  FontSize 12
+}
+
+skinparam arrowFontSize 10
+skinparam classFontSize 14
+
+skinparam arrowSize 10
+
+class Monopoly {
+    menu()
+}
+
+class Jugador {
+    String nombre
+    int fortuna
+}
+
+class Avatar {
+    Casilla siguiente_casilla()
+}
+
+enum TipoAvatar {}
+
+class Tablero {}
+
+class Casilla {}
+
+class Solar {
+    int precio
+    bool hipotecado
+    String grupo
+}
+
+class Consola {
+    Scanner scanner
+}
+
+class Comando {
+    List<String> args
+}
+
+enum Cmds {}
+
+Solar --|> Casilla
+Casilla "*"--"1" Tablero : casillas
+Casilla "1"-"*" Jugador : lista_jugadores
+Solar "*"-"1" Jugador : propiedades
+
+TipoAvatar "1"--"1" Avatar : tipo
+Avatar "1"--"1" Jugador : avatar
+
+Jugador "*"---"1" Monopoly : jugadores
+Tablero "1"--"1" Monopoly : tablero
+
+Cmds "1"--"1" Comando : cmd
+Comando -[hidden]- Consola
+
+@enduml
