@@ -30,7 +30,7 @@ public class Tablero {
         String fmt = new String();
 
         String[] partes = casillas.get(i).toString().split("&");
-        fmt += String.format("%-10s", partes[0]);
+        fmt += String.format("%-12s", partes[0]);
         
         return fmt;
     }
@@ -39,48 +39,44 @@ public class Tablero {
         String fmt = new String();
 
         String[] partes = casillas.get(i).toString().split("&");
-        fmt += String.format("\u001b[4m%10s\u001b[0m", partes.length > 1 ? partes[1].replaceFirst(" ", "&") : "");
+        fmt += String.format("\u001b[4m%12s\u001b[0m", partes.length > 1 ? partes[1].replaceFirst(" ", "&") : "");
         
         return fmt;
     }
 
     @Override
     public String toString() {
+        // TODO: Cambiar los string formats de espacio en blanco por una constante
         String s = new String();
         String inf = new String();
 
         // Fila superior
-        s += " " + String.format("\u001b[4m%10s\u001b[0m ", " ").repeat(11) + "\n";
+        s += " " + String.format("\u001b[4m%12s\u001b[0m ", " ").repeat(11) + "\n";
         for (int i = 20; i <= 30; i++) {
             s += "|" + format_casilla(i);
             inf += "|" + format_jugadores(i);
-
         }
-        s += "|\n" + inf + "|\n";
+        s += "|\n|" + String.format("%12s|", "").repeat(11) + "\n" + inf + "|\n";
         inf = "";
+
         // Bordes laterales
         for (int i = 1; i < 10; i++) {
-            final String espacio_interior = " ".repeat(11 * 9 - 1);
-            final String barra_interior = String.format("\u001b[4m%10s\u001b[0m ", " ").repeat(9);
+            final String espacio_interior = " ".repeat((12 + 1) * 9 - 1);
+            final String barra_interior = String.format("\u001b[4m%12s\u001b[0m ", " ").repeat(9);
             String interior = i < 9 ? espacio_interior : barra_interior.substring(0, barra_interior.length() - 1);
+
             s += "|" + format_casilla(20-i) + "|" + espacio_interior + "|" + format_casilla(30+i) + "|" + "\n";
+            s += "|" + String.format("%12s|", "") + espacio_interior + "|" + String.format("%12s|", "")+ "\n";
             s += "|" + format_jugadores(20-i) + "|" + interior + "|" + format_jugadores(30+i) + "|" + "\n";
         }
+
         // Fila inferior
         for (int i = 10; i >= 0; i--) {
             s += "|" + format_casilla(i);
             inf += "|" + format_jugadores(i);
         }
-        s += "|\n" + inf + "|\n";
+        s += "|\n|" + String.format("%12s|", "").repeat(11) + "\n" + inf + "|\n";
 
-        /*for (Casilla c : casillas) {
-            
-            s += partes[0];
-            if (partes.length > 1) {
-                // s += "\n" + partes[1].replaceFirst(" ", "&");
-            }
-            s += "\n";
-        }*/
         return s;
     }
 }
