@@ -43,4 +43,10 @@ public class Avatar {
     public TipoAvatar get_tipo() {
         return tipo;
     }
+
+    // String
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
 }

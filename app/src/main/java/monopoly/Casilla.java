@@ -1,17 +1,19 @@
 package monopoly;
 
-import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 // TODO: Mover funcionalidad a Solar cando se poida
 
 public class Casilla {
-    List<Jugador> jugadores;
+    String nombre;
     TipoCasilla tipo;
+    Set<Jugador> jugadores;
 
     // Propiedades de Solar
-    int precio;
+    float precio;
     Boolean hipotecado;
-    String grupo;
+    String grupo; // TODO: Convertir en clase
 
     public enum TipoCasilla {
         SOLAR,
@@ -23,18 +25,43 @@ public class Casilla {
         CARCEL,
         IR_A_CARCEL,
         PARKING,
-        SALIDA;
+        SALIDA,
+        NULL;
     }
 
-    public Casilla(TipoCasilla tipo) {
+    public Casilla(TipoCasilla tipo, String nombre) {
         this.tipo = tipo;
-        this.jugadores = List.of();
+        this.nombre = nombre;
+        this.jugadores = new HashSet<Jugador>();
     }
 
-    public Casilla(TipoCasilla tipo, int precio, String grupo) {
-        this(tipo);
+    public Casilla(TipoCasilla tipo, String nombre, int precio, String grupo) {
+        this(tipo, nombre);
         this.precio = precio;
         this.hipotecado = false;
         this.grupo = grupo;
+    } 
+
+    public void add_jugador(Jugador jugador) {
+        jugadores.add(jugador);
+    }
+
+    public void remove_jugador(Jugador jugador) {
+        jugadores.remove(jugador);
+    }
+
+    public String get_nombre() {
+        return nombre;
+    }
+
+    // String
+    @Override
+    public String toString() {
+        String str_jugadores = new String("");
+        for (Jugador j : jugadores) {
+             str_jugadores += " " + j.toString();
+        }
+
+        return String.format("%s&%s", nombre, str_jugadores);
     }
 }
