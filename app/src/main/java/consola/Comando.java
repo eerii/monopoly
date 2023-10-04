@@ -22,8 +22,16 @@ public class Comando {
     Cmd cmd;
     List<String> args;
 
+    // Gestionar todas las acciones
+    // TAREA: Completar acciones
     public void run() {
-        System.out.println(cmd.to_str());
-        System.out.println(args);
+        switch (cmd) {
+            case CREAR:
+                System.out.println("no implementado!");
+                break;
+            default:
+                System.out.println(cmd.to_str());
+                System.out.println(args);
+        }
     }
 }

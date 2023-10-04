@@ -8,14 +8,14 @@ public class App {
     public static void main(String[] args) {
         Tablero t = new Tablero();
         Jugador j = new Jugador("hola", new Avatar(Avatar.TipoAvatar.PELOTA));
-        Casilla c = t.buscar_casilla("23");
-        if (c != null)
-            c.add_jugador(j);
+        Casilla ca = t.buscar_casilla("23");
+        if (ca != null)
+            ca.add_jugador(j);
 
         System.out.println(t.toString());
 
-        // c = new Consola();
-        // while (true)
-        //     c.input();
+        c = new Consola();
+        while (true)
+            c.input();
     }
 }

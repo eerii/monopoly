@@ -39,6 +39,7 @@ public enum Cmd {
     }
 
     static {
+        // TAREA: Lista de cómandos válidos
         args.put(Cmd.CREAR, List.of("xogador"));
         args.put(Cmd.LISTAR, List.of("xogadores", "avatares"));
     }

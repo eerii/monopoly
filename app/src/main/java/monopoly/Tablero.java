@@ -10,6 +10,7 @@ public class Tablero {
     public Tablero() {
         casillas = new ArrayList<Casilla>();
 
+        // TAREA: Cambiar esto por crear casillas
         Random r = new Random();
         for (int i = 0; i < 40; i++) {
             casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, String.valueOf(i)));
