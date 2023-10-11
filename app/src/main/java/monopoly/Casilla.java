@@ -1,6 +1,9 @@
 package monopoly;
 
 import java.util.Set;
+
+import consola.Color;
+
 import java.util.HashSet;
 
 // TODO: Mover funcionalidad a Solar cando se poida
@@ -13,7 +16,7 @@ public class Casilla {
     // Propiedades de Solar
     float precio;
     Boolean hipotecado;
-    Grupo grupo;
+    Grupo grupo = null;
 
     public enum TipoCasilla {
         SOLAR,
@@ -55,14 +58,22 @@ public class Casilla {
         return nombre;
     }
 
+    public Color get_color() {
+        return grupo != null ? grupo.get_color() : Color.BLANCO;
+    }
+
     // String
-    @Override
-    public String toString() {
+    public String representar() {
         String str_jugadores = new String("");
         for (Jugador j : jugadores) {
-             str_jugadores += " " + j.toString();
+             str_jugadores += " " + j.representar();
         }
 
         return String.format("%s&%s", nombre, str_jugadores);
+    }
+
+    @Override
+    public String toString() {
+        return "";
     }
 }

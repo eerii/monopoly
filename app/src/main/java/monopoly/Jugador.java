@@ -16,6 +16,10 @@ public class Jugador {
         this.fortuna = 1000.f; // TODO: Un tercio da suma total de todalas propiedades do tableiro
         this.propiedades = List.of();
         this.vueltas = 0;
+        
+        Tablero t = Monopoly.get().get_tablero();
+        Casilla salida = t.buscar_casilla("Salida");
+        salida.add_jugador(this);
     }
 
     // Constructor de la banca
@@ -26,10 +30,47 @@ public class Jugador {
         this.propiedades = List.of(); // TODO: Debe tener todas las propiedades
     }
 
+    public String get_nombre() {
+        return nombre;
+    }
+
+    public Casilla mover(Casilla inicial, int posiciones) {
+        // TODO: Implementar mover
+        return inicial;
+    }
+
     // String
+    public String representar() {
+        return String.valueOf(avatar.get_id());
+    }
+
     @Override
     public String toString() {
-        return avatar.toString();
+        return String.format("{\n" +
+            "\tnombre: %s,\n" +
+            "\tavatar: %s (%s),\n" +
+            "\tfortuna: %.0f,\n" +
+            "\tpropiedades: %s,\n" +
+            "\thipotecas: %s,\n" +
+            "\tedificios: %s\n" +
+            "}",
+            nombre,
+            String.valueOf(avatar.get_id()), avatar.get_tipo(),
+            fortuna,
+            propiedades,
+            "-", // TODO: imprimir hipotecas y edificios
+            "-"
+        );
+    }
+
+    public String toStringMini() {
+        return String.format("{\n" +
+            "\tnombre: %s,\n" +
+            "\tavatar: %s (%s)\n" +
+            "}",
+            nombre,
+            String.valueOf(avatar.get_id()), avatar.get_tipo()
+        );
     }
 
     // Comparación de jugadores

@@ -9,9 +9,9 @@ public enum Cmd {
     VER("ver"),
     COMPRAR("comprar"),
     LANZAR("lanzar"),
-    XOGADOR("xogador"),
-    REMATAR("rematar"),
-    SAIR("sair"),
+    JUGADOR("jugador"),
+    ACABAR("acabar"),
+    SALIR("salir"),
     DESCRIBIR("describir");
  
     private final String cmd;
@@ -28,7 +28,10 @@ public enum Cmd {
         }
         Cmd value = by_str.get(cmd);
 
-        if (arg == null || !args.get(value).contains(arg)) {
+        if (arg == null)
+            arg = "";
+
+        if (!args.get(value).contains(arg)) {
             throw new IllegalArgumentException("argumentos inválidos");
         }
         return value;
@@ -40,8 +43,14 @@ public enum Cmd {
 
     static {
         // TAREA: Lista de cómandos válidos
-        args.put(Cmd.CREAR, List.of("xogador"));
-        args.put(Cmd.LISTAR, List.of("xogadores", "avatares"));
+        args.put(Cmd.CREAR, List.of("jugador"));
+        args.put(Cmd.LISTAR, List.of("jugadores", "avatares"));
+        args.put(Cmd.VER, List.of("tablero"));
+        args.put(Cmd.LANZAR, List.of("dados"));
+        args.put(Cmd.JUGADOR, List.of(""));
+        args.put(Cmd.ACABAR, List.of("turno"));
+        args.put(Cmd.SALIR, List.of(""));
+        args.put(Cmd.DESCRIBIR, List.of("jugador", "casilla", "avatar"));
     }
 
     static {

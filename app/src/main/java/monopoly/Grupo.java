@@ -1,5 +1,6 @@
 package monopoly;
 
+import java.util.ArrayList;
 import java.util.List;
 import consola.Color;
 
@@ -9,6 +10,7 @@ public class Grupo{
 
     public Grupo(Color color) {
         this.color = color;
+        this.casillas = new ArrayList<Casilla>();
     }
 
     public void add(Casilla casilla) {
