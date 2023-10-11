@@ -2,21 +2,68 @@ package monopoly;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import consola.Color;
 
 import consola.Color;
 
 public class Tablero {
     List<Casilla> casillas; // TODO: Cambiar a set cuando los nombres no se repitan
-
+    List<Grupo> grupos;
     public Tablero() {
-        casillas = new ArrayList<Casilla>();
+        grupos = new ArrayList<Grupo>();
+        grupos.add(new Grupo(Color.AZUL));
+        grupos.add(new Grupo(Color.AMARILLO));
+        grupos.add(new Grupo(Color.CYAN));
+        grupos.add(new Grupo(Color.BLANCO));
+        grupos.add(new Grupo(Color.ROJO));
+        grupos.add(new Grupo(Color.VERDE));
+        grupos.add(new Grupo(Color.VERDE));
+        grupos.add(new Grupo(Color.ROJO));
 
-        // TAREA: Cambiar esto por crear casillas
-        Random r = new Random();
-        for (int i = 0; i < 40; i++) {
-            casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, String.valueOf(i)));
-        }
+        casillas = new ArrayList<Casilla>();
+        casillas.add(new Casilla(Casilla.TipoCasilla.SALIDA, "Salida"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar1",1000, grupos.get(0)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar2",1000, grupos.get(0)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.IMPUESTOS, "Imp1"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans1"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar3",1000, grupos.get(1)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar4",1000, grupos.get(1)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar5",1000, grupos.get(1)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.CARCEL, "Cárcel"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar6",1000, grupos.get(2)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SERVICIOS, "Serv1"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar7",1000, grupos.get(2)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar8",1000, grupos.get(2)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans2"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar9",1000, grupos.get(3)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar10",1000, grupos.get(3)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar11",1000, grupos.get(3)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.PARKING, "Parking"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar12",1000, grupos.get(4)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar13",1000, grupos.get(4)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar14",1000, grupos.get(4)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans3"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar15",1000, grupos.get(5)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar16",1000, grupos.get(5)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SERVICIOS, "Serv2"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar17",1000, grupos.get(5)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.IR_A_CARCEL, "IrCarcel"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar18",1000, grupos.get(6)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar19",1000, grupos.get(6)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar20",1000, grupos.get(6)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans4"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar21",1000, grupos.get(7)));
+        casillas.add(new Casilla(Casilla.TipoCasilla.IMPUESTOS, "Imp2"));
+        casillas.add(new Casilla(Casilla.TipoCasilla.SOLAR, "Solar22",1000, grupos.get(7)));
+
+
+
     }
 
     public Casilla buscar_casilla(String nombre) {

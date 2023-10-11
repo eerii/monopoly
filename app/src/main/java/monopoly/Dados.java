@@ -5,12 +5,12 @@ import javafx.util.Pair;
 
 public class Dados {
 
-    public int tirarDados() {
+    public Pair<Integer,Integer> tirarDados() {
         int dado1,dado2;
         Random r = new Random();
         dado1=(r.nextInt(6) + 1);
         dado2=(r.nextInt(6) + 1);
-        return  dado1 + dado2;
+        return  new Pair<>(dado1,dado2);
     }
 
 }
