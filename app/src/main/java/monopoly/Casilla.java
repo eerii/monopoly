@@ -13,7 +13,7 @@ public class Casilla {
     // Propiedades de Solar
     float precio;
     Boolean hipotecado;
-    String grupo; // TODO: Convertir en clase
+    Grupo grupo;
 
     public enum TipoCasilla {
         SOLAR,
@@ -27,7 +27,7 @@ public class Casilla {
         PARKING,
         SALIDA,
         NULL;
-    }
+}
 
     public Casilla(TipoCasilla tipo, String nombre) {
         this.tipo = tipo;
@@ -35,11 +35,12 @@ public class Casilla {
         this.jugadores = new HashSet<Jugador>();
     }
 
-    public Casilla(TipoCasilla tipo, String nombre, int precio, String grupo) {
+    public Casilla(TipoCasilla tipo, String nombre, int precio, Grupo grupo) {
         this(tipo, nombre);
         this.precio = precio;
         this.hipotecado = false;
         this.grupo = grupo;
+        grupo.add(this);
     } 
 
     public void add_jugador(Jugador jugador) {
