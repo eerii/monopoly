@@ -13,17 +13,17 @@ public class Consola {
         System.out.print("\u001b[33;0H\u001b[1J\u001b[H");
     }
 
-    void limpiar_resultado() {
+    public void limpiar_resultado() {
         System.out.println("\u001b[1A\u001b[0J");
     }
 
     public void entrada() {
         System.out.print("> \u001b[K");
         String line = sc.nextLine();
+        limpiar_resultado();
     
         try {
             Comando cmd = new Comando(line);
-            limpiar_resultado();
             cmd.run();
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());

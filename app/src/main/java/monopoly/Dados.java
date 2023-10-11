@@ -7,17 +7,21 @@ public class Dados {
     int b;
     int dobles = 0;
     Jugador jugador;
-    boolean primera_tirada;
 
-    public void tirar(Jugador jugador) {
+    public boolean cambio_jugador(Jugador jugador) {
+        if (this.jugador == jugador)
+            return false;
+        this.jugador = jugador;
+
+        dobles = 0; 
+        return true;
+    }
+
+    public void tirar() {
         Random r = new Random();
         a = (r.nextInt(6) + 1);
         b = (r.nextInt(6) + 1);
-        if (a == b)
-            dobles += 1;
-
-        primera_tirada = this.jugador != jugador;
-        this.jugador = jugador;
+        dobles = a == b ? dobles + 1 : 0;
     }
 
     public int get_a() {
@@ -30,9 +34,5 @@ public class Dados {
 
     public boolean son_dobles() {
         return dobles > 0;
-    }
-    
-    public boolean primera_tirada() {
-        return primera_tirada;
     }
 }

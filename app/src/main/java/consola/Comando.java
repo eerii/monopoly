@@ -96,18 +96,21 @@ public class Comando {
                         Jugador j = m.get_turno();
                         Dados d = m.get_dados();
 
-                        Casilla inicial = t.buscar_jugador(j);
-                       
-                        d.tirar(j);
-                        if (!d.primera_tirada() && !d.son_dobles())
+                        Casilla actual = t.buscar_jugador(j);
+                      
+                        if (!d.cambio_jugador(j) && !d.son_dobles())
                             throw new RuntimeException("no puedes volver a tirar");
+                        d.tirar();
                         
-                        int resultado = d.get_a() + d.get_b();
-                        System.out.format("los dados han sacado %d y %d\n", d.get_a(), d.get_b());
+                        int movimiento = d.get_a() + d.get_b();
+                        System.out.format("los dados han sacado %s%s%d%s y %s%s%d%s\n",
+                            Color.ROJO, Color.BOLD, d.get_a(), Color.RESET,
+                            Color.ROJO, Color.BOLD, d.get_b(), Color.RESET);
                         if (d.son_dobles())
-                            System.out.println("has sacado dobles! Tienes que volver a tirar");
+                            System.out.format("has sacado %s%sdobles%s! tienes que volver a tirar\n",
+                                Color.ALT_ROJO, Color.BOLD, Color.RESET);
 
-                        System.out.format("el avatar %s avanza %d posiciones, desde %s a %s\n", j.representar(), resultado, inicial.get_nombre(), "-");
+                        j.mover(actual, movimiento);
                         
                         break;
                     default:
@@ -132,7 +135,7 @@ public class Comando {
 
                         m.siguiente_turno();
                         Jugador j = m.get_turno();
-                        System.out.format("el jugador actual es %s\n", j.get_nombre());
+                        System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL, Color.BOLD, j.get_nombre(), Color.RESET);
 
                         break;
                     default:

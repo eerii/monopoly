@@ -28,6 +28,13 @@ public class Monopoly {
 
     public static void jugar() {
         Monopoly m = Monopoly.get();
+        m.consola.limpiar_pantalla();
+        m.consola.limpiar_resultado();
+
+        // TODO: Jugadores temporales para pruebas, borrar
+        m.add_jugador(new Jugador("hola", new Avatar(Avatar.TipoAvatar.COCHE)));
+        m.add_jugador(new Jugador("adios", new Avatar(Avatar.TipoAvatar.ESFINGE)));
+
         while(true) {
             m.consola.limpiar_pantalla();
             System.out.println(m.tablero);

@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import consola.Color;
 
-import consola.Color;
-
 public class Tablero {
     List<Casilla> casillas; // TODO: Cambiar a set cuando los nombres no se repitan
     List<Grupo> grupos;
@@ -65,6 +63,10 @@ public class Tablero {
             new Casilla(Casilla.TipoCasilla.IMPUESTOS, "Imp2"),
             new Casilla(Casilla.TipoCasilla.SOLAR, "Solar22",1000, grupos.get(7))
         ));
+    }
+
+    public List<Casilla> get_casillas() {
+        return casillas;
     }
 
     public Casilla buscar_casilla(String nombre) {

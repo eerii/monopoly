@@ -53,11 +53,7 @@ public class Avatar {
         } while (ocupados.contains(id));
         ocupados.add(id);
         this.tipo = tipo;
-    }
-
-    Casilla siguiente_casilla(Tablero tablero) {
-        throw null;
-    }
+    } 
 
     public char get_id() {
         return id;
@@ -74,6 +70,22 @@ public class Avatar {
                 return j;
         }
         throw new RuntimeException("unreachable");
+    }
+
+    // Movimiento
+    Casilla siguiente_casilla(Casilla actual, int movimiento) {
+        Tablero t = Monopoly.get().get_tablero();
+        List<Casilla> casillas = t.get_casillas();
+
+        int a = casillas.indexOf(actual);
+        int b = a + movimiento;
+        if (b > casillas.size()) {
+            Jugador j = get_jugador();
+            j.dar_vuelta();
+        }
+        b %= casillas.size();
+
+        return casillas.get(b);
     }
 
     // String

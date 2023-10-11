@@ -6,7 +6,7 @@ import consola.Color;
 
 import java.util.HashSet;
 
-// TODO: Mover funcionalidad a Solar cando se poida
+// TODO: Mover funcionalidad a Solar cuando se pueda
 
 public class Casilla {
     String nombre;
@@ -48,6 +48,7 @@ public class Casilla {
 
     public void add_jugador(Jugador jugador) {
         jugadores.add(jugador);
+        System.out.println("no implementado: acción de casilla");
     }
 
     public void remove_jugador(Jugador jugador) {
