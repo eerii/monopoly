@@ -11,8 +11,8 @@ public enum Cmd {
     LANZAR("lanzar"),
     JUGADOR("jugador"),
     ACABAR("acabar"),
-    SALIR("salir"),
-    DESCRIBIR("describir");
+    DESCRIBIR("describir"),
+    SALIR("salir");
  
     private final String cmd;
     private static final HashMap<Cmd, List<String>> args = new HashMap<>();
@@ -26,12 +26,9 @@ public enum Cmd {
         if (!by_str.containsKey(cmd)) {
             throw new IllegalArgumentException("comando inválido");
         }
-        Cmd value = by_str.get(cmd);
+        Cmd value = by_str.get(cmd); 
 
-        if (arg == null)
-            arg = "";
-
-        if (!args.get(value).contains(arg)) {
+        if (!args.get(value).contains(arg) && !args.get(value).contains("*")) {
             throw new IllegalArgumentException("argumentos inválidos");
         }
         return value;
@@ -44,13 +41,14 @@ public enum Cmd {
     static {
         // TAREA: Lista de cómandos válidos
         args.put(Cmd.CREAR, List.of("jugador"));
-        args.put(Cmd.LISTAR, List.of("jugadores", "avatares"));
+        args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa"));
         args.put(Cmd.VER, List.of("tablero"));
+        args.put(Cmd.COMPRAR, List.of("*"));
         args.put(Cmd.LANZAR, List.of("dados"));
         args.put(Cmd.JUGADOR, List.of(""));
         args.put(Cmd.ACABAR, List.of("turno"));
-        args.put(Cmd.SALIR, List.of(""));
-        args.put(Cmd.DESCRIBIR, List.of("jugador", "casilla", "avatar"));
+        args.put(Cmd.DESCRIBIR, List.of("*", "jugador", "avatar"));
+        args.put(Cmd.SALIR, List.of("", "carcel"));
     }
 
     static {

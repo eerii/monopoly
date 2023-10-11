@@ -16,7 +16,7 @@ public class Consola {
         try {
             Comando cmd = new Comando(line);
             cmd.run();
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             System.out.println(e.getMessage());
         }
     }
