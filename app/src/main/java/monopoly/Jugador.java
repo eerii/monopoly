@@ -7,6 +7,7 @@ public class Jugador {
     Avatar avatar;
     float fortuna;
     List<Casilla> propiedades; // TODO: Cambiar con herencia
+    int vueltas;
     
     // Constructor de un jugador normal
     public Jugador(String nombre, Avatar avatar) {
@@ -14,6 +15,7 @@ public class Jugador {
         this.avatar = avatar;
         this.fortuna = 1000.f; // TODO: Un tercio da suma total de todalas propiedades do tableiro
         this.propiedades = List.of();
+        this.vueltas = 0;
     }
 
     // Constructor de la banca

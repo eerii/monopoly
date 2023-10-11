@@ -4,15 +4,11 @@ import consola.Consola;
 
 public class App {
     static Consola c;
+    static Monopoly m;
 
     public static void main(String[] args) {
-        Tablero t = new Tablero();
-        Jugador j = new Jugador("hola", new Avatar(Avatar.TipoAvatar.PELOTA));
-        Casilla ca = t.buscar_casilla("23");
-        if (ca != null)
-            ca.add_jugador(j);
-
-        System.out.println(t.toString());
+        m = new Monopoly();
+        System.out.println(m.get_tablero().toString());
 
         c = new Consola();
         while (true)

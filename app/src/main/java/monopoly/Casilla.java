@@ -27,7 +27,7 @@ public class Casilla {
         PARKING,
         SALIDA,
         NULL;
-}
+    }
 
     public Casilla(TipoCasilla tipo, String nombre) {
         this.tipo = tipo;
