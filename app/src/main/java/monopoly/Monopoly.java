@@ -2,8 +2,10 @@ package monopoly;
 
 import java.util.ArrayList;
 import java.util.List;
+import consola.Consola;
 
 public class Monopoly {
+    Consola consola;
     List<Jugador> jugadores;
     Tablero tablero;
     Dados dados;
@@ -12,6 +14,7 @@ public class Monopoly {
     static Monopoly instance = null;
 
     Monopoly() {
+        consola = new Consola();
         jugadores = new ArrayList<Jugador>();
         tablero = new Tablero();
         dados = new Dados();
@@ -21,6 +24,15 @@ public class Monopoly {
         if (instance == null)
             instance = new Monopoly();
         return instance;
+    }
+
+    public static void jugar() {
+        Monopoly m = Monopoly.get();
+        while(true) {
+            m.consola.limpiar_pantalla();
+            System.out.println(m.tablero);
+            m.consola.entrada();
+        }
     }
 
     public Tablero get_tablero() {

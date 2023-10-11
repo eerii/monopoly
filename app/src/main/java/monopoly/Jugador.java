@@ -2,6 +2,8 @@ package monopoly;
 
 import java.util.List;
 
+import consola.Color;
+
 public class Jugador {
     String nombre;
     Avatar avatar;
@@ -34,6 +36,10 @@ public class Jugador {
         return nombre;
     }
 
+    public Avatar get_avatar() {
+        return avatar;
+    }
+
     public Casilla mover(Casilla inicial, int posiciones) {
         // TODO: Implementar mover
         return inicial;
@@ -46,51 +52,25 @@ public class Jugador {
 
     @Override
     public String toString() {
-        return String.format("{\n" +
-            "\tnombre: %s,\n" +
-            "\tavatar: %s (%s),\n" +
-            "\tfortuna: %.0f,\n" +
-            "\tpropiedades: %s,\n" +
-            "\thipotecas: %s,\n" +
-            "\tedificios: %s\n" +
-            "}",
-            nombre,
-            String.valueOf(avatar.get_id()), avatar.get_tipo(),
-            fortuna,
-            propiedades,
-            "-", // TODO: imprimir hipotecas y edificios
-            "-"
+        // NOTA: El formato es diferente al del ejemplo para hacerlo más compacto
+        //       De esta manera podemos tener una terminal interactiva con el tablero y la salida de los comandos
+        return String.format(
+            "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
+            "propiedades: %s",
+            Color.AZUL, Color.BOLD, nombre, Color.RESET,
+            Color.BOLD, String.valueOf(avatar.get_id()), Color.RESET,
+            avatar.get_tipo(),
+            Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
+            propiedades
+            // TODO: imprimir hipotecas y edificios con colores en la lista de propiedades
         );
     }
 
     public String toStringMini() {
-        return String.format("{\n" +
-            "\tnombre: %s,\n" +
-            "\tavatar: %s (%s)\n" +
-            "}",
-            nombre,
-            String.valueOf(avatar.get_id()), avatar.get_tipo()
+        return String.format("%s%s%s%s - avatar %s%s%s (%s)",
+            Color.AZUL, Color.BOLD, nombre, Color.RESET,
+            Color.BOLD, String.valueOf(avatar.get_id()), Color.RESET,
+            avatar.get_tipo()
         );
-    }
-
-    // Comparación de jugadores
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Jugador lhs = (Jugador) obj;
-        return this.nombre == lhs.nombre;
     }
 }

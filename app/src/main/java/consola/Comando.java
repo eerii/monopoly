@@ -36,8 +36,13 @@ public class Comando {
                         String nombre = args.get(1);
                         TipoAvatar tipo = TipoAvatar.from_str(args.get(2));
 
+                        for (Jugador j : Monopoly.get().get_jugadores())
+                            if (j.get_nombre().equals(nombre))
+                                throw new IllegalArgumentException("el nombre del jugador ya está cogido");
+
                         Jugador j = new Jugador(nombre, new Avatar(tipo));
                         Monopoly.get().add_jugador(j);
+                        System.out.println(j.toStringMini());
 
                         break;
                     default:
@@ -46,16 +51,19 @@ public class Comando {
                 break;
 
             case LISTAR:
+                List<Jugador> jugadores = Monopoly.get().get_jugadores();
+
                 switch (args.get(0)) {
                     case "jugadores":
-                        List<Jugador> jugadores = Monopoly.get().get_jugadores();
-                        for (int i = 0; i < jugadores.size(); i++) {
-                            System.out.print(jugadores.get(i));
-                            System.out.println(i == jugadores.size() - 1 ? "" : ",");
+                        for (Jugador j : jugadores) {
+                            System.out.println(j);
                         }
                         break;
                     case "avatares":
-                        throw new IllegalArgumentException("no implementado");
+                        for (Jugador j : jugadores) {
+                            System.out.println(j.get_avatar());
+                        }
+                        break;
                     case "enventa":
                         throw new IllegalArgumentException("no implementado");
                     default:
@@ -140,11 +148,11 @@ public class Comando {
 
                         String nombre = args.get(1);
                         Jugador j = Monopoly.get().buscar_jugador(nombre);
+
                         if (j == null)
                             throw new RuntimeException(String.format("el jugador '%s' no existe", nombre));
+                        System.out.println(j);
 
-                        if (j != null)
-                            System.out.println(j);
                         break;
                     case "avatar":
                         throw new IllegalArgumentException("no implementado");
