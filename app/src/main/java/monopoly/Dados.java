@@ -1,6 +1,7 @@
 package monopoly;
 
 import java.util.Random;
+import javafx.util.Pair;
 
 public class Dados {
 

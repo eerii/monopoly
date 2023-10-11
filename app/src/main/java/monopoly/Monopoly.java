@@ -6,17 +6,24 @@ import java.util.List;
 public class Monopoly {
     List<Jugador> jugadores;
     Tablero tablero;
+    static Monopoly instance = null;
 
-    public Monopoly() {
+    Monopoly() {
         jugadores = new ArrayList<Jugador>();
         tablero = new Tablero();
     }
 
+    Monopoly get_instance() {
+        if (instance == null)
+            instance = new Monopoly();
+        return instance;
+    }
+
     public Tablero get_tablero() {
-        return tablero;
+        return get_instance().tablero;
     }
 
     public List<Jugador> get_jugador() {
-        return jugadores;
+        return get_instance().jugadores;
     }
 }
