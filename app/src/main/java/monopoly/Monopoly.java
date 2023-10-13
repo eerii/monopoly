@@ -73,6 +73,15 @@ public class Monopoly {
         return null;
     }
 
+    public Jugador buscar_avatar(char caracter) {
+        for (Jugador j : jugadores) {
+            if (j.get_avatar().get_id() == caracter) {
+                return j;
+            }
+        }
+        return null;
+    }
+
     public Jugador get_turno() {
         if (turno < 0)
             return null;

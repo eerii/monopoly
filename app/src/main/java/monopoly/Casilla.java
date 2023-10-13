@@ -15,6 +15,9 @@ public class Casilla {
 
     // Propiedades de Solar
     float precio;
+    Boolean enVenta;
+
+    Jugador propietario;
     Boolean hipotecado;
     Grupo grupo = null;
 
@@ -32,23 +35,45 @@ public class Casilla {
         NULL;
     }
 
+
     public Casilla(TipoCasilla tipo, String nombre) {
         this.tipo = tipo;
         this.nombre = nombre;
         this.jugadores = new HashSet<Jugador>();
+        this.propietario = null;
     }
 
-    public Casilla(TipoCasilla tipo, String nombre, int precio, Grupo grupo) {
+    public Casilla(TipoCasilla tipo, String nombre, int precio, Grupo grupo, boolean enVenta, Jugador propietario) {
         this(tipo, nombre);
         this.precio = precio;
         this.hipotecado = false;
         this.grupo = grupo;
+        this.enVenta = enVenta;
+        this.propietario = propietario;
         grupo.add(this);
-    } 
+    }
 
     public void add_jugador(Jugador jugador) {
         jugadores.add(jugador);
         System.out.println("no implementado: acción de casilla");
+    }
+
+    public boolean enVenta () {
+        if(tipo == TipoCasilla.SOLAR || tipo == TipoCasilla.TRANSPORTE || tipo == TipoCasilla.SERVICIOS)
+        {
+            return enVenta;
+        }
+        return false;
+    }
+
+    public int comprar(Jugador jugador) {
+
+        if(jugador.get_fortuna() >= precio) {
+            jugador.add_propiedades(this, precio);
+            enVenta=false;
+            return 0;
+        }
+        return -1;
     }
 
     public void remove_jugador(Jugador jugador) {
@@ -57,6 +82,14 @@ public class Casilla {
 
     public String get_nombre() {
         return nombre;
+    }
+
+    public float get_precio() {
+        return precio;
+    }
+
+    public TipoCasilla get_tipo() {
+        return tipo;
     }
 
     public Color get_color() {
@@ -75,6 +108,75 @@ public class Casilla {
 
     @Override
     public String toString() {
-        return "";
+
+        if(tipo==TipoCasilla.SOLAR)
+        {
+            return String.format(
+                    "tipo: %s%s%s%s - grupo: %s%s%s - precio: %s%.0f%s",
+                    Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
+                    Color.BOLD, String.valueOf(grupo.get_color()), Color.RESET,
+                    Color.BOLD, precio, Color.RESET
+            );
+        }
+
+        return String.format(
+                "tipo: %s%s%s%s - precio: %s%.0f%s",
+                Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
+                Color.BOLD, precio, Color.RESET
+                );
+    }
+
+    public String describir()
+    {
+        if(tipo==TipoCasilla.SOLAR)
+        {
+            return String.format(
+                    "tipo: %s%s%s%s - grupo: %s%s%s - propietario: %s%s%s - valor: %s%.0f%s",
+                    Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
+                    Color.BOLD, String.valueOf(grupo.get_color()), Color.RESET,
+                    Color.BOLD, propietario.get_nombre(), Color.RESET,
+                    Color.BOLD, precio, Color.RESET
+            );
+        }
+
+        if(tipo==TipoCasilla.TRANSPORTE || tipo==TipoCasilla.SERVICIOS)
+        {
+            return String.format(
+                    "tipo: %s%s%s%s - propietario: %s%s%s - valor: %s%.0f%s",
+                    Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
+                    Color.BOLD, propietario.get_nombre(), Color.RESET,
+                    Color.BOLD, precio, Color.RESET
+            );
+        }
+
+        if(tipo==TipoCasilla.IMPUESTOS)
+        {
+            return String.format(
+                    "tipo: %s%s%s%s - a pagar: %s%.0f%s",
+                    Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
+                    Color.BOLD, precio, Color.RESET
+            );
+        }
+
+        if(tipo==TipoCasilla.PARKING)
+        {
+            float bote = Monopoly.get().get_tablero().get_bote();
+            return String.format(
+                    "bote: %s%s%f%s - jugadores: %s%s%s",
+                    Color.AZUL, Color.BOLD, bote, Color.RESET,
+                    Color.BOLD, jugadores, Color.RESET
+            );
+        }
+
+        if(tipo==TipoCasilla.CARCEL)
+        {
+
+            return String.format(
+                    "salir: %s%s%f%s - jugadores: %s%s%s",
+                    Color.AZUL, Color.BOLD, precio, Color.RESET,
+                    Color.BOLD, jugadores, Color.RESET
+            );
+        }
+        return String.format("La casilla no se puede describir");
     }
 }
