@@ -93,9 +93,8 @@ public class Comando {
                 {
                     if (args.size() != 1)
                         throw new IllegalArgumentException("argumentos inválidos, uso: comprar [propiedad]");
-                    String nombre = args.get(1);
+                    String nombre = args.get(0);
                     Casilla c = Monopoly.get().get_tablero().buscar_casilla(nombre);
-
                     if(!c.enVenta())
                         throw new RuntimeException(String.format("la propiedad '%s' no está en venta", nombre));
                     Jugador j = Monopoly.get().get_turno();
@@ -204,7 +203,7 @@ public class Comando {
                         throw new RuntimeException("unreachable");
                 }
 
-                if(args.get(0)!= "jugador" && args.get(0)!="avatar")
+                if(args.get(0)!= "jugador" && args.get(0)!= "avatar")
                 {
                     if (args.size() != 2)
                         throw new IllegalArgumentException("argumentos inválidos, uso: describir [casilla]");
