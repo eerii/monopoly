@@ -71,6 +71,7 @@ public class Casilla {
         if(jugador.get_fortuna() >= precio) {
             jugador.add_propiedades(this, precio);
             enVenta=false;
+            propietario=jugador;
             return 0;
         }
         return -1;
@@ -131,9 +132,9 @@ public class Casilla {
         if(tipo==TipoCasilla.SOLAR)
         {
             return String.format(
-                    "tipo: %s%s%s%s - grupo: %s%s%s - propietario: %s%s%s - valor: %s%.0f%s",
+                    "tipo: %s%s%s%s - grupo: %s%s%s%s - propietario: %s%s%s - valor: %s%.0f%s",
                     Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
-                    Color.BOLD, String.valueOf(grupo.get_color()), Color.RESET,
+                    grupo.get_color(), Color.BOLD, String.valueOf(grupo.get_nombre()), Color.RESET,
                     Color.BOLD, propietario.get_nombre(), Color.RESET,
                     Color.BOLD, precio, Color.RESET
             );

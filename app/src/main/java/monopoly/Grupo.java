@@ -6,10 +6,12 @@ import consola.Color;
 
 public class Grupo{
     Color color;
+    String nombre;
     List<Casilla> casillas;
 
-    public Grupo(Color color) {
+    public Grupo(Color color, String nombre) {
         this.color = color;
+        this.nombre=nombre;
         this.casillas = new ArrayList<Casilla>();
     }
 
@@ -19,5 +21,9 @@ public class Grupo{
 
     public Color get_color() {
         return color;
+    }
+
+    public String get_nombre(){
+        return nombre;
     }
 }

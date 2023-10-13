@@ -16,16 +16,16 @@ public class Tablero {
         Jugador banca = new Jugador();
         bote = 0;
         grupos = new ArrayList<Grupo>(Arrays.asList(
-            new Grupo(Color.AZUL),
-            new Grupo(Color.AMARILLO),
-            new Grupo(Color.CYAN),
-            new Grupo(Color.VERDE),
-            new Grupo(Color.ROJO),
-            new Grupo(Color.ALT_ROJO),
-            new Grupo(Color.ALT_VERDE),
-            new Grupo(Color.ALT_AZUL),
-            new Grupo(Color.BLANCO),
-            new Grupo(Color.BLANCO)
+            new Grupo(Color.AZUL, "Azul"),
+            new Grupo(Color.AMARILLO, "Amarillo"),
+            new Grupo(Color.CYAN, "Cyan"),
+            new Grupo(Color.VERDE, "Verde"),
+            new Grupo(Color.ROJO, "Rojo"),
+            new Grupo(Color.ALT_ROJO, "Naranja"),
+            new Grupo(Color.ALT_VERDE, "Verde claro"),
+            new Grupo(Color.ALT_AZUL, "Azul oscuro"),
+            new Grupo(Color.BOLD,""),
+            new Grupo(Color.BOLD, "")
         ));
 
         casillas = new ArrayList<Casilla>(Arrays.asList(

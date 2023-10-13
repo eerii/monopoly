@@ -1,5 +1,6 @@
 package monopoly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import consola.Color;
@@ -16,7 +17,7 @@ public class Jugador {
         this.nombre = nombre;
         this.avatar = avatar;
         this.fortuna = 1000.f; // TODO: Un tercio da suma total de todalas propiedades do tableiro
-        this.propiedades = List.of();
+        this.propiedades = new ArrayList<Casilla>();
         this.vueltas = 0;
         
         Tablero t = Monopoly.get().get_tablero();
@@ -29,7 +30,7 @@ public class Jugador {
         this.nombre = "banca";
         this.avatar = null;
         this.fortuna = -1.f;
-        this.propiedades = List.of(); // TODO: Debe tener todas las propiedades
+        this.propiedades = new ArrayList<Casilla>(); // TODO: Debe tener todas las propiedades
     }
 
     public String get_nombre() {
@@ -46,7 +47,7 @@ public class Jugador {
 
     public void add_propiedades(Casilla casilla, float precio) {
         propiedades.add(casilla);
-        fortuna-=precio;
+        fortuna = fortuna - precio;
     }
 
     public void mover(Casilla actual, int movimiento) {
