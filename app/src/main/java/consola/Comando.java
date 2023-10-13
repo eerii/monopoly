@@ -195,7 +195,7 @@ public class Comando {
                         Jugador jugador = Monopoly.get().buscar_avatar(caracter);
                         Avatar a = jugador.get_avatar();
 
-                        if (j == null)
+                        if (jugador == null)
                             throw new RuntimeException(String.format("el jugador '%c' no existe", caracter));
                         System.out.println(a);
 
