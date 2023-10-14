@@ -1,10 +1,12 @@
 package monopoly;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import consola.Color;
 
 import java.util.HashSet;
+import java.util.List;
 
 // TODO: Mover funcionalidad a Solar cuando se pueda
 
@@ -15,9 +17,8 @@ public class Casilla {
 
     // Propiedades de Solar
     float precio;
-    Boolean enVenta;
+    Boolean en_venta;
 
-    Jugador propietario;
     Boolean hipotecado;
     Grupo grupo = null;
 
@@ -35,46 +36,48 @@ public class Casilla {
         NULL;
     }
 
-
     public Casilla(TipoCasilla tipo, String nombre) {
         this.tipo = tipo;
         this.nombre = nombre;
         this.jugadores = new HashSet<Jugador>();
-        this.propietario = null;
     }
 
-    public Casilla(TipoCasilla tipo, String nombre, int precio, Grupo grupo, boolean enVenta, Jugador propietario) {
+    public Casilla(TipoCasilla tipo, String nombre, int precio, Grupo grupo) {
         this(tipo, nombre);
         this.precio = precio;
         this.hipotecado = false;
         this.grupo = grupo;
-        this.enVenta = enVenta;
-        this.propietario = propietario;
+        this.en_venta = true;
         grupo.add(this);
     }
 
     public void add_jugador(Jugador jugador) {
+        add_jugador(jugador, false);
+    }
+
+    public void add_jugador(Jugador jugador, boolean ignorar) {
         jugadores.add(jugador);
-        System.out.println("no implementado: acción de casilla");
+        if (!ignorar) {
+            System.out.println("no implementado: acción de casilla");
+        }
     }
 
-    public boolean enVenta () {
-        if(tipo == TipoCasilla.SOLAR || tipo == TipoCasilla.TRANSPORTE || tipo == TipoCasilla.SERVICIOS)
-        {
-            return enVenta;
-        }
-        return false;
+    public boolean get_en_venta() {
+        return (tipo == TipoCasilla.SOLAR || tipo == TipoCasilla.TRANSPORTE || tipo == TipoCasilla.SERVICIOS) && en_venta;
     }
 
-    public int comprar(Jugador jugador) {
+    public void comprar(Jugador jugador) {
+        if (!en_venta)
+            throw new RuntimeException(String.format("la casilla %s no está en venta", nombre));
 
-        if(jugador.get_fortuna() >= precio) {
-            jugador.add_propiedades(this, precio);
-            enVenta=false;
-            propietario=jugador;
-            return 0;
-        }
-        return -1;
+        if (!jugadores.contains(jugador))
+            throw new RuntimeException(String.format("el jugador %s no está en la casilla %s por lo que no puede comprarla", jugador.get_nombre(), nombre));
+        
+        if (jugador.get_fortuna() < precio)
+            throw new RuntimeException(String.format("el jugador %s no puede permitirse comprar la casilla %s por %.0f", jugador.get_nombre(), nombre, precio));
+
+        jugador.add_propiedad(this, precio);
+        en_venta=false;
     }
 
     public void remove_jugador(Jugador jugador) {
@@ -107,77 +110,37 @@ public class Casilla {
         return String.format("%s&%s", nombre, str_jugadores);
     }
 
-    @Override
-    public String toString() {
-
-        if(tipo==TipoCasilla.SOLAR)
-        {
-            return String.format(
-                    "tipo: %s%s%s%s - grupo: %s%s%s - precio: %s%.0f%s",
-                    Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
-                    Color.BOLD, String.valueOf(grupo.get_color()), Color.RESET,
-                    Color.BOLD, precio, Color.RESET
-            );
-        }
-
-        return String.format(
-                "tipo: %s%s%s%s - precio: %s%.0f%s",
-                Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
-                Color.BOLD, precio, Color.RESET
-                );
+    String lista_jugadores() {
+        List<String> js = jugadores.stream().map( Jugador::get_nombre ).collect( Collectors.toList() );
+        String s = String.join(", ", js);
+        return "[ " + s + " ]";
     }
 
-    public String describir()
-    {
-        if(tipo==TipoCasilla.SOLAR)
-        {
-            return String.format(
-                    "tipo: %s%s%s%s - grupo: %s%s%s%s - propietario: %s%s%s - valor: %s%.0f%s",
-                    Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
-                    grupo.get_color(), Color.BOLD, String.valueOf(grupo.get_nombre()), Color.RESET,
-                    Color.BOLD, propietario.get_nombre(), Color.RESET,
-                    Color.BOLD, precio, Color.RESET
-            );
-        }
+    @Override
+    public String toString() {
+        Monopoly m = Monopoly.get();
+        String sn = String.format("%s%s%s%s", Color.AZUL, Color.BOLD, nombre, Color.RESET);
+        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, String.valueOf(tipo), Color.RESET);
+        String sj = String.format("%s%s%s", Color.BOLD, lista_jugadores(), Color.RESET);
+        String sp, sg;
 
-        if(tipo==TipoCasilla.TRANSPORTE || tipo==TipoCasilla.SERVICIOS)
-        {
-            return String.format(
-                    "tipo: %s%s%s%s - propietario: %s%s%s - valor: %s%.0f%s",
-                    Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
-                    Color.BOLD, propietario.get_nombre(), Color.RESET,
-                    Color.BOLD, precio, Color.RESET
-            );
+        switch (tipo) {
+            case SOLAR:
+                sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(), Color.RESET);
+                sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
+                return String.format("%s - tipo: %s - grupo: %s - valor: %s - jugadores: %s", sn, st, sg, sp, sj);
+            case TRANSPORTE:
+            case SERVICIOS:
+                sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
+                return String.format("%s - tipo: %s - valor: %s - jugadores: %s", sn, st, sp, sj);
+            case IMPUESTOS:
+                sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
+                return String.format("%s - tipo: %s - a pagar: %s - jugadores: %s", sn, st, sp, sj);
+            case PARKING:
+                sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, m.get_banca().get_fortuna(), Color.RESET);
+                return String.format("%s - tipo: %s - bote: %s - jugadores: %s", sn, st, sp, sj);
+            default:
+                return String.format("%s - tipo: %s - jugadores: %s", sn, st, sj);
         }
-
-        if(tipo==TipoCasilla.IMPUESTOS)
-        {
-            return String.format(
-                    "tipo: %s%s%s%s - a pagar: %s%.0f%s",
-                    Color.AZUL, Color.BOLD, String.valueOf(tipo), Color.RESET,
-                    Color.BOLD, precio, Color.RESET
-            );
-        }
-
-        if(tipo==TipoCasilla.PARKING)
-        {
-            float bote = Monopoly.get().get_tablero().get_bote();
-            return String.format(
-                    "bote: %s%s%f%s - jugadores: %s%s%s",
-                    Color.AZUL, Color.BOLD, bote, Color.RESET,
-                    Color.BOLD, jugadores, Color.RESET
-            );
-        }
-
-        if(tipo==TipoCasilla.CARCEL)
-        {
-
-            return String.format(
-                    "salir: %s%s%f%s - jugadores: %s%s%s",
-                    Color.AZUL, Color.BOLD, precio, Color.RESET,
-                    Color.BOLD, jugadores, Color.RESET
-            );
-        }
-        return String.format("La casilla no se puede describir");
     }
 }

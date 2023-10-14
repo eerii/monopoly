@@ -7,6 +7,7 @@ import consola.Consola;
 public class Monopoly {
     Consola consola;
     List<Jugador> jugadores;
+    Jugador banca;
     Tablero tablero;
     Dados dados;
     int turno = -1;
@@ -18,6 +19,10 @@ public class Monopoly {
         jugadores = new ArrayList<Jugador>();
         tablero = new Tablero();
         dados = new Dados();
+
+        banca = new Jugador();
+        for (Casilla c: tablero.get_casillas())
+            banca.add_propiedad(c, 0.f);
     }
 
     public static Monopoly get() {
@@ -48,6 +53,10 @@ public class Monopoly {
 
     public List<Jugador> get_jugadores() {
         return jugadores;
+    }
+    
+    public Jugador get_banca() {
+        return banca;
     }
 
     public Dados get_dados() {
@@ -90,5 +99,9 @@ public class Monopoly {
 
     public void siguiente_turno() {
         turno = (turno + 1) % jugadores.size();
+    }
+
+    public void debug_set_turno(Jugador j) {
+        turno = jugadores.indexOf(j);
     }
 }

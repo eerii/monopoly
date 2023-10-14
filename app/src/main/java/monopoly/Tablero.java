@@ -9,12 +9,7 @@ public class Tablero {
     List<Casilla> casillas; // TODO: Cambiar a set cuando los nombres no se repitan
     List<Grupo> grupos;
 
-    float bote;
-
     public Tablero() {
-
-        Jugador banca = new Jugador();
-        bote = 0;
         grupos = new ArrayList<Grupo>(Arrays.asList(
             new Grupo(Color.AZUL, "Azul"),
             new Grupo(Color.AMARILLO, "Amarillo"),
@@ -30,54 +25,50 @@ public class Tablero {
 
         casillas = new ArrayList<Casilla>(Arrays.asList(
             new Casilla(Casilla.TipoCasilla.SALIDA, "Salida"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar1",1000, grupos.get(0),true,banca),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar1",1000, grupos.get(0)),
             new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar2",1000, grupos.get(0),true,banca),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar2",1000, grupos.get(0)),
             new Casilla(Casilla.TipoCasilla.IMPUESTOS, "Imp1"),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans1",1000, grupos.get(8), true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar3",1000, grupos.get(1),true,banca),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans1",1000, grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar3",1000, grupos.get(1)),
             new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar4",1000, grupos.get(1),true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar5",1000, grupos.get(1),true,banca),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar4",1000, grupos.get(1)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar5",1000, grupos.get(1)),
             new Casilla(Casilla.TipoCasilla.CARCEL, "Cárcel"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar6",1000, grupos.get(2),true,banca),
-            new Casilla(Casilla.TipoCasilla.SERVICIOS, "Serv1", 1000, grupos.get(9),true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar7",1000, grupos.get(2),true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar8",1000, grupos.get(2),true,banca),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans2",1000, grupos.get(8), true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar9",1000, grupos.get(3),true,banca),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar6",1000, grupos.get(2)),
+            new Casilla(Casilla.TipoCasilla.SERVICIOS, "Serv1", 1000, grupos.get(9)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar7",1000, grupos.get(2)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar8",1000, grupos.get(2)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans2",1000, grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar9",1000, grupos.get(3)),
             new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar10",1000, grupos.get(3),true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar11",1000, grupos.get(3),true,banca),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar10",1000, grupos.get(3)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar11",1000, grupos.get(3)),
             new Casilla(Casilla.TipoCasilla.PARKING, "Parking"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar12",1000, grupos.get(4),true,banca),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar12",1000, grupos.get(4)),
             new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar13",1000, grupos.get(4),true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar14",1000, grupos.get(4),true,banca),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans3",1000, grupos.get(8), true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar15",1000, grupos.get(5),true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar16",1000, grupos.get(5),true,banca),
-            new Casilla(Casilla.TipoCasilla.SERVICIOS, "Serv2",1000, grupos.get(9), true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar17",1000, grupos.get(5),true,banca),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar13",1000, grupos.get(4)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar14",1000, grupos.get(4)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans3",1000, grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar15",1000, grupos.get(5)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar16",1000, grupos.get(5)),
+            new Casilla(Casilla.TipoCasilla.SERVICIOS, "Serv2",1000, grupos.get(9)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar17",1000, grupos.get(5)),
             new Casilla(Casilla.TipoCasilla.IR_A_CARCEL, "IrCarcel"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar18",1000, grupos.get(6),true,banca),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar19",1000, grupos.get(6),true,banca),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar18",1000, grupos.get(6)),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar19",1000, grupos.get(6)),
             new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar20",1000, grupos.get(6),true,banca),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans4", 1000,grupos.get(8),true,banca),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar20",1000, grupos.get(6)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans4", 1000,grupos.get(8)),
             new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar21",1000, grupos.get(7),true,banca),
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar21",1000, grupos.get(7)),
             new Casilla(Casilla.TipoCasilla.IMPUESTOS, "Imp2"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar22",1000, grupos.get(7),true,banca)
-        ));
+            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar22",1000, grupos.get(7))
+        )); 
     }
 
     public List<Casilla> get_casillas() {
         return casillas;
-    }
-
-    public float get_bote() {
-        return bote;
     }
 
     public Casilla buscar_casilla(String nombre) {

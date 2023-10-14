@@ -45,7 +45,7 @@ public enum Cmd {
         args.put(Cmd.VER, List.of("tablero"));
         args.put(Cmd.COMPRAR, List.of("*"));
         args.put(Cmd.LANZAR, List.of("dados"));
-        args.put(Cmd.JUGADOR, List.of(""));
+        args.put(Cmd.JUGADOR, List.of("*"));
         args.put(Cmd.ACABAR, List.of("turno"));
         args.put(Cmd.DESCRIBIR, List.of("*", "jugador", "avatar"));
         args.put(Cmd.SALIR, List.of("", "carcel"));

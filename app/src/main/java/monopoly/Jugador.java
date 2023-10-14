@@ -22,15 +22,15 @@ public class Jugador {
         
         Tablero t = Monopoly.get().get_tablero();
         Casilla salida = t.buscar_casilla("Salida");
-        salida.add_jugador(this);
+        salida.add_jugador(this, true);
     }
 
     // Constructor de la banca
     public Jugador() {
         this.nombre = "banca";
         this.avatar = null;
-        this.fortuna = -1.f;
-        this.propiedades = new ArrayList<Casilla>(); // TODO: Debe tener todas las propiedades
+        this.fortuna = 0.f;
+        this.propiedades = new ArrayList<Casilla>();
     }
 
     public String get_nombre() {
@@ -45,7 +45,7 @@ public class Jugador {
         return fortuna;
     }
 
-    public void add_propiedades(Casilla casilla, float precio) {
+    public void add_propiedad(Casilla casilla, float precio) {
         propiedades.add(casilla);
         fortuna = fortuna - precio;
     }

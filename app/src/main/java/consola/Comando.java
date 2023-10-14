@@ -52,7 +52,6 @@ public class Comando {
 
             case LISTAR:
                 List<Jugador> jugadores = Monopoly.get().get_jugadores();
-                List<Casilla> casillas =Monopoly.get().get_tablero().get_casillas();
 
                 switch (args.get(0)) {
                     case "jugadores":
@@ -66,10 +65,9 @@ public class Comando {
                         }
                         break;
                     case "enventa":
-                        for (Casilla c: casillas)
-                        {
-                            if(c.enVenta())
-                            {
+                        List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
+                        for (Casilla c: casillas) {
+                            if(c.get_en_venta()) {
                                 System.out.println(c);
                             }
                         }
@@ -91,28 +89,21 @@ public class Comando {
 
             case COMPRAR:
                 {
-                    if (args.size() != 1)
-                        throw new IllegalArgumentException("argumentos inválidos, uso: comprar [propiedad]");
-                    String nombre = args.get(0);
-                    Casilla c = Monopoly.get().get_tablero().buscar_casilla(nombre);
-                    if(!c.enVenta())
-                        throw new RuntimeException(String.format("la propiedad '%s' no está en venta", nombre));
-                    Jugador j = Monopoly.get().get_turno();
-                    if(c.comprar(j)==0){
-                        System.out.format("el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%f%s. Su fortuna actual es de %s%s%f%s\n",
-                                Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                                Color.ROJO, Color.BOLD, nombre, Color.RESET,
-                                Color.ROJO, Color.BOLD, c.get_precio(), Color.RESET,
-                                Color.ROJO, Color.BOLD, j.get_fortuna(), Color.RESET
-                        );
-                    }
-                    else
-                        System.out.format("el jugador %s%s%s%s no tiene dinero suficiente para comprar la casilla %s%s%s%s\n",
-                            Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                            Color.ROJO, Color.BOLD, nombre, Color.RESET
+                    Monopoly m = Monopoly.get();
+                    Tablero t = m.get_tablero();
+                    Jugador j = m.get_turno();
+                    Casilla c = t.buscar_casilla(args.get(0));
+
+                    if (c == null)
+                        throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
+                    
+                    c.comprar(j);
+                    System.out.format("el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
+                        Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
+                        Color.AZUL, Color.BOLD, c.get_nombre(), Color.RESET,
+                        Color.AMARILLO, Color.BOLD, c.get_precio(), Color.RESET,
+                        Color.ALT_AMARILLO, Color.BOLD, j.get_fortuna(), Color.RESET
                     );
-
-
                 }
                 break;
             
@@ -128,7 +119,11 @@ public class Comando {
                       
                         if (!d.cambio_jugador(j) && !d.son_dobles())
                             throw new RuntimeException("no puedes volver a tirar");
-                        d.tirar();
+                        
+                        if (args.size() == 3)
+                            d.debug_set(Integer.parseInt(args.get(1)), Integer.parseInt(args.get(2)));
+                        else
+                            d.tirar();
                         
                         int movimiento = d.get_a() + d.get_b();
                         System.out.format("los dados han sacado %s%s%d%s y %s%s%d%s\n",
@@ -148,7 +143,14 @@ public class Comando {
 
             case JUGADOR:
                 {
-                    Jugador j = Monopoly.get().get_turno();
+                    Monopoly m = Monopoly.get();
+                    Jugador j = m.get_turno();
+                
+                    if (args.get(0).equals("")) {
+                        j = m.buscar_jugador(args.get(0));
+                        m.debug_set_turno(j);
+                    }
+
                     System.out.println(j.toStringMini());
                 }
                 break;
@@ -172,52 +174,45 @@ public class Comando {
                 break;
 
             case DESCRIBIR:
+                switch (args.get(0)) {
+                    case "jugador":
+                        if (args.size() != 2)
+                            throw new IllegalArgumentException("argumentos inválidos, uso: describir jugador [nombre]");
 
-                if(!args.get(0).equals("jugador") && !args.get(0).equals("avatar"))
-                {
-                    if (args.size() != 1)
-                        throw new IllegalArgumentException("argumentos inválidos, uso: describir [casilla]");
+                        String nombre = args.get(1);
+                        Jugador j = Monopoly.get().buscar_jugador(nombre);
 
-                    String nomCasilla = args.get(0);
-                    Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(nomCasilla);
+                        if (j == null)
+                            throw new RuntimeException(String.format("el jugador '%s' no existe", nombre));
+                        System.out.println(j);
 
-                    if (casilla == null)
-                        throw new RuntimeException(String.format("la casilla '%s' no existe", nomCasilla));
-                    System.out.println(casilla.describir());
+                        break;
+                    case "avatar":
+                        if (args.size() != 2)
+                            throw new IllegalArgumentException("argumentos inválidos, uso: describir avatar [caracter]");
+
+                        char caracter = args.get(1).charAt(0);
+                        Jugador jugador = Monopoly.get().buscar_avatar(caracter);
+
+                        if (jugador == null)
+                            throw new RuntimeException(String.format("el jugador '%c' no existe", caracter));
+
+                        Avatar a = jugador.get_avatar();
+                        System.out.println(a);
+
+                        break;
+                    default:
+                        if (args.size() != 1)
+                            throw new IllegalArgumentException("argumentos inválidos, uso: describir [casilla]");
+
+                        String n = args.get(0);
+                        Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(n);
+
+                        if (casilla == null)
+                            throw new RuntimeException(String.format("la casilla '%s' no existe", n));
+
+                        System.out.println(casilla);
                 }
-                else {
-                    switch (args.get(0)) {
-                        case "jugador":
-                            if (args.size() != 2)
-                                throw new IllegalArgumentException("argumentos inválidos, uso: describir jugador [nombre]");
-
-                            String nombre = args.get(1);
-                            Jugador j = Monopoly.get().buscar_jugador(nombre);
-
-                            if (j == null)
-                                throw new RuntimeException(String.format("el jugador '%s' no existe", nombre));
-                            System.out.println(j);
-
-                            break;
-                        case "avatar":
-                            if (args.size() != 2)
-                                throw new IllegalArgumentException("argumentos inválidos, uso: describir avatar [caracter]");
-
-                            char caracter = args.get(1).charAt(0);
-                            Jugador jugador = Monopoly.get().buscar_avatar(caracter);
-                            Avatar a = jugador.get_avatar();
-
-                            if (jugador == null)
-                                throw new RuntimeException(String.format("el jugador '%c' no existe", caracter));
-                            System.out.println(a);
-
-                            break;
-                        default:
-                            throw new RuntimeException("unreachable");
-                    }
-                }
-
-
                 break; 
  
             case SALIR:

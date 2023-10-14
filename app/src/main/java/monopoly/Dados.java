@@ -35,4 +35,10 @@ public class Dados {
     public boolean son_dobles() {
         return dobles > 0;
     }
+
+    public void debug_set(int a, int b) {
+        this.a = a;
+        this.b = b;
+        dobles = a == b ? dobles + 1 : 0;
+    }
 }
