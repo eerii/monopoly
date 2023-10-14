@@ -30,7 +30,7 @@ public class Casilla {
         COMUNIDAD,
         IMPUESTOS,
         CARCEL,
-        IR_A_CARCEL,
+        A_LA_CARCEL,
         PARKING,
         SALIDA,
         NULL;
@@ -58,8 +58,32 @@ public class Casilla {
     public void add_jugador(Jugador jugador, boolean ignorar) {
         jugadores.add(jugador);
         if (!ignorar) {
-            System.out.println("no implementado: acción de casilla");
+            Monopoly m = Monopoly.get();
+            Tablero t = m.get_tablero();
+
+            switch (tipo) {
+                case A_LA_CARCEL: 
+                    Casilla c = t.buscar_casilla("Cárcel");
+                    jugador.ir_a_carcel();
+
+                    this.remove_jugador(jugador);
+                    c.add_jugador(jugador);
+                    System.out.format("el jugador %s ha ido a la cárcel!\n", jugador.get_nombre());
+                    
+                    m.siguiente_turno();
+                    break;
+                case CARCEL:
+                    if (!jugador.en_la_carcel())
+                        System.out.println("no te preocupes, solo pasas de visita");
+                    break;
+                default:
+                    System.out.println("no implementado: acción de casilla");
+            }
         }
+    }
+
+    public void remove_jugador(Jugador jugador) {
+        jugadores.remove(jugador);
     }
 
     public boolean get_en_venta() {
@@ -78,10 +102,6 @@ public class Casilla {
 
         jugador.add_propiedad(this, precio);
         en_venta=false;
-    }
-
-    public void remove_jugador(Jugador jugador) {
-        jugadores.remove(jugador);
     }
 
     public String get_nombre() {

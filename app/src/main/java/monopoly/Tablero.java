@@ -19,7 +19,7 @@ public class Tablero {
             new Grupo(Color.ALT_ROJO, "Naranja"),
             new Grupo(Color.ALT_VERDE, "Verde claro"),
             new Grupo(Color.ALT_AZUL, "Azul oscuro"),
-            new Grupo(Color.BOLD,""),
+            new Grupo(Color.BOLD, ""),
             new Grupo(Color.BOLD, "")
         ));
 
@@ -54,7 +54,7 @@ public class Tablero {
             new Casilla(Casilla.TipoCasilla.SOLAR, "Solar16",1000, grupos.get(5)),
             new Casilla(Casilla.TipoCasilla.SERVICIOS, "Serv2",1000, grupos.get(9)),
             new Casilla(Casilla.TipoCasilla.SOLAR, "Solar17",1000, grupos.get(5)),
-            new Casilla(Casilla.TipoCasilla.IR_A_CARCEL, "IrCarcel"),
+            new Casilla(Casilla.TipoCasilla.A_LA_CARCEL, "IrCarcel"),
             new Casilla(Casilla.TipoCasilla.SOLAR, "Solar18",1000, grupos.get(6)),
             new Casilla(Casilla.TipoCasilla.SOLAR, "Solar19",1000, grupos.get(6)),
             new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"),

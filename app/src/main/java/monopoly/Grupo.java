@@ -11,7 +11,7 @@ public class Grupo{
 
     public Grupo(Color color, String nombre) {
         this.color = color;
-        this.nombre=nombre;
+        this.nombre = nombre;
         this.casillas = new ArrayList<Casilla>();
     }
 

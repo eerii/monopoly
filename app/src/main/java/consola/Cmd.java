@@ -12,6 +12,7 @@ public enum Cmd {
     JUGADOR("jugador"),
     ACABAR("acabar"),
     DESCRIBIR("describir"),
+    DAR("dar"),
     SALIR("salir");
  
     private final String cmd;
@@ -48,6 +49,7 @@ public enum Cmd {
         args.put(Cmd.JUGADOR, List.of("*"));
         args.put(Cmd.ACABAR, List.of("turno"));
         args.put(Cmd.DESCRIBIR, List.of("*", "jugador", "avatar"));
+        args.put(Cmd.DAR, List.of("dinero"));
         args.put(Cmd.SALIR, List.of("", "carcel"));
     }
 

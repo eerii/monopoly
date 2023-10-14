@@ -2,6 +2,8 @@ package monopoly;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import consola.Color;
 import consola.Consola;
 
 public class Monopoly {
@@ -98,7 +100,14 @@ public class Monopoly {
     }
 
     public void siguiente_turno() {
+        Jugador j = get_turno();
+        int tc = j.turno_carcel();
+        if (tc > 0)
+            System.out.format("al jugador %s le quedan %d turnos en la cárcel\n", j.get_nombre(), tc);            
+
         turno = (turno + 1) % jugadores.size();
+        j = get_turno();
+        System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL, Color.BOLD, j.get_nombre(), Color.RESET);
     }
 
     public void debug_set_turno(Jugador j) {

@@ -116,7 +116,10 @@ public class Comando {
                         Dados d = m.get_dados();
 
                         Casilla actual = t.buscar_jugador(j);
-                      
+
+                        if (j.en_la_carcel())
+                            throw new RuntimeException("no puedes tirar, estás en la cárcel");
+                             
                         if (!d.cambio_jugador(j) && !d.son_dobles())
                             throw new RuntimeException("no puedes volver a tirar");
                         
@@ -160,13 +163,10 @@ public class Comando {
                     case "turno":
                         Monopoly m = Monopoly.get();
 
-                        if (m.get_dados().son_dobles())
+                        if (m.get_dados().son_dobles() && !m.get_turno().en_la_carcel())
                             throw new RuntimeException("has sacado dobles, no puedes terminar el turno");
 
                         m.siguiente_turno();
-                        Jugador j = m.get_turno();
-                        System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL, Color.BOLD, j.get_nombre(), Color.RESET);
-
                         break;
                     default:
                         throw new RuntimeException("unreachable");
@@ -213,13 +213,38 @@ public class Comando {
 
                         System.out.println(casilla);
                 }
-                break; 
+                break;
+
+            case DAR:
+                 switch (args.get(0)) {
+                    case "dinero":
+                        if (args.size() != 3)
+                            throw new IllegalArgumentException("argumentos inválidos, uso: dar dinero [nombre] [cantidad]");
+
+                        String nombre = args.get(1);
+                        float dinero = Float.parseFloat(args.get(2));
+                        Jugador j = Monopoly.get().buscar_jugador(nombre);
+
+                        if (j == null)
+                            throw new RuntimeException(String.format("el jugador '%s' no existe", nombre));
+                        j.add_fortuna(dinero);
+
+                        break;
+                    default:
+                        throw new RuntimeException("unreachable");
+                }
+                break;
  
             case SALIR:
                 switch (args.get(0)) {
                     case "carcel":
-                        throw new IllegalArgumentException("no implementado");
-                        //break;
+                        if (args.size() != 1)
+                            throw new IllegalArgumentException("argumentos inválidos, uso: salir carcel");
+
+                        Jugador j = Monopoly.get().get_turno();
+                        j.salir_carcel();
+                        
+                        break;
                     case "":
                         System.exit(0);
                         break;

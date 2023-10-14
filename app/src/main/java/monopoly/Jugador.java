@@ -11,6 +11,9 @@ public class Jugador {
     float fortuna;
     List<Casilla> propiedades; // TODO: Cambiar con herencia
     int vueltas;
+    int contador_carcel = 0;
+    static final float precio_carcel = 200.f;
+    static final int turnos_carcel = 3;
     
     // Constructor de un jugador normal
     public Jugador(String nombre, Avatar avatar) {
@@ -45,9 +48,40 @@ public class Jugador {
         return fortuna;
     }
 
+    public void add_fortuna(float valor) {
+        fortuna = fortuna + valor;
+        if (fortuna < 0) {
+            System.out.format("%s%s%s%s está en %s%sbancarrota%s! :(\n",
+                Color.AZUL, Color.BOLD, nombre, Color.RESET,
+                Color.ROJO, Color.BOLD, Color.RESET
+            );
+        }
+    }
+
     public void add_propiedad(Casilla casilla, float precio) {
         propiedades.add(casilla);
-        fortuna = fortuna - precio;
+        add_fortuna(-precio);
+    }
+
+    public void ir_a_carcel() {
+        contador_carcel = turnos_carcel;
+    }
+
+    public int turno_carcel() {
+        contador_carcel = contador_carcel > 0 ? contador_carcel - 1 : 0;
+        return contador_carcel;
+    }
+
+    public boolean en_la_carcel() {
+        return contador_carcel > 0;
+    }
+
+    public void salir_carcel() {
+        if (fortuna < precio_carcel)
+            throw new RuntimeException(String.format("el jugador %s no puede salir de la cárcel porque no tiene %.0f, quedan %d turnos para salir gratis\n", nombre, precio_carcel, contador_carcel));
+        
+        fortuna -= precio_carcel;
+        contador_carcel = 0;
     }
 
     public void mover(Casilla actual, int movimiento) {
