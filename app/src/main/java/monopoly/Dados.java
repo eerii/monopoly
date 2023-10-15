@@ -5,15 +5,15 @@ import java.util.Random;
 public class Dados {
     int a;
     int b;
-    int dobles = 0;
+    int dobles = -1;
+    boolean tirados = false;
     Jugador jugador;
 
     public boolean cambio_jugador(Jugador jugador) {
         if (this.jugador == jugador)
             return false;
         this.jugador = jugador;
-
-        dobles = 0; 
+        dobles = -1;
         return true;
     }
 
@@ -21,7 +21,7 @@ public class Dados {
         Random r = new Random();
         a = (r.nextInt(6) + 1);
         b = (r.nextInt(6) + 1);
-        dobles = a == b ? dobles + 1 : 0;
+        dobles = a == b ? Math.max(dobles, 0) + 1 : 0;
     }
 
     public int get_a() {
@@ -39,6 +39,6 @@ public class Dados {
     public void debug_set(int a, int b) {
         this.a = a;
         this.b = b;
-        dobles = a == b ? dobles + 1 : 0;
+        dobles = a == b ? Math.max(dobles, 0) + 1 : 0;
     }
 }

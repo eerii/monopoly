@@ -72,6 +72,11 @@ public class Monopoly {
             System.out.println(m.tablero);
             if (pausa) m.consola.limpiar_resultado();
             pausa = m.consola.entrada();
+
+            if (m.jugadores.size() == 1) {
+                System.out.format("el jugador %s ha ganado!\n", m.jugadores.get(0).get_nombre());
+                break;
+            }
         }
     }
 
@@ -103,6 +108,12 @@ public class Monopoly {
         if (jugadores.size() == 1) {
             turno = 0;
         }
+    }
+
+    public void remove_jugador(Jugador jugador) {
+        jugadores.remove(jugador);
+        for (Casilla c : tablero.get_casillas())
+            c.remove_jugador(jugador); 
     }
 
     public Jugador buscar_jugador(String nombre) {
@@ -142,6 +153,7 @@ public class Monopoly {
 
     public void debug_set_turno(Jugador j) {
         turno = jugadores.indexOf(j);
+        dados.cambio_jugador(null);
     }
 
     public void comprobar_vueltas() {

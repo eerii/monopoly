@@ -55,6 +55,10 @@ public class Avatar {
         }
     }
 
+    public Avatar() {
+        this(TipoAvatar.SOMBRERO);
+    }
+
     public Avatar(TipoAvatar tipo) {
         Random r = new Random();
         do {

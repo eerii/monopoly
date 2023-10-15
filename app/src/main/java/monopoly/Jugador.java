@@ -9,7 +9,7 @@ public class Jugador {
     String nombre;
     Avatar avatar;
     float fortuna;
-    List<Casilla> propiedades; // TODO: Cambiar con herencia
+    List<Casilla> propiedades;
     int vueltas;
     int contador_carcel = 0;
     static final int turnos_carcel = 3;
@@ -56,14 +56,17 @@ public class Jugador {
         return vueltas;
     }
 
-    public void add_fortuna(float valor) {
+    public boolean add_fortuna(float valor) {
         fortuna = fortuna + valor;
         if (fortuna < 0) {
             System.out.format("%s%s%s%s está en %s%sbancarrota%s! :(\n",
                 Color.AZUL, Color.BOLD, nombre, Color.RESET,
                 Color.ROJO, Color.BOLD, Color.RESET
             );
+            System.out.println("ni hipotecar ni bancarrota están implementados todavía");
+            Monopoly.get().remove_jugador(this);
         }
+        return fortuna < 0;
     }
 
     public void add_propiedad(Casilla casilla, float precio) {
@@ -137,7 +140,13 @@ public class Jugador {
     public void paga_alquiler(Jugador propietario, Casilla casilla) {
         float alquiler = casilla.get_alquiler();
         this.add_fortuna(alquiler * -1.f);
-        propietario.add_fortuna(alquiler);
+        if (propietario.add_fortuna(alquiler)) {
+            System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
+                Color.AZUL, Color.BOLD, nombre, Color.RESET,
+                casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
+                casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
+                Color.AZUL, Color.BOLD, propietario.get_nombre(), Color.RESET);
+        }
     }
 
     // String
@@ -161,8 +170,7 @@ public class Jugador {
             Color.BOLD, representar(), Color.RESET,
             avatar.get_tipo(),
             Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
-            propiedades
-            // TODO: imprimir hipotecas y edificios con colores en la lista de propiedades
+            propiedades // TODO: imprimir hipotecas y edificios con colores en la lista de propiedades
         );
     }
 

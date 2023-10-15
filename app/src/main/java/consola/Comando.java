@@ -170,9 +170,15 @@ public class Comando {
                  switch (args.get(0)) {
                     case "turno":
                         Monopoly m = Monopoly.get();
+                        Jugador j = m.get_turno();
+                        Dados d = m.get_dados();
+                        d.cambio_jugador(j);
 
-                        if (m.get_dados().get_dobles() > 0 && !m.get_turno().en_la_carcel())
+                        if (d.get_dobles() > 0 && !j.en_la_carcel())
                             throw new RuntimeException("has sacado dobles, no puedes terminar el turno");
+
+                        if (d.get_dobles() < 0)
+                            throw new RuntimeException("aún no has tirado, no puedes terminar el turno");
 
                         m.siguiente_turno();
                         break;
@@ -254,7 +260,6 @@ public class Comando {
                         
                         break;
                     case "":
-                        System.out.println("TODO: cambiar print a consola y registrar las lineas, si es muy larga imprimir por separado");
                         System.exit(0);
                         break;
                     default:

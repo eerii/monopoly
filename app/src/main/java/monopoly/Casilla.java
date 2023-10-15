@@ -86,19 +86,14 @@ public class Casilla {
                 case PARKING:
                     float bote = m.get_banca().get_fortuna();
                     jugador.add_fortuna(bote);
+                    m.get_banca().add_fortuna(bote * -1.f);
                     System.out.format("el jugador %s ha caído en el parking, recibe %.0f extra del bote!\n", jugador.get_nombre(), bote);
                     break;
                 default:
                     if(!en_venta) {
                         Jugador j = this.get_propietario();
-                        if(j != null) {
+                        if(j != null)
                             jugador.paga_alquiler(j, this);
-                            System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
-                                Color.AZUL, Color.BOLD, jugador.get_nombre(), Color.RESET,
-                                get_color(), Color.BOLD, alquiler, Color.RESET,
-                                get_color(), Color.BOLD, nombre, Color.RESET,
-                                Color.AZUL, Color.BOLD, j.get_nombre(), Color.RESET);
-                        }
                     }
             }
         }
@@ -155,7 +150,7 @@ public class Casilla {
     }
 
     public Color get_color() {
-        return grupo != null ? grupo.get_color() : Color.BLANCO;
+        return grupo != null ? grupo.get_color() : Color.NONE;
     }
 
     // String

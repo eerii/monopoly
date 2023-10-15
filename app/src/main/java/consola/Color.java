@@ -52,9 +52,9 @@ public enum Color {
     NONE("");
 
     public final String ansi;
-    static final HashMap<Color, Color> bg = new HashMap<>(); 
+    static final HashMap<Color, Color> bg = new HashMap<>();
 
-    private Color(String ansi) {
+    Color(String ansi) {
         this.ansi = ansi;
     }
 

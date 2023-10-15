@@ -6,8 +6,13 @@ import java.util.List;
 import consola.Color;
 
 public class Tablero {
-    List<Casilla> casillas; // TODO: Cambiar a set cuando los nombres no se repitan
+    List<Casilla> casillas;
     List<Grupo> grupos;
+
+    public Tablero(List<Grupo> grupos, List<Casilla> casillas) {
+        this.grupos = grupos;
+        this.casillas = casillas;
+    }
 
     public Tablero() {
         grupos = new ArrayList<Grupo>(Arrays.asList(
@@ -18,9 +23,7 @@ public class Tablero {
             new Grupo(Color.ROJO, "Naranja"),
             new Grupo(Color.ALT_ROJO, "Rojo"),
             new Grupo(Color.ALT_VERDE, "Verde claro"),
-            new Grupo(Color.ALT_AZUL, "Azul oscuro"),
-            new Grupo(Color.NONE, "Transporte"),
-            new Grupo(Color.NONE, "Servicios")
+            new Grupo(Color.ALT_AZUL, "Azul oscuro")
         ));
 
         casillas = new ArrayList<Casilla>(Arrays.asList(
@@ -29,17 +32,17 @@ public class Tablero {
             new Casilla(Casilla.TipoCasilla.COMUNIDAD,  "Caja"),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar2",	60, 	grupos.get(0)),
             new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp1",     200,    null),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans1",	200,	grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans1",	200,	null),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar3",	100,	grupos.get(1)),
             new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar4",	100,	grupos.get(1)),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar5",	120,	grupos.get(1)),
             new Casilla(Casilla.TipoCasilla.CARCEL,		"Cárcel",   300,    null),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar6",	140,	grupos.get(2)),
-            new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv1",	150,	grupos.get(9)),
+            new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv1",	150,	null),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar7",	140,	grupos.get(2)),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar8",	160,	grupos.get(2)),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans2",	200,	grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans2",	200,	null),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar9",	180,	grupos.get(3)),
             new Casilla(Casilla.TipoCasilla.COMUNIDAD,	"Caja"),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar10",	180,	grupos.get(3)),
@@ -49,17 +52,17 @@ public class Tablero {
             new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar13",	220,	grupos.get(4)),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar14",	240,	grupos.get(4)),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans3",	200,	grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans3",	200,	null),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar15",	260,	grupos.get(5)),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar16",	260,	grupos.get(5)),
-            new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv2",	150,	grupos.get(9)),
+            new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv2",	150,	null),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar17",	280,	grupos.get(5)),
             new Casilla(Casilla.TipoCasilla.A_LA_CARCEL,"IrCarcel"),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar18",	300,	grupos.get(6)),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar19",	300,	grupos.get(6)),
             new Casilla(Casilla.TipoCasilla.COMUNIDAD,	"Caja"),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar20",	100,	grupos.get(6)),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans4",	320,	grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans4",	320,	null),
             new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar21",	350,	grupos.get(7)),
             new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp2",     200,    null),
@@ -133,7 +136,6 @@ public class Tablero {
 
     @Override
     public String toString() {
-        // TODO: Cambiar los string formats de espacio en blanco por una constante
         String s = new String();
         String mid = new String();
         String inf = new String();
