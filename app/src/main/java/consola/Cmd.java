@@ -14,7 +14,6 @@ public enum Cmd {
     DESCRIBIR("describir"),
     DAR("dar"),
     SALIR("salir");
- 
     private final String cmd;
     private static final HashMap<Cmd, List<String>> args = new HashMap<>();
     private static final HashMap<String, Cmd> by_str = new HashMap<>(); 

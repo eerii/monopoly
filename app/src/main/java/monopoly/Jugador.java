@@ -103,7 +103,17 @@ public class Jugador {
         contador_carcel = 0;
     }
 
+    public Boolean esDueno (String nombre) {
+        for (Casilla c : propiedades) {
+            if (c.get_nombre().equals(nombre)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void mover(Casilla actual, int movimiento) {
+        Monopoly m = Monopoly.get();
         Casilla siguiente = avatar.siguiente_casilla(actual, movimiento);
         System.out.format("el avatar %s%s%s%s avanza %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
             Color.AZUL, Color.BOLD, this.representar(), Color.RESET,
@@ -120,6 +130,12 @@ public class Jugador {
         float media = Monopoly.get().get_media();
         add_fortuna(media);
         System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
+    }
+
+    public void paga_alquiler(Jugador dueno, Casilla casilla) {
+        float alquiler = casilla.get_alquiler();
+        this.add_fortuna(-1*alquiler);
+        dueno.add_fortuna(alquiler);
     }
 
     // String

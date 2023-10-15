@@ -15,12 +15,13 @@ public class Tablero {
             new Grupo(Color.AMARILLO, "Amarillo"),
             new Grupo(Color.CYAN, "Cyan"),
             new Grupo(Color.VERDE, "Verde"),
-            new Grupo(Color.ROJO, "Rojo"),
-            new Grupo(Color.ALT_ROJO, "Naranja"),
+            new Grupo(Color.ROJO, "Naranja"),
+            new Grupo(Color.ALT_ROJO, "Rojo"),
             new Grupo(Color.ALT_VERDE, "Verde claro"),
             new Grupo(Color.ALT_AZUL, "Azul oscuro"),
             new Grupo(Color.NONE, "Transporte"),
-            new Grupo(Color.NONE, "Servicios")
+            new Grupo(Color.NONE, "Servicios"),
+            new Grupo(Color.NONE, "ImpuestosyCarcel")
         ));
 
         casillas = new ArrayList<Casilla>(Arrays.asList(
@@ -28,13 +29,13 @@ public class Tablero {
             new Casilla(Casilla.TipoCasilla.SOLAR,      "Solar1",	60, 	grupos.get(0)),
             new Casilla(Casilla.TipoCasilla.COMUNIDAD,  "Caja"),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar2",	60, 	grupos.get(0)),
-            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp1"),
+            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp1",     200,  grupos.get(10)),
             new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans1",	200,	grupos.get(8)),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar3",	100,	grupos.get(1)),
             new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar4",	100,	grupos.get(1)),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar5",	120,	grupos.get(1)),
-            new Casilla(Casilla.TipoCasilla.CARCEL,		"Cárcel"),
+            new Casilla(Casilla.TipoCasilla.CARCEL,		"Cárcel",    500,  grupos.get(10)),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar6",	140,	grupos.get(2)),
             new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv1",	150,	grupos.get(9)),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar7",	140,	grupos.get(2)),
@@ -62,7 +63,7 @@ public class Tablero {
             new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans4",	320,	grupos.get(8)),
             new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar21",	350,	grupos.get(7)),
-            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp2"),
+            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp2",     200, grupos.get(10)),
             new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar22",	400,	grupos.get(7))
         )); 
     }

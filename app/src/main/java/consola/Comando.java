@@ -71,6 +71,7 @@ public class Comando {
                                 System.out.println(c);
                             }
                         }
+                        break;
                     default:
                         throw new RuntimeException("unreachable");
                 }
@@ -259,6 +260,8 @@ public class Comando {
                     default:
                         throw new RuntimeException("unreachable");
                 }
+
+            break;
         }
     }
 }
