@@ -90,11 +90,12 @@ public class Casilla {
                     if(!this.en_venta)
                     {
                         Jugador j = this.get_dueno();
-                            if(!j.equals(m.get_banca()))
+                            if(j!=null)
                             {
                                 jugador.paga_alquiler(j,this);
-                                System.out.format("el jugador %s%s%s%s paga el alquiler de %s%s%s%s al jugador %s%s%s%s\n",
+                                System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
                                         Color.AZUL, Color.BOLD, jugador.get_nombre(), Color.RESET,
+                                        this.get_color(), Color.BOLD, this.get_alquiler(), Color.RESET,
                                         this.get_color(), Color.BOLD, this.get_nombre(), Color.RESET,
                                         Color.AZUL, Color.BOLD, j.get_nombre(), Color.RESET);
                             }
@@ -144,7 +145,7 @@ public class Casilla {
             if(j.esDueno(this.nombre))
                 return j;
         }
-        return m.get_banca();
+        return null;
     }
 
     public void incrementar_precio() {
@@ -185,7 +186,11 @@ public class Casilla {
 
         switch (tipo) {
             case SOLAR:
+                Jugador j =this.get_dueno();
+                if(j!=null)
                 s = String.format("%s%s%s%s", Color.AMARILLO, Color.BOLD, this.get_dueno().get_nombre(), Color.RESET);
+                else
+                    s = " no hay ";
                 sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(), Color.RESET);
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
                 return String.format("%s - tipo: %s - propietario: %s - grupo: %s - valor: %s - jugadores: %s", sn, st, s, sg, sp, sj);
