@@ -175,19 +175,21 @@ public class Casilla {
         String sn = String.format("%s%s%s%s", Color.AZUL, Color.BOLD, nombre, Color.RESET);
         String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, String.valueOf(tipo), Color.RESET);
         String sj = String.format("%s%s%s", Color.BOLD, lista_jugadores(), Color.RESET);
-        String sp, sg, sjp;
+        String sp, sa, sg, sjp;
 
         switch (tipo) {
             case SOLAR:
                 Jugador jp = get_propietario();
                 sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(), Color.RESET);
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
-                sjp = jp != null ? String.format("%s%s%s%s", Color.AMARILLO, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : ""; 
-                return String.format("%s - tipo: %s - propietario: %s - grupo: %s - valor: %s - jugadores: %s", sn, st, sjp, sg, sp, sj);
+                sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, alquiler, Color.RESET);
+                sjp = jp != null ? String.format("%s%s%s%s", Color.AZUL, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : ""; 
+                return String.format("%s - tipo: %s - propietario: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sjp, sg, sp, sa, sj);
             case TRANSPORTE:
             case SERVICIOS:
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
-                return String.format("%s - tipo: %s - valor: %s - jugadores: %s", sn, st, sp, sj);
+                sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, alquiler, Color.RESET);
+                return String.format("%s - tipo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sp, sa, sj);
             case IMPUESTOS:
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
                 return String.format("%s - tipo: %s - a pagar: %s - jugadores: %s", sn, st, sp, sj);
