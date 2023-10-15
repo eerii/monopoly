@@ -260,8 +260,7 @@ public class Comando {
                     default:
                         throw new RuntimeException("unreachable");
                 }
-
-            break;
+                break;
         }
     }
 }

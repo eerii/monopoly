@@ -17,7 +17,6 @@ public class Casilla {
 
     // Propiedades de Solar
     float precio = 0.f;
-
     float alquiler = 0.f;
     Boolean en_venta = false;
 
@@ -47,11 +46,14 @@ public class Casilla {
     public Casilla(TipoCasilla tipo, String nombre, int precio, Grupo grupo) {
         this(tipo, nombre);
         this.precio = precio;
-        this.alquiler = (float) (0.1 * precio);
+        this.alquiler = (float)Math.floor(0.1f * precio);
         this.hipotecado = false;
-        this.grupo = grupo;
         this.en_venta = true;
-        grupo.add(this);
+
+        if (grupo != null) {
+            this.grupo = grupo;
+            grupo.add(this);
+        }
     }
 
     public void add_jugador(Jugador jugador) {
@@ -70,8 +72,7 @@ public class Casilla {
                     System.out.format("el jugador %s ha caído en la salida, recibe %.0f extra!\n", jugador.get_nombre(), media);
                     break;
                 case IMPUESTOS:
-                    float total = m.get_banca().get_fortuna();
-                    jugador.add_fortuna((-1*precio));
+                    jugador.add_fortuna(precio * -1.f);
                     m.get_banca().add_fortuna(precio);
                     System.out.format("el jugador %s ha caído la casilla de impuestos, paga %.0f a la banca!\n", jugador.get_nombre(), precio);
                     break;
@@ -86,19 +87,18 @@ public class Casilla {
                     float bote = m.get_banca().get_fortuna();
                     jugador.add_fortuna(bote);
                     System.out.format("el jugador %s ha caído en el parking, recibe %.0f extra del bote!\n", jugador.get_nombre(), bote);
+                    break;
                 default:
-                    if(!this.en_venta)
-                    {
-                        Jugador j = this.get_dueno();
-                            if(j!=null)
-                            {
-                                jugador.paga_alquiler(j,this);
-                                System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
-                                        Color.AZUL, Color.BOLD, jugador.get_nombre(), Color.RESET,
-                                        this.get_color(), Color.BOLD, this.get_alquiler(), Color.RESET,
-                                        this.get_color(), Color.BOLD, this.get_nombre(), Color.RESET,
-                                        Color.AZUL, Color.BOLD, j.get_nombre(), Color.RESET);
-                            }
+                    if(!en_venta) {
+                        Jugador j = this.get_propietario();
+                        if(j != null) {
+                            jugador.paga_alquiler(j, this);
+                            System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
+                                Color.AZUL, Color.BOLD, jugador.get_nombre(), Color.RESET,
+                                get_color(), Color.BOLD, alquiler, Color.RESET,
+                                get_color(), Color.BOLD, nombre, Color.RESET,
+                                Color.AZUL, Color.BOLD, j.get_nombre(), Color.RESET);
+                        }
                     }
             }
         }
@@ -137,12 +137,10 @@ public class Casilla {
         return alquiler;
     }
 
-    public Jugador get_dueno() {
+    public Jugador get_propietario() {
         Monopoly m = Monopoly.get();
-        List<Jugador> jugadores = m.get_jugadores();
-        for(Jugador j : jugadores)
-        {
-            if(j.esDueno(this.nombre))
+        for(Jugador j : m.get_jugadores()) {
+            if(j.es_propietario(nombre))
                 return j;
         }
         return null;
@@ -182,18 +180,15 @@ public class Casilla {
         String sn = String.format("%s%s%s%s", Color.AZUL, Color.BOLD, nombre, Color.RESET);
         String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, String.valueOf(tipo), Color.RESET);
         String sj = String.format("%s%s%s", Color.BOLD, lista_jugadores(), Color.RESET);
-        String sp, sg, s;
+        String sp, sg, sjp;
 
         switch (tipo) {
             case SOLAR:
-                Jugador j =this.get_dueno();
-                if(j!=null)
-                s = String.format("%s%s%s%s", Color.AMARILLO, Color.BOLD, this.get_dueno().get_nombre(), Color.RESET);
-                else
-                    s = " no hay ";
+                Jugador jp = get_propietario();
                 sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(), Color.RESET);
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
-                return String.format("%s - tipo: %s - propietario: %s - grupo: %s - valor: %s - jugadores: %s", sn, st, s, sg, sp, sj);
+                sjp = jp != null ? String.format("%s%s%s%s", Color.AMARILLO, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : ""; 
+                return String.format("%s - tipo: %s - propietario: %s - grupo: %s - valor: %s - jugadores: %s", sn, st, sjp, sg, sp, sj);
             case TRANSPORTE:
             case SERVICIOS:
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);

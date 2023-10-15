@@ -12,7 +12,6 @@ public class Jugador {
     List<Casilla> propiedades; // TODO: Cambiar con herencia
     int vueltas;
     int contador_carcel = 0;
-    static final float precio_carcel = 200.f;
     static final int turnos_carcel = 3;
     
     // Constructor de un jugador normal
@@ -96,14 +95,17 @@ public class Jugador {
     }
 
     public void salir_carcel() {
-        if (fortuna < precio_carcel)
-            throw new RuntimeException(String.format("el jugador %s no puede salir de la cárcel porque no tiene %.0f, quedan %d turnos para salir gratis\n", nombre, precio_carcel, contador_carcel));
+        Tablero t = Monopoly.get().get_tablero();
+        Casilla c = t.buscar_casilla("Cárcel");
+
+        if (fortuna < c.get_precio())
+            throw new RuntimeException(String.format("el jugador %s no puede salir de la cárcel porque no tiene %.0f, quedan %d turnos para salir gratis\n", nombre, c.get_precio(), contador_carcel));
         
-        fortuna -= precio_carcel;
+        fortuna -= c.get_precio();
         contador_carcel = 0;
     }
 
-    public Boolean esDueno (String nombre) {
+    public boolean es_propietario(String nombre) {
         for (Casilla c : propiedades) {
             if (c.get_nombre().equals(nombre)) {
                 return true;
@@ -132,10 +134,10 @@ public class Jugador {
         System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
     }
 
-    public void paga_alquiler(Jugador dueno, Casilla casilla) {
+    public void paga_alquiler(Jugador propietario, Casilla casilla) {
         float alquiler = casilla.get_alquiler();
-        this.add_fortuna(-1*alquiler);
-        dueno.add_fortuna(alquiler);
+        this.add_fortuna(alquiler * -1.f);
+        propietario.add_fortuna(alquiler);
     }
 
     // String
