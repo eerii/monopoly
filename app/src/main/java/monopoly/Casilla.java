@@ -59,18 +59,15 @@ public class Casilla {
         jugadores.add(jugador);
         if (!ignorar) {
             Monopoly m = Monopoly.get();
-            Tablero t = m.get_tablero();
 
             switch (tipo) {
+                case SALIDA:
+                    float media = m.get_media(); 
+                    jugador.add_fortuna(media);
+                    System.out.format("el jugador %s ha caído en la salida, recibe %.0f extra!\n", jugador.get_nombre(), media);
+                    break;
                 case A_LA_CARCEL: 
-                    Casilla c = t.buscar_casilla("Cárcel");
                     jugador.ir_a_carcel();
-
-                    this.remove_jugador(jugador);
-                    c.add_jugador(jugador);
-                    System.out.format("el jugador %s ha ido a la cárcel!\n", jugador.get_nombre());
-                    
-                    m.siguiente_turno();
                     break;
                 case CARCEL:
                     if (!jugador.en_la_carcel())
@@ -110,6 +107,10 @@ public class Casilla {
 
     public float get_precio() {
         return precio;
+    }
+
+    public void incrementar_precio() {
+        precio = (float)Math.floor(precio * 1.05f);
     }
 
     public TipoCasilla get_tipo() {

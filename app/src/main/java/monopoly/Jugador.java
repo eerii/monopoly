@@ -19,13 +19,18 @@ public class Jugador {
     public Jugador(String nombre, Avatar avatar) {
         this.nombre = nombre;
         this.avatar = avatar;
-        this.fortuna = 1000.f; // TODO: Un tercio da suma total de todalas propiedades do tableiro
         this.propiedades = new ArrayList<Casilla>();
         this.vueltas = 0;
         
         Tablero t = Monopoly.get().get_tablero();
         Casilla salida = t.buscar_casilla("Salida");
         salida.add_jugador(this, true);
+
+        for (Casilla c: t.get_casillas())
+            fortuna += c.get_precio();
+        fortuna /= 3.f;
+        // Lo redondeamos en las centenas para que quede más bonito
+        fortuna = (float)Math.ceil(fortuna / 100.f) * 100.f;
     }
 
     // Constructor de la banca
@@ -47,6 +52,10 @@ public class Jugador {
     public float get_fortuna() {
         return fortuna;
     }
+    
+    public int get_vueltas() {
+        return vueltas;
+    }
 
     public void add_fortuna(float valor) {
         fortuna = fortuna + valor;
@@ -64,7 +73,17 @@ public class Jugador {
     }
 
     public void ir_a_carcel() {
+        Tablero t = Monopoly.get().get_tablero();
+        Casilla c = t.buscar_casilla("Cárcel");
+        Casilla actual = t.buscar_jugador(this);
+
         contador_carcel = turnos_carcel;
+
+        actual.remove_jugador(this);
+        c.add_jugador(this);
+
+        System.out.format("el jugador %s ha ido a la cárcel!\n", nombre);
+        Monopoly.get().siguiente_turno();
     }
 
     public int turno_carcel() {
@@ -98,6 +117,9 @@ public class Jugador {
 
     public void dar_vuelta() {
         vueltas += 1;
+        float media = Monopoly.get().get_media();
+        add_fortuna(media);
+        System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
     }
 
     // String
@@ -118,7 +140,7 @@ public class Jugador {
             "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
             "propiedades: %s",
             Color.AZUL, Color.BOLD, nombre, Color.RESET,
-            Color.BOLD, String.valueOf(avatar.get_id()), Color.RESET,
+            Color.BOLD, representar(), Color.RESET,
             avatar.get_tipo(),
             Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
             propiedades
@@ -129,7 +151,7 @@ public class Jugador {
     public String toStringMini() {
         return String.format("%s%s%s%s - avatar %s%s%s (%s)",
             Color.AZUL, Color.BOLD, nombre, Color.RESET,
-            Color.BOLD, String.valueOf(avatar.get_id()), Color.RESET,
+            Color.BOLD, representar(), Color.RESET,
             avatar.get_tipo()
         );
     }

@@ -120,7 +120,7 @@ public class Comando {
                         if (j.en_la_carcel())
                             throw new RuntimeException("no puedes tirar, estás en la cárcel");
                              
-                        if (!d.cambio_jugador(j) && !d.son_dobles())
+                        if (!d.cambio_jugador(j) && d.get_dobles() == 0)
                             throw new RuntimeException("no puedes volver a tirar");
                         
                         if (args.size() == 3)
@@ -132,9 +132,16 @@ public class Comando {
                         System.out.format("los dados han sacado %s%s%d%s y %s%s%d%s\n",
                             Color.ROJO, Color.BOLD, d.get_a(), Color.RESET,
                             Color.ROJO, Color.BOLD, d.get_b(), Color.RESET);
-                        if (d.son_dobles())
-                            System.out.format("has sacado %s%sdobles%s! tienes que volver a tirar\n",
-                                Color.ALT_ROJO, Color.BOLD, Color.RESET);
+
+                        if (d.get_dobles() == 3) {
+                            System.out.println("te has pasado de velocidad, vas a la cárcel");
+                            j.ir_a_carcel();
+                            break;
+                        }
+
+                        if (d.get_dobles() > 0) {
+                            System.out.format("has sacado %s%sdobles%s! tienes que volver a tirar\n", Color.ALT_ROJO, Color.BOLD, Color.RESET);
+                        }
 
                         j.mover(actual, movimiento);
                         
@@ -149,7 +156,7 @@ public class Comando {
                     Monopoly m = Monopoly.get();
                     Jugador j = m.get_turno();
                 
-                    if (args.get(0).equals("")) {
+                    if (!args.get(0).equals("")) {
                         j = m.buscar_jugador(args.get(0));
                         m.debug_set_turno(j);
                     }
@@ -163,7 +170,7 @@ public class Comando {
                     case "turno":
                         Monopoly m = Monopoly.get();
 
-                        if (m.get_dados().son_dobles() && !m.get_turno().en_la_carcel())
+                        if (m.get_dados().get_dobles() > 0 && !m.get_turno().en_la_carcel())
                             throw new RuntimeException("has sacado dobles, no puedes terminar el turno");
 
                         m.siguiente_turno();
@@ -246,6 +253,7 @@ public class Comando {
                         
                         break;
                     case "":
+                        System.out.println("TODO: cambiar print a consola y registrar las lineas, si es muy larga imprimir por separado");
                         System.exit(0);
                         break;
                     default:

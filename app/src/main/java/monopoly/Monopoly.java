@@ -14,6 +14,7 @@ public class Monopoly {
     Dados dados;
     Config config;
     int turno = -1;
+    int vueltas_totales = 0;
 
     static Monopoly instance = null;
 
@@ -139,5 +140,32 @@ public class Monopoly {
 
     public void debug_set_turno(Jugador j) {
         turno = jugadores.indexOf(j);
+    }
+
+    public void comprobar_vueltas() {
+        int min = 10000;
+        for (Jugador j : jugadores) {
+            min = j.get_vueltas() < min ? j.get_vueltas() : min;
+        }
+        if (min > vueltas_totales) {
+            vueltas_totales = min;
+            System.out.format("todos los jugadores han completado %d vueltas!\n", vueltas_totales);
+            if (vueltas_totales % 4 == 0) {
+                for (Casilla c: tablero.get_casillas())
+                    c.incrementar_precio();
+                System.out.println("el precio de todas las casillas se incrementa en un 5%");
+            }
+        }
+    }
+
+    public float get_media() {
+        float media = 0.f; 
+        for (Casilla c: tablero.get_casillas())
+            media += c.get_precio();
+
+        media /= tablero.get_casillas().size();
+        media = (float)Math.ceil(media / 10.f) * 10.f;
+
+        return media;
     }
 }

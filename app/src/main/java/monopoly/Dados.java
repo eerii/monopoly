@@ -32,8 +32,8 @@ public class Dados {
         return b;
     }
 
-    public boolean son_dobles() {
-        return dobles > 0;
+    public int get_dobles() {
+        return dobles;
     }
 
     public void debug_set(int a, int b) {

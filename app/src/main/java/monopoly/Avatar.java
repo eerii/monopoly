@@ -83,16 +83,18 @@ public class Avatar {
 
     // Movimiento
     Casilla siguiente_casilla(Casilla actual, int movimiento) {
-        Tablero t = Monopoly.get().get_tablero();
+        Monopoly m = Monopoly.get();
+        Tablero t = m.get_tablero();
         List<Casilla> casillas = t.get_casillas();
 
         int a = casillas.indexOf(actual);
         int b = a + movimiento;
-        if (b > casillas.size()) {
+        while (b >= casillas.size()) {
             Jugador j = get_jugador();
             j.dar_vuelta();
+            m.comprobar_vueltas();
+            b -= casillas.size();
         }
-        b %= casillas.size();
 
         return casillas.get(b);
     }
