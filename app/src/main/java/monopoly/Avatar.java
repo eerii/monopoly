@@ -21,10 +21,15 @@ public class Avatar {
         COCHE("coche");
 
         public final String nombre;
-        private static final HashMap<String, TipoAvatar> by_str = new HashMap<>(); 
+        static final HashMap<String, TipoAvatar> by_str = new HashMap<>(); 
+        static final HashMap<TipoAvatar, String> iconos = new HashMap<>();
 
         private TipoAvatar(String nombre) {
             this.nombre = nombre;
+        }
+
+        public String get_icono() {
+            return iconos.get(this);
         }
 
         @Override
@@ -43,6 +48,10 @@ public class Avatar {
             for (TipoAvatar t: values()) {
                 by_str.put(t.nombre, t);
             }
+            iconos.put(ESFINGE, "󰄛");
+            iconos.put(SOMBRERO, "󰮤");
+            iconos.put(PELOTA, "");
+            iconos.put(COCHE, "");
         }
     }
 

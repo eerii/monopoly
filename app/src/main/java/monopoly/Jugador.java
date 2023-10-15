@@ -102,6 +102,11 @@ public class Jugador {
 
     // String
     public String representar() {
+        Monopoly.Config c = Monopoly.get().get_config();
+        if (c.get_iconos()) {
+            Avatar.TipoAvatar t = avatar.get_tipo();
+            return t.get_icono();
+        }
         return String.valueOf(avatar.get_id());
     }
 

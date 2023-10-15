@@ -94,7 +94,11 @@ public class Tablero {
         Casilla c = casillas.get(i);
 
         String[] partes = c.representar().split("&");
-        fmt += String.format("%s%-12s%s", c.get_color(), partes[0], Color.RESET);
+        Color bg_col = c.get_color().to_bg();
+        String bg = bg_col == null ? "" : bg_col.toString();
+        String fg = bg_col == null ? "" : Color.NEGRO.toString();
+
+        fmt += String.format("%s%s%s%-12s%s", Color.BOLD, fg, bg, partes[0], Color.RESET);
         
         return fmt;
     }
@@ -104,10 +108,17 @@ public class Tablero {
         Casilla c = casillas.get(i);
 
         String[] partes = c.representar().split("&");
-        fmt += String.format("%s%s%12s%s", Color.UNDERLINE, c.get_color(), partes.length > 1 ? partes[1].replaceFirst(" ", "&") : "", Color.RESET);
+
+        // Arreglar unicode
+        String sj = partes.length > 1 ? partes[1].substring(1) : "";
+        int len = sj.codePointCount(0, sj.length());
+
+        fmt += String.format("%s%s%s%12s%s", Color.UNDERLINE, c.get_color(), " ".repeat(sj.length() - len), sj, Color.RESET);
         
         return fmt;
     }
+
+
 
     @Override
     public String toString() {

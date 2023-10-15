@@ -124,7 +124,7 @@ public class Casilla {
     public String representar() {
         String str_jugadores = new String("");
         for (Jugador j : jugadores) {
-             str_jugadores += " " + j.representar();
+            str_jugadores += " " + j.representar();
         }
 
         return String.format("%s&%s", nombre, str_jugadores);

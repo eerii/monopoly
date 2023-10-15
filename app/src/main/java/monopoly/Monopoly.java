@@ -12,6 +12,7 @@ public class Monopoly {
     Jugador banca;
     Tablero tablero;
     Dados dados;
+    Config config;
     int turno = -1;
 
     static Monopoly instance = null;
@@ -25,6 +26,8 @@ public class Monopoly {
         banca = new Jugador();
         for (Casilla c: tablero.get_casillas())
             banca.add_propiedad(c, 0.f);
+
+        config = new Config();
     }
 
     public static Monopoly get() {
@@ -33,14 +36,34 @@ public class Monopoly {
         return instance;
     }
 
-    public static void jugar() {
+    public class Config {
+        boolean iconos = false;
+
+        public void procesar(String[] args) {
+            for (String arg : args) {
+                switch (arg) {
+                    case "iconos":
+                        iconos = true;
+                        break;
+                }
+            }
+        }
+
+        public boolean get_iconos() {
+            return iconos;
+        }
+    }
+
+    public static void jugar(String[] args) {
         Monopoly m = Monopoly.get();
         m.consola.limpiar_pantalla();
         m.consola.limpiar_resultado();
 
+        m.config.procesar(args);
+
         // TODO: Jugadores temporales para pruebas, borrar
-        m.add_jugador(new Jugador("hola", new Avatar(Avatar.TipoAvatar.COCHE)));
-        m.add_jugador(new Jugador("adios", new Avatar(Avatar.TipoAvatar.ESFINGE)));
+        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.COCHE)));
+        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.ESFINGE)));
 
         while(true) {
             m.consola.limpiar_pantalla();
@@ -63,6 +86,10 @@ public class Monopoly {
 
     public Dados get_dados() {
         return dados;
+    }
+
+    public Config get_config() {
+        return config;
     }
 
     public void add_jugador(Jugador jugador) {
