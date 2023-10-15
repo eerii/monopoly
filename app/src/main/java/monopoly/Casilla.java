@@ -16,7 +16,7 @@ public class Casilla {
     Set<Jugador> jugadores;
 
     // Propiedades de Solar
-    float precio;
+    float precio = 0.f;
     Boolean en_venta;
 
     Boolean hipotecado;

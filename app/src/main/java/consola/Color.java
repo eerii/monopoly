@@ -47,7 +47,9 @@ public enum Color {
     BLINK("\u001b[5m"),
     INVERSE("\u001b[7m"),
     HIDDEN("\u001b[8m"),
-    STRIKE("\u001b[9m");
+    STRIKE("\u001b[9m"),
+
+    NONE("");
 
     public final String ansi;
     static final HashMap<Color, Color> bg = new HashMap<>(); 

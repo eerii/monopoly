@@ -19,51 +19,51 @@ public class Tablero {
             new Grupo(Color.ALT_ROJO, "Naranja"),
             new Grupo(Color.ALT_VERDE, "Verde claro"),
             new Grupo(Color.ALT_AZUL, "Azul oscuro"),
-            new Grupo(Color.BOLD, ""),
-            new Grupo(Color.BOLD, "")
+            new Grupo(Color.NONE, "Transporte"),
+            new Grupo(Color.NONE, "Servicios")
         ));
 
         casillas = new ArrayList<Casilla>(Arrays.asList(
-            new Casilla(Casilla.TipoCasilla.SALIDA, "Salida"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar1",1000, grupos.get(0)),
-            new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar2",1000, grupos.get(0)),
-            new Casilla(Casilla.TipoCasilla.IMPUESTOS, "Imp1"),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans1",1000, grupos.get(8)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar3",1000, grupos.get(1)),
-            new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar4",1000, grupos.get(1)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar5",1000, grupos.get(1)),
-            new Casilla(Casilla.TipoCasilla.CARCEL, "Cárcel"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar6",1000, grupos.get(2)),
-            new Casilla(Casilla.TipoCasilla.SERVICIOS, "Serv1", 1000, grupos.get(9)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar7",1000, grupos.get(2)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar8",1000, grupos.get(2)),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans2",1000, grupos.get(8)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar9",1000, grupos.get(3)),
-            new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar10",1000, grupos.get(3)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar11",1000, grupos.get(3)),
-            new Casilla(Casilla.TipoCasilla.PARKING, "Parking"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar12",1000, grupos.get(4)),
-            new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar13",1000, grupos.get(4)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar14",1000, grupos.get(4)),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans3",1000, grupos.get(8)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar15",1000, grupos.get(5)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar16",1000, grupos.get(5)),
-            new Casilla(Casilla.TipoCasilla.SERVICIOS, "Serv2",1000, grupos.get(9)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar17",1000, grupos.get(5)),
-            new Casilla(Casilla.TipoCasilla.A_LA_CARCEL, "IrCarcel"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar18",1000, grupos.get(6)),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar19",1000, grupos.get(6)),
-            new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar20",1000, grupos.get(6)),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Trans4", 1000,grupos.get(8)),
-            new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar21",1000, grupos.get(7)),
-            new Casilla(Casilla.TipoCasilla.IMPUESTOS, "Imp2"),
-            new Casilla(Casilla.TipoCasilla.SOLAR, "Solar22",1000, grupos.get(7))
+            new Casilla(Casilla.TipoCasilla.SALIDA,     "Salida"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,      "Solar1",	60, 	grupos.get(0)),
+            new Casilla(Casilla.TipoCasilla.COMUNIDAD,  "Caja"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar2",	60, 	grupos.get(0)),
+            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp1"),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans1",	200,	grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar3",	100,	grupos.get(1)),
+            new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar4",	100,	grupos.get(1)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar5",	120,	grupos.get(1)),
+            new Casilla(Casilla.TipoCasilla.CARCEL,		"Cárcel"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar6",	140,	grupos.get(2)),
+            new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv1",	150,	grupos.get(9)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar7",	140,	grupos.get(2)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar8",	160,	grupos.get(2)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans2",	200,	grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar9",	180,	grupos.get(3)),
+            new Casilla(Casilla.TipoCasilla.COMUNIDAD,	"Caja"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar10",	180,	grupos.get(3)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar11",	200,	grupos.get(3)),
+            new Casilla(Casilla.TipoCasilla.PARKING,	"Parking"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar12",	220,	grupos.get(4)),
+            new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar13",	220,	grupos.get(4)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar14",	240,	grupos.get(4)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans3",	200,	grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar15",	260,	grupos.get(5)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar16",	260,	grupos.get(5)),
+            new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv2",	150,	grupos.get(9)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar17",	280,	grupos.get(5)),
+            new Casilla(Casilla.TipoCasilla.A_LA_CARCEL,"IrCarcel"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar18",	300,	grupos.get(6)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar19",	300,	grupos.get(6)),
+            new Casilla(Casilla.TipoCasilla.COMUNIDAD,	"Caja"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar20",	100,	grupos.get(6)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans4",	320,	grupos.get(8)),
+            new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar21",	350,	grupos.get(7)),
+            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp2"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar22",	400,	grupos.get(7))
         )); 
     }
 
@@ -103,6 +103,19 @@ public class Tablero {
         return fmt;
     }
 
+    String format_propiedad(int i) {
+        String fmt = new String();
+        Casilla c = casillas.get(i);
+
+        float precio = c.get_precio();
+        if (precio == 0.f || !c.get_en_venta())
+            return String.format("%12s", "");
+
+        fmt += String.format("%sM%-11.0f%s", c.get_color(), precio, Color.RESET);
+        
+        return fmt;
+    }
+
     String format_jugadores(int i) {
         String fmt = new String();
         Casilla c = casillas.get(i);
@@ -118,22 +131,22 @@ public class Tablero {
         return fmt;
     }
 
-
-
     @Override
     public String toString() {
         // TODO: Cambiar los string formats de espacio en blanco por una constante
         String s = new String();
+        String mid = new String();
         String inf = new String();
 
         // Fila superior
         s += " " + String.format("%s%12s%s ", Color.UNDERLINE, " ", Color.RESET).repeat(11) + "\n";
         for (int i = 20; i <= 30; i++) {
             s += "|" + format_casilla(i);
+            mid += "|" + format_propiedad(i);
             inf += "|" + format_jugadores(i);
         }
-        s += "|\n|" + String.format("%12s|", "").repeat(11) + "\n" + inf + "|\n";
-        inf = "";
+        s += "|\n" + mid + "|\n" + inf + "|\n";
+        inf = ""; mid = "";
 
         // Bordes laterales
         for (int i = 1; i < 10; i++) {
@@ -142,16 +155,18 @@ public class Tablero {
             String interior = i < 9 ? espacio_interior : barra_interior.substring(0, barra_interior.length() - 1);
 
             s += "|" + format_casilla(20-i) + "|" + espacio_interior + "|" + format_casilla(30+i) + "|" + "\n";
-            s += "|" + String.format("%12s|", "") + espacio_interior + "|" + String.format("%12s|", "")+ "\n";
+            s += "|" + format_propiedad(20-i) + "|" + espacio_interior + "|" + format_propiedad(30+i) + "|" + "\n";
             s += "|" + format_jugadores(20-i) + "|" + interior + "|" + format_jugadores(30+i) + "|" + "\n";
         }
 
         // Fila inferior
         for (int i = 10; i >= 0; i--) {
             s += "|" + format_casilla(i);
+            mid += "|" + format_propiedad(i);
             inf += "|" + format_jugadores(i);
         }
-        s += "|\n|" + String.format("%12s|", "").repeat(11) + "\n" + inf + "|\n";
+        s += "|\n" + mid + "|\n" + inf + "|\n";
+        inf = ""; mid = "";
 
         return s;
     }
