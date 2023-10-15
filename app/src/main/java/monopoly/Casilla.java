@@ -89,10 +89,8 @@ public class Casilla {
                 default:
                     if(!this.en_venta)
                     {
-                        List<Jugador> jugadores = m.get_jugadores();
-                        for (Jugador j : jugadores)
-                        {
-                            if(j.esDueno(this.get_nombre()))
+                        Jugador j = this.get_dueno();
+                            if(!j.equals(m.get_banca()))
                             {
                                 jugador.paga_alquiler(j,this);
                                 System.out.format("el jugador %s%s%s%s paga el alquiler de %s%s%s%s al jugador %s%s%s%s\n",
@@ -100,7 +98,6 @@ public class Casilla {
                                         this.get_color(), Color.BOLD, this.get_nombre(), Color.RESET,
                                         Color.AZUL, Color.BOLD, j.get_nombre(), Color.RESET);
                             }
-                        }
                     }
             }
         }
