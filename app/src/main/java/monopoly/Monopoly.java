@@ -66,10 +66,12 @@ public class Monopoly {
         m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.COCHE)));
         m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.ESFINGE)));
 
+        boolean pausa = false;
         while(true) {
             m.consola.limpiar_pantalla();
             System.out.println(m.tablero);
-            m.consola.entrada();
+            if (pausa) m.consola.limpiar_resultado();
+            pausa = m.consola.entrada();
         }
     }
 
