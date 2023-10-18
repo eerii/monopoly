@@ -173,11 +173,18 @@ public class Monopoly {
     }
 
     public float get_media() {
-        float media = 0.f; 
+        float media = 0.f;
+        int i=0;
         for (Casilla c: tablero.get_casillas())
-            media += c.get_precio();
+        {
+            if(c.get_tipo()== Casilla.TipoCasilla.SOLAR)
+            {
+                media += c.get_precio();
+                i+=1;
+            }
 
-        media /= tablero.get_casillas().size();
+        }
+        media /= i;
         media = (float)Math.ceil(media / 10.f) * 10.f;
 
         return media;

@@ -43,9 +43,9 @@ public class Casilla {
         this.jugadores = new HashSet<Jugador>();
     }
 
-    public Casilla(TipoCasilla tipo, String nombre, int precio, Grupo grupo) {
+    public Casilla(TipoCasilla tipo, String nombre, double precio, Grupo grupo) {
         this(tipo, nombre);
-        this.precio = precio;
+        this.precio = (float) precio;
         this.alquiler = (float)Math.floor(0.1f * precio);
         this.hipotecado = false;
         this.en_venta = true;
@@ -125,6 +125,10 @@ public class Casilla {
         return nombre;
     }
 
+    public void set_precio(float precio)
+    {
+        this.precio=precio;
+    }
     public float get_precio() {
         return precio;
     }
