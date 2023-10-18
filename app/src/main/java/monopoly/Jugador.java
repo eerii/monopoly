@@ -109,6 +109,41 @@ public class Jugador {
         contador_carcel = 0;
     }
 
+    public boolean has_group (Grupo grupo)
+    {
+        int cont=0;
+        for(Casilla c: propiedades)
+        {
+            if(c.get_color().equals(grupo.get_color()))
+                cont+=1;
+        }
+        if((grupo.get_nombre().equals("Azul") || grupo.get_nombre().equals("Azul oscuro"))&& cont==2)
+            return true;
+        return cont == 3;
+    }
+
+    public int num_servicios ()
+    {
+        int cont=0;
+        for(Casilla c: propiedades)
+        {
+            if(c.get_tipo()==Casilla.TipoCasilla.SERVICIOS)
+                cont+=1;
+        }
+        return cont;
+    }
+
+    public int num_transporter ()
+    {
+        int cont=0;
+        for(Casilla c: propiedades)
+        {
+            if(c.get_tipo()==Casilla.TipoCasilla.TRANSPORTE)
+                cont+=1;
+        }
+        return cont;
+    }
+
     public boolean es_propietario(String nombre) {
         for (Casilla c : propiedades) {
             if (c.get_nombre().equals(nombre)) {
@@ -140,6 +175,8 @@ public class Jugador {
 
     public void paga_alquiler(Jugador propietario, Casilla casilla) {
         float alquiler = casilla.get_alquiler();
+        if(propietario.has_group(casilla.get_grupo()))
+            alquiler*=2;
         this.add_fortuna(alquiler * -1.f);
         if (propietario.add_fortuna(alquiler)) {
             System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",

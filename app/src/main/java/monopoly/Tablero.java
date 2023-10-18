@@ -87,10 +87,12 @@ public class Tablero {
             if(c.get_tipo()== Casilla.TipoCasilla.TRANSPORTE)
             {
                 c.set_precio(media);
+                c.set_alquiler(media);
             }
             if(c.get_tipo()== Casilla.TipoCasilla.SERVICIOS)
             {
                 c.set_precio((float) Math.floor(0.75f * media));
+                c.set_alquiler(0.005f * media);
             }
             if(c.get_tipo()== Casilla.TipoCasilla.CARCEL)
             {

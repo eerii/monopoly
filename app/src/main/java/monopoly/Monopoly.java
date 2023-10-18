@@ -166,7 +166,11 @@ public class Monopoly {
             System.out.format("todos los jugadores han completado %d vueltas!\n", vueltas_totales);
             if (vueltas_totales % 4 == 0) {
                 for (Casilla c: tablero.get_casillas())
-                    c.incrementar_precio();
+                {
+                    if(c.get_en_venta())
+                        c.incrementar_precio();
+                }
+
                 System.out.println("el precio de todas las casillas se incrementa en un 5%");
             }
         }

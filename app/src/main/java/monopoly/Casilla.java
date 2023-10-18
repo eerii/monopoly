@@ -129,11 +129,20 @@ public class Casilla {
     {
         this.precio=precio;
     }
+
+    public void set_alquiler(float alquiler)
+    {
+        this.alquiler=alquiler;
+    }
     public float get_precio() {
         return precio;
     }
     public float get_alquiler() {
         return alquiler;
+    }
+
+    public Grupo get_grupo() {
+        return grupo;
     }
 
     public Jugador get_propietario() {
