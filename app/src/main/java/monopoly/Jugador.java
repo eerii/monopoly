@@ -26,7 +26,8 @@ public class Jugador {
         salida.add_jugador(this, true);
 
         for (Casilla c: t.get_casillas())
-            fortuna += c.get_precio();
+            if(c.get_tipo()== Casilla.TipoCasilla.SOLAR)
+                        fortuna += c.get_precio();
         fortuna /= 3.f;
         // Lo redondeamos en las centenas para que quede más bonito
         fortuna = (float)Math.ceil(fortuna / 100.f) * 100.f;
