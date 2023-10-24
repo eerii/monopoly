@@ -26,4 +26,8 @@ public class Grupo{
     public String get_nombre(){
         return nombre;
     }
+
+    public List<Casilla> get_casillas() {
+        return casillas;
+    }
 }

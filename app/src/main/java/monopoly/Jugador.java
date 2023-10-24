@@ -20,16 +20,19 @@ public class Jugador {
         this.avatar = avatar;
         this.propiedades = new ArrayList<Casilla>();
         this.vueltas = 0;
-        
+       
+        // Todos los jugadores empiezan en la salida
         Tablero t = Monopoly.get().get_tablero();
         Casilla salida = t.buscar_casilla("Salida");
         salida.add_jugador(this, true);
 
+        // La fortuna inicial es la suma del precio de todas las casillas comprables entre 3 
         for (Casilla c: t.get_casillas())
-            if(c.get_tipo()== Casilla.TipoCasilla.SOLAR)
-                        fortuna += c.get_precio();
+            if(c.es_comprable())
+                fortuna += c.get_precio();
         fortuna /= 3.f;
-        // Lo redondeamos en las centenas para que quede más bonito
+
+        // La redondeamos a las centenas para que quede más bonita
         fortuna = (float)Math.ceil(fortuna / 100.f) * 100.f;
     }
 
@@ -67,7 +70,7 @@ public class Jugador {
             System.out.println("ni hipotecar ni bancarrota están implementados todavía");
             Monopoly.get().remove_jugador(this);
         }
-        return fortuna < 0;
+        return fortuna > 0;
     }
 
     public void add_propiedad(Casilla casilla, float precio) {
@@ -109,39 +112,16 @@ public class Jugador {
         contador_carcel = 0;
     }
 
-    public boolean has_group (Grupo grupo)
-    {
-        int cont=0;
-        for(Casilla c: propiedades)
-        {
-            if(c.get_color().equals(grupo.get_color()))
-                cont+=1;
-        }
-        if((grupo.get_nombre().equals("Azul") || grupo.get_nombre().equals("Azul oscuro"))&& cont==2)
-            return true;
-        return cont == 3;
+    public boolean tiene_grupo(Grupo grupo) {
+        return propiedades.containsAll(grupo.get_casillas());
     }
 
-    public int num_servicios ()
-    {
-        int cont=0;
-        for(Casilla c: propiedades)
-        {
-            if(c.get_tipo()==Casilla.TipoCasilla.SERVICIOS)
-                cont+=1;
-        }
-        return cont;
+    public int num_servicios() {
+        return (int)propiedades.stream().filter(c -> c.get_tipo() == Casilla.TipoCasilla.SERVICIOS).count();
     }
 
-    public int num_transporter ()
-    {
-        int cont=0;
-        for(Casilla c: propiedades)
-        {
-            if(c.get_tipo()==Casilla.TipoCasilla.TRANSPORTE)
-                cont+=1;
-        }
-        return cont;
+    public int num_transportes() {
+        return (int)propiedades.stream().filter(c -> c.get_tipo() == Casilla.TipoCasilla.TRANSPORTE).count();
     }
 
     public boolean es_propietario(String nombre) {
@@ -154,7 +134,6 @@ public class Jugador {
     }
 
     public void mover(Casilla actual, int movimiento) {
-        Monopoly m = Monopoly.get();
         Casilla siguiente = avatar.siguiente_casilla(actual, movimiento);
         System.out.format("el avatar %s%s%s%s avanza %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
             Color.AZUL, Color.BOLD, this.representar(), Color.RESET,
@@ -168,15 +147,16 @@ public class Jugador {
 
     public void dar_vuelta() {
         vueltas += 1;
-        float media = Monopoly.get().get_media();
+        float media = Monopoly.get().get_tablero().precio_medio();
         add_fortuna(media);
         System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
     }
 
     public void paga_alquiler(Jugador propietario, Casilla casilla) {
         float alquiler = casilla.get_alquiler();
-        if(propietario.has_group(casilla.get_grupo()))
-            alquiler*=2;
+        if(propietario.tiene_grupo(casilla.get_grupo()))
+            alquiler *= 2;
+
         this.add_fortuna(alquiler * -1.f);
         if (propietario.add_fortuna(alquiler)) {
             System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",

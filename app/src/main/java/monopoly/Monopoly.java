@@ -165,32 +165,11 @@ public class Monopoly {
             vueltas_totales = min;
             System.out.format("todos los jugadores han completado %d vueltas!\n", vueltas_totales);
             if (vueltas_totales % 4 == 0) {
-                for (Casilla c: tablero.get_casillas())
-                {
-                    if(c.get_en_venta())
-                        c.incrementar_precio();
-                }
-
+                tablero.get_casillas().stream()
+                    .filter(c -> c.get_en_venta())
+                    .forEach(c -> c.incrementar_precio());
                 System.out.println("el precio de todas las casillas se incrementa en un 5%");
             }
         }
-    }
-
-    public float get_media() {
-        float media = 0.f;
-        int i=0;
-        for (Casilla c: tablero.get_casillas())
-        {
-            if(c.get_tipo()== Casilla.TipoCasilla.SOLAR)
-            {
-                media += c.get_precio();
-                i+=1;
-            }
-
-        }
-        media /= i;
-        media = (float)Math.ceil(media / 10.f) * 10.f;
-
-        return media;
-    }
+    } 
 }

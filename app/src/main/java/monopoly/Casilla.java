@@ -17,7 +17,6 @@ public class Casilla {
 
     // Propiedades de Solar
     float precio = 0.f;
-    float alquiler = 0.f;
     Boolean en_venta = false;
 
     Boolean hipotecado;
@@ -43,10 +42,9 @@ public class Casilla {
         this.jugadores = new HashSet<Jugador>();
     }
 
-    public Casilla(TipoCasilla tipo, String nombre, double precio, Grupo grupo) {
+    public Casilla(TipoCasilla tipo, String nombre, float precio, Grupo grupo) {
         this(tipo, nombre);
-        this.precio = (float) precio;
-        this.alquiler = (float)Math.floor(0.1f * precio);
+        this.precio = precio;
         this.hipotecado = false;
         this.en_venta = true;
 
@@ -67,7 +65,7 @@ public class Casilla {
 
             switch (tipo) {
                 case SALIDA:
-                    float media = m.get_media(); 
+                    float media = m.get_tablero().precio_medio(); 
                     jugador.add_fortuna(media);
                     System.out.format("el jugador %s ha caído en la salida, recibe %.0f extra!\n", jugador.get_nombre(), media);
                     break;
@@ -103,8 +101,12 @@ public class Casilla {
         jugadores.remove(jugador);
     }
 
+    public boolean es_comprable() {
+        return tipo == TipoCasilla.SOLAR || tipo == TipoCasilla.TRANSPORTE || tipo == TipoCasilla.SERVICIOS;
+    }
+
     public boolean get_en_venta() {
-        return (tipo == TipoCasilla.SOLAR || tipo == TipoCasilla.TRANSPORTE || tipo == TipoCasilla.SERVICIOS) && en_venta;
+        return es_comprable() && en_venta;
     }
 
     public void comprar(Jugador jugador) {
@@ -125,20 +127,16 @@ public class Casilla {
         return nombre;
     }
 
-    public void set_precio(float precio)
-    {
-        this.precio=precio;
+    public void set_precio(float precio) {
+        this.precio = (float)Math.floor(precio);
     }
 
-    public void set_alquiler(float alquiler)
-    {
-        this.alquiler=alquiler;
-    }
     public float get_precio() {
         return precio;
     }
+
     public float get_alquiler() {
-        return alquiler;
+        return (float)Math.floor(0.1f * precio);
     }
 
     public Grupo get_grupo() {
@@ -155,12 +153,13 @@ public class Casilla {
     }
 
     public void incrementar_precio() {
-        precio = (float)Math.floor(precio * 1.05f);
+        if (en_venta)
+            precio = (float)Math.floor(precio * 1.05f);
     }
 
     public TipoCasilla get_tipo() {
         return tipo;
-    }
+    } 
 
     public Color get_color() {
         return grupo != null ? grupo.get_color() : Color.NONE;
@@ -195,13 +194,13 @@ public class Casilla {
                 Jugador jp = get_propietario();
                 sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(), Color.RESET);
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
-                sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, alquiler, Color.RESET);
+                sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, get_alquiler(), Color.RESET);
                 sjp = jp != null ? String.format("%s%s%s%s", Color.AZUL, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : ""; 
                 return String.format("%s - tipo: %s - propietario: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sjp, sg, sp, sa, sj);
             case TRANSPORTE:
             case SERVICIOS:
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
-                sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, alquiler, Color.RESET);
+                sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, get_alquiler(), Color.RESET);
                 return String.format("%s - tipo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sp, sa, sj);
             case IMPUESTOS:
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);

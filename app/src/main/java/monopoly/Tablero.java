@@ -3,6 +3,8 @@ package monopoly;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import consola.Color;
 
 public class Tablero {
@@ -27,86 +29,66 @@ public class Tablero {
         ));
 
         casillas = new ArrayList<Casilla>(Arrays.asList(
-                new Casilla(Casilla.TipoCasilla.SALIDA,     "Salida"),
-                new Casilla(Casilla.TipoCasilla.SOLAR,      "Solar1",	1200, 	grupos.get(0)),
-                new Casilla(Casilla.TipoCasilla.COMUNIDAD,  "Caja"),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar2",	1200, 	grupos.get(0)),
-                new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp1",     0,    null),
-                new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans1",	0,	null),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar3",	1500,	grupos.get(1)),
-                new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar4",	1500,	grupos.get(1)),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar5",	1500,	grupos.get(1)),
-                new Casilla(Casilla.TipoCasilla.CARCEL,		"Cárcel",   0,    null),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar6",	2100,	grupos.get(2)),
-                new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv1",	0,	null),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar7",	2100,	grupos.get(2)),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar8",	2100,	grupos.get(2)),
-                new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans2",	0,	null),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar9",	2700,	grupos.get(3)),
-                new Casilla(Casilla.TipoCasilla.COMUNIDAD,	"Caja"),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar10",	2700,	grupos.get(3)),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar11",	2700,	grupos.get(3)),
-                new Casilla(Casilla.TipoCasilla.PARKING,	"Parking"),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar12",	3500,	grupos.get(4)),
-                new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar13",	3500,	grupos.get(4)),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar14",	3500,	grupos.get(4)),
-                new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans3",	0,	null),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar15",	4500,	grupos.get(5)),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar16",	4500,	grupos.get(5)),
-                new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv2",	0,	null),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar17",	4500,	grupos.get(5)),
-                new Casilla(Casilla.TipoCasilla.A_LA_CARCEL,"IrCarcel"),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar18",	5800,	grupos.get(6)),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar19",	5800,	grupos.get(6)),
-                new Casilla(Casilla.TipoCasilla.COMUNIDAD,	"Caja"),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar20",	5800,	grupos.get(6)),
-                new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans4",	0,	null),
-                new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar21",	7500,	grupos.get(7)),
-                new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp2",     0,    null),
-                new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar22",	7500,	grupos.get(7))
-                ));
+            new Casilla(Casilla.TipoCasilla.SALIDA,     "Salida"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,      "Solar1",	1200.f, grupos.get(0)),
+            new Casilla(Casilla.TipoCasilla.COMUNIDAD,  "Caja"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar2",	1200.f, grupos.get(0)),
+            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp1",     0.f,    null),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans1",	0.f,	null),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar3",	1500.f,	grupos.get(1)),
+            new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar4",	1500.f,	grupos.get(1)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar5",	1500.f,	grupos.get(1)),
+            new Casilla(Casilla.TipoCasilla.CARCEL,		"Cárcel",   0.f,    null),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar6",	2100.f,	grupos.get(2)),
+            new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv1",	0.f,	null),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar7",	2100.f,	grupos.get(2)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar8",	2100.f,	grupos.get(2)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans2",	0.f,	null),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar9",	2700.f,	grupos.get(3)),
+            new Casilla(Casilla.TipoCasilla.COMUNIDAD,	"Caja"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar10",	2700.f,	grupos.get(3)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar11",	2700.f,	grupos.get(3)),
+            new Casilla(Casilla.TipoCasilla.PARKING,	"Parking"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar12",	3500.f,	grupos.get(4)),
+            new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar13",	3500.f,	grupos.get(4)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar14",	3500.f,	grupos.get(4)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans3",	0.f,	null),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar15",	4500.f,	grupos.get(5)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar16",	4500.f,	grupos.get(5)),
+            new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv2",	0.f,	null),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar17",	4500.f,	grupos.get(5)),
+            new Casilla(Casilla.TipoCasilla.A_LA_CARCEL,"IrCarcel"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar18",	5800.f,	grupos.get(6)),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar19",	5800.f,	grupos.get(6)),
+            new Casilla(Casilla.TipoCasilla.COMUNIDAD,	"Caja"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar20",	5800.f,	grupos.get(6)),
+            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans4",	0.f,	null),
+            new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar21",	7500.f,	grupos.get(7)),
+            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp2",     0.f,    null),
+            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar22",	7500.f,	grupos.get(7))
+        ));
 
-        float media =  0;
-        int i=0;
-        for (Casilla c: casillas)
-        {
-            if(c.get_tipo()== Casilla.TipoCasilla.SOLAR)
-            {
-                media += c.get_precio();
-                i+=1;
-            }
-
-        }
-        media /= i;
-        media = (float)Math.ceil(media / 10.f) * 10.f;
-        for(Casilla c: casillas)
-        {
-            if(c.get_tipo()== Casilla.TipoCasilla.TRANSPORTE)
-            {
-                c.set_precio(media);
-                c.set_alquiler(media);
-            }
-            if(c.get_tipo()== Casilla.TipoCasilla.SERVICIOS)
-            {
-                c.set_precio((float) Math.floor(0.75f * media));
-                c.set_alquiler(0.005f * media);
-            }
-            if(c.get_tipo()== Casilla.TipoCasilla.CARCEL)
-            {
-                c.set_precio((float) Math.floor(0.25f * media));
-            }
-            if(c.get_tipo()== Casilla.TipoCasilla.IMPUESTOS)
-            {
-                if(c.get_nombre().equals("Imp1"))
+        float media = this.precio_medio();
+        for(Casilla c: casillas) {
+            switch (c.get_tipo()) {
+                case TRANSPORTE:
                     c.set_precio(media);
-                else if(c.get_nombre().equals("Imp2"))
-                    c.set_precio((float) Math.floor (media * 0.5f));
+                    break;
+                case SERVICIOS:
+                    c.set_precio(media * 0.75f);
+                    break;
+                case CARCEL:
+                    c.set_precio(media * 0.25f);
+                    break;
+                case IMPUESTOS:
+                    c.set_precio(c.get_nombre().equals("Imp1") ? media * 0.5f : media);
+                    break;
+                default:
             }
         }
-
     }
 
     public List<Casilla> get_casillas() {
@@ -128,6 +110,20 @@ public class Tablero {
                 return c;
         }
         return null;
+    }
+
+    public float precio_medio() {
+        float media = 0.f;
+        List<Casilla> solares = casillas.stream()
+            .filter(c -> c.get_tipo() == Casilla.TipoCasilla.SOLAR)
+            .collect(Collectors.toList());
+        for (Casilla c: solares) {
+            media += c.get_precio();
+        }
+        media /= solares.size();
+        media = (float)Math.ceil(media / 10.f) * 10.f;
+
+        return media;
     }
 
     // String
