@@ -8,8 +8,6 @@ import consola.Color;
 import java.util.HashSet;
 import java.util.List;
 
-// TODO: Mover funcionalidad a Solar cuando se pueda
-
 public class Casilla {
     String nombre;
     TipoCasilla tipo;
@@ -69,6 +67,12 @@ public class Casilla {
                     jugador.add_fortuna(bote);
                     m.get_banca().add_fortuna(bote * -1.f);
                     System.out.format("el jugador %s ha caído en el parking, recibe %.0f extra del bote!\n", jugador.get_nombre(), bote);
+                    break;
+                case SUERTE:
+                case COMUNIDAD:
+                    // TODO: Sacar cartas de la suerte y comunidad
+                    // Hacer otra clase, hacer una lista de cartas (problablmente en monopoly)
+                    // Elegir una aleatoriamente y tal
                     break;
                 default:
             }

@@ -72,6 +72,7 @@ public class Jugador {
             Monopoly.get().remove_jugador(this);
         }
         return fortuna > 0;
+        // TODO: Comprobar bancarrota
     }
 
     public void add_propiedad(Casilla casilla, float precio) {
@@ -156,10 +157,13 @@ public class Jugador {
     public void paga_alquiler(Jugador propietario, CasillaComprable casilla) {
         float alquiler = casilla.get_alquiler();
 
-        if (casilla instanceof Solar && propietario.tiene_grupo(((Solar)casilla).get_grupo()))
-            alquiler *= 2;
+        if (casilla instanceof Solar) {
+            if (propietario.tiene_grupo(((Solar)casilla).get_grupo()))
+                alquiler *= 2;
+        }
 
         // TODO: Comprobar número de servicio y transportes
+        // TODO: Comprobar edificios
 
         this.add_fortuna(alquiler * -1.f);
         if (propietario.add_fortuna(alquiler)) {

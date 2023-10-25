@@ -1,18 +1,24 @@
 package monopoly;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import consola.Color;
+import monopoly.Edificio.TipoEdificio;
 
 public class Solar extends CasillaComprable {
-    Grupo grupo = null;
+    Grupo grupo;
+    List<Edificio> edificios;
 
     public Solar(TipoCasilla tipo, String nombre, float precio, Grupo grupo) {
         super(tipo, nombre);
 
         this.precio = precio;
-        if (grupo != null) {
-            this.grupo = grupo;
-            grupo.add(this);
-        }
+        this.grupo = grupo;
+        grupo.add(this);
+
+        this.edificios = new ArrayList<>();
     }
 
     @Override
@@ -23,6 +29,44 @@ public class Solar extends CasillaComprable {
     public Grupo get_grupo() {
         return grupo;
     }
+
+    public int numero_edificios(TipoEdificio tipo) {
+        return (int)edificios.stream().filter(e -> e.get_tipo() == tipo).count();
+    }
+
+    public void comprar_edificio(Jugador jugador, TipoEdificio tipo) {
+        switch (tipo) {
+            case CASA:
+                if (numero_edificios(TipoEdificio.CASA) == 4)
+                    throw new RuntimeException("no se pueden comprar más casas, ya tienes 4");
+                
+                break;
+
+            case HOTEL:
+                if (numero_edificios(TipoEdificio.CASA) != 4)
+                    throw new RuntimeException("no se puede hacer un hotel, no tienes 4 casas");
+
+                edificios = edificios.stream().filter(e -> e.get_tipo() == TipoEdificio.CASA).collect(Collectors.toList());
+
+                break;
+
+            case TERMAS:
+                if (numero_edificios(TipoEdificio.HOTEL) < 1 && numero_edificios(TipoEdificio.CASA) < 2)
+                    throw new RuntimeException("no se puede comprar unas termas, necesitas al menos 2 casas y un hotel");
+
+                break;
+
+            case PABELLON:
+                if (numero_edificios(TipoEdificio.HOTEL) < 2)
+                    throw new RuntimeException("no se puede comprar un pabellón, necesitas al menos 2 hoteles");
+        }
+
+        // TODO: Límite de edificios por grupo
+
+        edificios.add(new Edificio(tipo));
+    }
+
+    // TODO: Lista de precios de cada combinación de edificos
 
     @Override
     public String toString() {

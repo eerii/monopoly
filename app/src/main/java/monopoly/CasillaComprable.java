@@ -5,7 +5,7 @@ import consola.Color;
 public class CasillaComprable extends Casilla {
     float alquiler;
     Boolean en_venta;
-    Boolean hipotecado;
+    Boolean hipotecado; // TODO: Implementar (des)hipotecar
 
     public CasillaComprable(TipoCasilla tipo, String nombre) {
         super(tipo, nombre);
@@ -61,7 +61,7 @@ public class CasillaComprable extends Casilla {
             throw new RuntimeException(String.format("el jugador %s no puede permitirse comprar la casilla %s por %.0f", jugador.get_nombre(), nombre, precio));
 
         jugador.add_propiedad(this, precio);
-        en_venta=false;
+        en_venta = false;
     }
 
     public void incrementar_precio() {

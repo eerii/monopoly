@@ -16,6 +16,8 @@ public class Monopoly {
     int turno = -1;
     int vueltas_totales = 0;
 
+    // TODO: Hacer estadísiticas del juego (probablemente una clase en consola)
+
     static Monopoly instance = null;
 
     Monopoly() {
