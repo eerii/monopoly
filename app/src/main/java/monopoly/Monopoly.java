@@ -148,7 +148,7 @@ public class Monopoly {
 
         turno = (turno + 1) % jugadores.size();
         j = get_turno();
-        System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL, Color.BOLD, j.get_nombre(), Color.RESET);
+        System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, j.get_nombre(), Color.RESET);
     }
 
     public void debug_set_turno(Jugador j) {

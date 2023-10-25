@@ -101,9 +101,9 @@ public class Comando {
                     c.comprar(j);
                     System.out.format("el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                        Color.AZUL, Color.BOLD, c.get_nombre(), Color.RESET,
+                        Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
                         Color.AMARILLO, Color.BOLD, c.get_precio(), Color.RESET,
-                        Color.ALT_AMARILLO, Color.BOLD, j.get_fortuna(), Color.RESET
+                        Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
                     );
                 }
                 break;
@@ -141,7 +141,7 @@ public class Comando {
                         }
 
                         if (d.get_dobles() > 0) {
-                            System.out.format("has sacado %s%sdobles%s! tienes que volver a tirar\n", Color.ALT_ROJO, Color.BOLD, Color.RESET);
+                            System.out.format("has sacado %s%sdobles%s! tienes que volver a tirar\n", Color.ROJO, Color.BOLD, Color.RESET);
                         }
 
                         j.mover(actual, movimiento);

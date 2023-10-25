@@ -112,7 +112,7 @@ public class Avatar {
 
         return String.format(
             "%s%s%s%s - tipo: %s%s%s - jugador: %s%s%s%s - casilla: %s%s%s%s",
-            Color.AZUL, Color.BOLD, String.valueOf(id), Color.RESET,
+            Color.AZUL_OSCURO, Color.BOLD, String.valueOf(id), Color.RESET,
             Color.BOLD, tipo, Color.RESET,
             Color.AMARILLO, Color.BOLD, j.get_nombre(), Color.RESET,
             Color.VERDE, Color.BOLD, c.get_nombre(), Color.RESET

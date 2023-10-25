@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 import consola.Color;
 
@@ -18,14 +19,14 @@ public class Tablero {
 
     public Tablero() {
         grupos = new ArrayList<Grupo>(Arrays.asList(
-            new Grupo(Color.AZUL, "Azul"),
+            new Grupo(Color.MORADO, "Morado"),
+            new Grupo(Color.AZUL_CLARITO, "Azul clarito"),
+            new Grupo(Color.ROSA, "Rosa"),
+            new Grupo(Color.NARANJA, "Naranja"),
+            new Grupo(Color.ROJO, "Rojo"),
             new Grupo(Color.AMARILLO, "Amarillo"),
-            new Grupo(Color.CYAN, "Cyan"),
             new Grupo(Color.VERDE, "Verde"),
-            new Grupo(Color.ROJO, "Naranja"),
-            new Grupo(Color.ALT_ROJO, "Rojo"),
-            new Grupo(Color.ALT_VERDE, "Verde claro"),
-            new Grupo(Color.ALT_AZUL, "Azul oscuro")
+            new Grupo(Color.AZUL_OSCURO, "Azul oscuro")
         ));
 
         casillas = new ArrayList<Casilla>(Arrays.asList(
@@ -113,13 +114,14 @@ public class Tablero {
     }
 
     public float precio_medio() {
-        float media = 0.f;
         List<Casilla> solares = casillas.stream()
             .filter(c -> c.get_tipo() == Casilla.TipoCasilla.SOLAR)
             .collect(Collectors.toList());
-        for (Casilla c: solares) {
+
+        float media = 0.f;
+        for (Casilla c: solares)
             media += c.get_precio();
-        }
+
         media /= solares.size();
         media = (float)Math.ceil(media / 10.f) * 10.f;
 

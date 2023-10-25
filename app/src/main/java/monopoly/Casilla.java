@@ -17,6 +17,7 @@ public class Casilla {
 
     // Propiedades de Solar
     float precio = 0.f;
+    float alquiler;
     Boolean en_venta = false;
 
     Boolean hipotecado;
@@ -45,6 +46,7 @@ public class Casilla {
     public Casilla(TipoCasilla tipo, String nombre, float precio, Grupo grupo) {
         this(tipo, nombre);
         this.precio = precio;
+        this.alquiler = (float)Math.floor(precio * 0.1f);
         this.hipotecado = false;
         this.en_venta = true;
 
@@ -129,6 +131,7 @@ public class Casilla {
 
     public void set_precio(float precio) {
         this.precio = (float)Math.floor(precio);
+        this.alquiler = (float)Math.floor(0.1f * precio);
     }
 
     public float get_precio() {
@@ -136,7 +139,7 @@ public class Casilla {
     }
 
     public float get_alquiler() {
-        return (float)Math.floor(0.1f * precio);
+        return alquiler;
     }
 
     public Grupo get_grupo() {
@@ -153,8 +156,7 @@ public class Casilla {
     }
 
     public void incrementar_precio() {
-        if (en_venta)
-            precio = (float)Math.floor(precio * 1.05f);
+        precio = (float)Math.floor(precio * 1.05f);
     }
 
     public TipoCasilla get_tipo() {
@@ -184,7 +186,7 @@ public class Casilla {
     @Override
     public String toString() {
         Monopoly m = Monopoly.get();
-        String sn = String.format("%s%s%s%s", Color.AZUL, Color.BOLD, nombre, Color.RESET);
+        String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET);
         String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, String.valueOf(tipo), Color.RESET);
         String sj = String.format("%s%s%s", Color.BOLD, lista_jugadores(), Color.RESET);
         String sp, sa, sg, sjp;
@@ -194,13 +196,13 @@ public class Casilla {
                 Jugador jp = get_propietario();
                 sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(), Color.RESET);
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
-                sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, get_alquiler(), Color.RESET);
-                sjp = jp != null ? String.format("%s%s%s%s", Color.AZUL, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : ""; 
+                sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, alquiler, Color.RESET);
+                sjp = jp != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : ""; 
                 return String.format("%s - tipo: %s - propietario: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sjp, sg, sp, sa, sj);
             case TRANSPORTE:
             case SERVICIOS:
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
-                sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, get_alquiler(), Color.RESET);
+                sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, alquiler, Color.RESET);
                 return String.format("%s - tipo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sp, sa, sj);
             case IMPUESTOS:
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);

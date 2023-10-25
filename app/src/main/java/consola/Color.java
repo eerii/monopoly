@@ -4,40 +4,23 @@ import java.util.HashMap;
 
 public enum Color {
     NEGRO("\u001b[30m"),
-    ROJO("\u001b[31m"),
-    VERDE("\u001b[32m"),
-    AMARILLO("\u001b[33m"),
-    AZUL("\u001b[34m"),
-    VIOLETA("\u001b[35m"),
-    CYAN("\u001b[36m"),
-    BLANCO("\u001b[37m"),
+    MORADO("\u001b[38;5;141m"),
+    AZUL_CLARITO("\u001b[38;5;153m"),
+    ROSA("\u001b[38;5;212m"),
+    NARANJA("\u001b[38;5;216m"),
+    ROJO("\u001b[38;5;203m"),
+    AMARILLO("\u001b[38;5;220m"),
+    VERDE("\u001b[38;5;42m"),
+    AZUL_OSCURO("\u001b[38;5;39m"),
 
-    ALT_NEGRO("\u001b[90m"),
-    ALT_ROJO("\u001b[91m"),
-    ALT_VERDE("\u001b[92m"),
-    ALT_AMARILLO("\u001b[93m"),
-    ALT_AZUL("\u001b[94m"),
-    ALT_VIOLETA("\u001b[95m"),
-    ALT_CYAN("\u001b[96m"),
-    ALT_BLANCO("\u001b[97m"),
-
-    BG_NEGRO("\u001b[40m"),
-    BG_ROJO("\u001b[41m"),
-    BG_VERDE("\u001b[42m"),
-    BG_AMARILLO("\u001b[43m"),
-    BG_AZUL("\u001b[44m"),
-    BG_VIOLETA("\u001b[45m"),
-    BG_CYAN("\u001b[46m"),
-    BG_BLANCO("\u001b[47m"),
-
-    BG_ALT_NEGRO("\u001b[100m"),
-    BG_ALT_ROJO("\u001b[101m"),
-    BG_ALT_VERDE("\u001b[102m"),
-    BG_ALT_AMARILLO("\u001b[103m"),
-    BG_ALT_AZUL("\u001b[104m"),
-    BG_ALT_VIOLETA("\u001b[105m"),
-    BG_ALT_CYAN("\u001b[106m"),
-    BG_ALT_BLANCO("\u001b[107m"),
+    BG_MORADO("\u001b[48;5;141m"),
+    BG_AZUL_CLARITO("\u001b[48;5;153m"),
+    BG_ROSA("\u001b[48;5;212m"),
+    BG_NARANJA("\u001b[48;5;216m"),
+    BG_ROJO("\u001b[48;5;203m"),
+    BG_AMARILLO("\u001b[48;5;220m"),
+    BG_VERDE("\u001b[48;5;42m"),
+    BG_AZUL_OSCURO("\u001b[48;5;39m"),
 
     RESET("\u001b[0m"),
     BOLD("\u001b[1m"),
@@ -68,22 +51,13 @@ public enum Color {
     }
 
     static {
-        bg.put(NEGRO, BG_NEGRO);
+        bg.put(MORADO, BG_MORADO);
+        bg.put(AZUL_CLARITO, BG_AZUL_CLARITO);
+        bg.put(ROSA, BG_ROSA);
+        bg.put(NARANJA, BG_NARANJA);
         bg.put(ROJO, BG_ROJO);
-        bg.put(VERDE, BG_VERDE);
         bg.put(AMARILLO, BG_AMARILLO);
-        bg.put(AZUL, BG_AZUL);
-        bg.put(VIOLETA, BG_VIOLETA);
-        bg.put(CYAN, BG_CYAN);
-        bg.put(BLANCO, BG_BLANCO);
-
-        bg.put(ALT_NEGRO, BG_ALT_NEGRO);
-        bg.put(ALT_ROJO, BG_ALT_ROJO);
-        bg.put(ALT_VERDE, BG_ALT_VERDE);
-        bg.put(ALT_AMARILLO, BG_ALT_AMARILLO);
-        bg.put(ALT_AZUL, BG_ALT_AZUL);
-        bg.put(ALT_VIOLETA, BG_ALT_VIOLETA);
-        bg.put(ALT_CYAN, BG_ALT_CYAN);
-        bg.put(ALT_BLANCO, BG_ALT_BLANCO);
+        bg.put(VERDE, BG_VERDE);
+        bg.put(AZUL_OSCURO, BG_AZUL_OSCURO);
     }
 }

@@ -2,6 +2,7 @@ package monopoly;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import consola.Color;
 
@@ -28,7 +29,7 @@ public class Jugador {
 
         // La fortuna inicial es la suma del precio de todas las casillas comprables entre 3 
         for (Casilla c: t.get_casillas())
-            if(c.es_comprable())
+            if(c.get_tipo() == Casilla.TipoCasilla.SOLAR)
                 fortuna += c.get_precio();
         fortuna /= 3.f;
 
@@ -64,7 +65,7 @@ public class Jugador {
         fortuna = fortuna + valor;
         if (fortuna < 0) {
             System.out.format("%s%s%s%s está en %s%sbancarrota%s! :(\n",
-                Color.AZUL, Color.BOLD, nombre, Color.RESET,
+                Color.AZUL_OSCURO, Color.BOLD, nombre, Color.RESET,
                 Color.ROJO, Color.BOLD, Color.RESET
             );
             System.out.println("ni hipotecar ni bancarrota están implementados todavía");
@@ -136,7 +137,7 @@ public class Jugador {
     public void mover(Casilla actual, int movimiento) {
         Casilla siguiente = avatar.siguiente_casilla(actual, movimiento);
         System.out.format("el avatar %s%s%s%s avanza %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
-            Color.AZUL, Color.BOLD, this.representar(), Color.RESET,
+            Color.AZUL_CLARITO, Color.BOLD, this.representar(), Color.RESET,
             movimiento,
             actual.get_color(), Color.BOLD, actual.get_nombre(), Color.RESET,
             siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
@@ -160,10 +161,10 @@ public class Jugador {
         this.add_fortuna(alquiler * -1.f);
         if (propietario.add_fortuna(alquiler)) {
             System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
-                Color.AZUL, Color.BOLD, nombre, Color.RESET,
+                Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                 casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
                 casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
-                Color.AZUL, Color.BOLD, propietario.get_nombre(), Color.RESET);
+                Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
         }
     }
 
@@ -184,17 +185,18 @@ public class Jugador {
         return String.format(
             "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
             "propiedades: %s",
-            Color.AZUL, Color.BOLD, nombre, Color.RESET,
+            Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
             Color.BOLD, representar(), Color.RESET,
             avatar.get_tipo(),
             Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
-            propiedades // TODO: imprimir hipotecas y edificios con colores en la lista de propiedades
+            propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList())
+            // TODO: imprimir hipotecas y edificios con colores en la lista de propiedades
         );
     }
 
     public String toStringMini() {
         return String.format("%s%s%s%s - avatar %s%s%s (%s)",
-            Color.AZUL, Color.BOLD, nombre, Color.RESET,
+            Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
             Color.BOLD, representar(), Color.RESET,
             avatar.get_tipo()
         );
