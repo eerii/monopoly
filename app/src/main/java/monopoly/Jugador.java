@@ -153,10 +153,13 @@ public class Jugador {
         System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
     }
 
-    public void paga_alquiler(Jugador propietario, Casilla casilla) {
+    public void paga_alquiler(Jugador propietario, CasillaComprable casilla) {
         float alquiler = casilla.get_alquiler();
-        if(propietario.tiene_grupo(casilla.get_grupo()))
+
+        if (casilla instanceof Solar && propietario.tiene_grupo(((Solar)casilla).get_grupo()))
             alquiler *= 2;
+
+        // TODO: Comprobar número de servicio y transportes
 
         this.add_fortuna(alquiler * -1.f);
         if (propietario.add_fortuna(alquiler)) {

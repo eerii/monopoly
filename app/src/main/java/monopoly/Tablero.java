@@ -31,45 +31,45 @@ public class Tablero {
 
         casillas = new ArrayList<Casilla>(Arrays.asList(
             new Casilla(Casilla.TipoCasilla.SALIDA,     "Salida"),
-            new Casilla(Casilla.TipoCasilla.SOLAR,      "Solar1",	1200.f, grupos.get(0)),
+            new Solar(Casilla.TipoCasilla.SOLAR,        "Solar1",	1200.f, grupos.get(0)),
             new Casilla(Casilla.TipoCasilla.COMUNIDAD,  "Caja"),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar2",	1200.f, grupos.get(0)),
-            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp1",     0.f,    null),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans1",	0.f,	null),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar3",	1500.f,	grupos.get(1)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar2",	1200.f, grupos.get(0)),
+            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp1"),
+            new CasillaComprable(Casilla.TipoCasilla.TRANSPORTE,	"Trans1"),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar3",	1500.f,	grupos.get(1)),
             new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar4",	1500.f,	grupos.get(1)),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar5",	1500.f,	grupos.get(1)),
-            new Casilla(Casilla.TipoCasilla.CARCEL,		"Cárcel",   0.f,    null),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar6",	2100.f,	grupos.get(2)),
-            new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv1",	0.f,	null),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar7",	2100.f,	grupos.get(2)),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar8",	2100.f,	grupos.get(2)),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans2",	0.f,	null),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar9",	2700.f,	grupos.get(3)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar4",	1500.f,	grupos.get(1)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar5",	1500.f,	grupos.get(1)),
+            new Casilla(Casilla.TipoCasilla.CARCEL,		"Cárcel"),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar6",	2100.f,	grupos.get(2)),
+            new CasillaComprable(Casilla.TipoCasilla.SERVICIOS,	    "Serv1"),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar7",	2100.f,	grupos.get(2)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar8",	2100.f,	grupos.get(2)),
+            new CasillaComprable(Casilla.TipoCasilla.TRANSPORTE,	"Trans2"),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar9",	2700.f,	grupos.get(3)),
             new Casilla(Casilla.TipoCasilla.COMUNIDAD,	"Caja"),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar10",	2700.f,	grupos.get(3)),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar11",	2700.f,	grupos.get(3)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar10",	2700.f,	grupos.get(3)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar11",	2700.f,	grupos.get(3)),
             new Casilla(Casilla.TipoCasilla.PARKING,	"Parking"),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar12",	3500.f,	grupos.get(4)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar12",	3500.f,	grupos.get(4)),
             new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar13",	3500.f,	grupos.get(4)),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar14",	3500.f,	grupos.get(4)),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans3",	0.f,	null),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar15",	4500.f,	grupos.get(5)),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar16",	4500.f,	grupos.get(5)),
-            new Casilla(Casilla.TipoCasilla.SERVICIOS,	"Serv2",	0.f,	null),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar17",	4500.f,	grupos.get(5)),
-            new Casilla(Casilla.TipoCasilla.A_LA_CARCEL,"IrCarcel"),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar18",	5800.f,	grupos.get(6)),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar19",	5800.f,	grupos.get(6)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar13",	3500.f,	grupos.get(4)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar14",	3500.f,	grupos.get(4)),
+            new CasillaComprable(Casilla.TipoCasilla.TRANSPORTE,	"Trans3"),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar15",	4500.f,	grupos.get(5)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar16",	4500.f,	grupos.get(5)),
+            new CasillaComprable(Casilla.TipoCasilla.SERVICIOS,	    "Serv2"),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar17",	4500.f,	grupos.get(5)),
+            new Casilla(Casilla.TipoCasilla.A_LA_CARCEL,            "IrCarcel"),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar18",	5800.f,	grupos.get(6)),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar19",	5800.f,	grupos.get(6)),
             new Casilla(Casilla.TipoCasilla.COMUNIDAD,	"Caja"),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar20",	5800.f,	grupos.get(6)),
-            new Casilla(Casilla.TipoCasilla.TRANSPORTE,	"Trans4",	0.f,	null),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar20",	5800.f,	grupos.get(6)),
+            new CasillaComprable(Casilla.TipoCasilla.TRANSPORTE,	"Trans4"),
             new Casilla(Casilla.TipoCasilla.SUERTE,		"Suerte"),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar21",	7500.f,	grupos.get(7)),
-            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp2",     0.f,    null),
-            new Casilla(Casilla.TipoCasilla.SOLAR,		"Solar22",	7500.f,	grupos.get(7))
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar21",	7500.f,	grupos.get(7)),
+            new Casilla(Casilla.TipoCasilla.IMPUESTOS,	"Imp2"),
+            new Solar(Casilla.TipoCasilla.SOLAR,		"Solar22",	7500.f,	grupos.get(7))
         ));
 
         float media = this.precio_medio();
@@ -148,7 +148,7 @@ public class Tablero {
         Casilla c = casillas.get(i);
 
         float precio = c.get_precio();
-        if (precio == 0.f || !c.get_en_venta())
+        if (!(c instanceof CasillaComprable) || !((CasillaComprable)c).get_en_venta())
             return String.format("%12s", "");
 
         fmt += String.format("%sM%-11.0f%s", c.get_color(), precio, Color.RESET);
