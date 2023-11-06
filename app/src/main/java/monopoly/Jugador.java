@@ -154,15 +154,11 @@ public class Jugador {
         System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
     }
 
-    public void paga_alquiler(Jugador propietario, CasillaComprable casilla) {
+    public void paga_alquiler(Jugador propietario, Solar casilla) {
         float alquiler = casilla.get_alquiler();
 
-        if (casilla instanceof Solar) {
-            if (propietario.tiene_grupo(((Solar)casilla).get_grupo()))
-                alquiler *= 2;
-        }
-
-        // TODO: Comprobar número de servicio y transportes
+        if (propietario.tiene_grupo(((Solar)casilla).get_grupo()))
+            alquiler *= 2;
         // TODO: Comprobar edificios
 
         this.add_fortuna(alquiler * -1.f);
@@ -172,6 +168,34 @@ public class Jugador {
                 casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
                 casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
                 Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
+        }
+    }
+
+    public void paga_servicio_transporte(Jugador propietario, CasillaComprable casilla)
+    {
+        float apagar = 0;
+        float media = Monopoly.get().get_tablero().precio_medio();
+        float dados = Monopoly.get().get_dados().get_total();
+        if (propietario.num_servicios() == 1)
+            apagar = media/ 200 * 4 * dados ;
+        else if(propietario.num_servicios() == 2)
+            apagar = media/ 200 * 10 * dados;
+        else if(propietario.num_transportes()==1)
+            apagar = (float) Math.floor (media* 0.25f);
+        else if(propietario.num_transportes()==2)
+            apagar = (float) Math.floor (media * 0.50f);
+        else if(propietario.num_transportes()==3)
+            apagar = (float) Math.floor (media * 0.75f);
+        else if(propietario.num_transportes()==4)
+            apagar = media;
+
+        this.add_fortuna(apagar * -1.f);
+        if (propietario.add_fortuna(apagar)) {
+            System.out.format("%s%s%s%s paga %s%s%.0f%s de por el uso de %s%s%s%s a %s%s%s%s\n",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    casilla.get_color(), Color.BOLD, apagar, Color.RESET,
+                    casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
+                    Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
         }
     }
 

@@ -8,6 +8,7 @@ import consola.Color;
 import monopoly.Edificio.TipoEdificio;
 
 public class Solar extends CasillaComprable {
+    float alquiler;
     Grupo grupo;
     List<Edificio> edificios;
 
@@ -15,12 +16,20 @@ public class Solar extends CasillaComprable {
         super(tipo, nombre);
 
         this.precio = precio;
+        this.alquiler = (float)Math.floor(0.1f * precio);
         this.grupo = grupo;
         grupo.add(this);
 
         this.edificios = new ArrayList<>();
     }
-
+    public float get_alquiler() {
+        return alquiler;
+    }
+    @Override
+    public void set_precio(float precio) {
+        super.set_precio(precio);
+        this.alquiler = (float)Math.floor(0.1f * precio);
+    }
     @Override
     public Color get_color() {
         return grupo != null ? grupo.get_color() : Color.NONE;

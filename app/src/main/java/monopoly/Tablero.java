@@ -76,10 +76,12 @@ public class Tablero {
         for(Casilla c: casillas) {
             switch (c.get_tipo()) {
                 case TRANSPORTE:
-                    c.set_precio(media);
+                    ((CasillaComprable) c).set_precio(media);
+
                     break;
                 case SERVICIOS:
-                    c.set_precio(media * 0.75f);
+                    ((CasillaComprable) c).set_precio(media * 0.75f);
+
                     break;
                 case CARCEL:
                     c.set_precio(media * 0.25f);
