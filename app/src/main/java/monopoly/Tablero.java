@@ -77,11 +77,9 @@ public class Tablero {
             switch (c.get_tipo()) {
                 case TRANSPORTE:
                     ((CasillaComprable) c).set_precio(media);
-
                     break;
                 case SERVICIOS:
                     ((CasillaComprable) c).set_precio(media * 0.75f);
-
                     break;
                 case CARCEL:
                     c.set_precio(media * 0.25f);

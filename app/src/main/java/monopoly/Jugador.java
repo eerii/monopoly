@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import consola.Color;
+import monopoly.Casilla.TipoCasilla;
 
 public class Jugador {
     String nombre;
@@ -161,8 +162,7 @@ public class Jugador {
             alquiler *= 2;
         // TODO: Comprobar edificios
 
-        this.add_fortuna(alquiler * -1.f);
-        if (propietario.add_fortuna(alquiler)) {
+        if (this.add_fortuna(alquiler * -1.f) && propietario.add_fortuna(alquiler)) {
             System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
                 Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                 casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
@@ -171,29 +171,26 @@ public class Jugador {
         }
     }
 
-    public void paga_servicio_transporte(Jugador propietario, CasillaComprable casilla)
-    {
-        float apagar = 0;
-        float media = Monopoly.get().get_tablero().precio_medio();
-        float dados = Monopoly.get().get_dados().get_total();
-        if (propietario.num_servicios() == 1)
-            apagar = media/ 200 * 4 * dados ;
-        else if(propietario.num_servicios() == 2)
-            apagar = media/ 200 * 10 * dados;
-        else if(propietario.num_transportes()==1)
-            apagar = (float) Math.floor (media* 0.25f);
-        else if(propietario.num_transportes()==2)
-            apagar = (float) Math.floor (media * 0.50f);
-        else if(propietario.num_transportes()==3)
-            apagar = (float) Math.floor (media * 0.75f);
-        else if(propietario.num_transportes()==4)
-            apagar = media;
+    public void paga_servicio_transporte(Jugador propietario, CasillaComprable casilla) {
+        Monopoly m = Monopoly.get();
+        Dados d = m.get_dados();
+        float media = m.get_tablero().precio_medio();
+        float coste = 0;
 
-        this.add_fortuna(apagar * -1.f);
-        if (propietario.add_fortuna(apagar)) {
+        switch (casilla.get_tipo()) {
+            case SERVICIOS:
+                    coste = (float) Math.floor(media / 200 * (propietario.num_servicios() == 1 ? 4 : 10) * (d.get_a() + d.get_b()));
+                break;
+            case TRANSPORTE:
+                    coste = (float) Math.floor(media * propietario.num_transportes() * 0.25);
+                break;
+            default:
+        }
+
+        if (this.add_fortuna(coste * -1.f) && propietario.add_fortuna(coste)) {
             System.out.format("%s%s%s%s paga %s%s%.0f%s de por el uso de %s%s%s%s a %s%s%s%s\n",
                     Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                    casilla.get_color(), Color.BOLD, apagar, Color.RESET,
+                    casilla.get_color(), Color.BOLD, coste, Color.RESET,
                     casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
         }

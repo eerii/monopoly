@@ -32,8 +32,6 @@ public class Dados {
         return b;
     }
 
-    public int get_total() {return a+b;}
-
     public int get_dobles() {
         return dobles;
     }

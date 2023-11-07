@@ -21,8 +21,7 @@ public class CasillaComprable extends Casilla {
         if (!ignorar) {
             if(!en_venta) {
                 Jugador j = this.get_propietario();
-                if(j != null)
-                {
+                if(j != null) {
                     if(this instanceof Solar)
                         jugador.paga_alquiler(j, (Solar) this);
                     else
@@ -43,12 +42,9 @@ public class CasillaComprable extends Casilla {
         return en_venta;
     }
 
-
     public float get_hipoteca() {
         return hipoteca;
     }
-
-
 
     public Jugador get_propietario() {
         Monopoly m = Monopoly.get();
