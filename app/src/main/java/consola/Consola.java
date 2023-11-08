@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import monopoly.Monopoly;
+
 public class Consola {
     Scanner sc;
     ByteArrayOutputStream os;
@@ -54,5 +56,27 @@ public class Consola {
             sc.nextLine();
         }
         return pausa;
-    } 
+    }
+
+    public String get_raw() {
+        System.out.flush();
+        System.setOut(out);
+
+        String salida = os.toString();
+        os.reset();
+
+        limpiar_pantalla();
+        System.out.println(Monopoly.get().get_tablero());
+
+        System.out.print("\u001b[1B");
+        System.out.println(salida);
+        System.out.print("\u001b[36;0H> \u001b[K");
+
+        String line = sc.nextLine();
+        limpiar_resultado();
+
+        System.setOut(ps);
+
+        return line;
+    }
 }

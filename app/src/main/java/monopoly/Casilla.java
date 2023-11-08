@@ -101,14 +101,28 @@ public class Casilla {
             }
 
             // CasillaComprable
-            if(!en_venta()) {
-                Jugador j = this.get_propietario();
-                if(j != null) {
-                    if(es_solar())
-                        jugador.paga_alquiler(j, this);
-                    else
-                        jugador.paga_servicio_transporte(j, this);
+            if (es_comprable() && en_venta()) {
+                System.out.format("¿Quieres comprar %s por %.0f? (s/N)\n", nombre, precio);
+                String respuesta = m.get_consola().get_raw().trim();
+                if (respuesta.equalsIgnoreCase("s")) {
+                    comprar(jugador);
+                    System.out.format("el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
+                        Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
+                        Color.AZUL_OSCURO, Color.BOLD, nombre, Color.RESET,
+                        Color.AMARILLO, Color.BOLD, precio, Color.RESET,
+                        Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET
+                    );
+                    return;
                 }
+                return;
+            }
+            
+            Jugador j = this.get_propietario();
+            if(j != null) {
+                if(es_solar())
+                    jugador.paga_alquiler(j, this);
+                else
+                    jugador.paga_servicio_transporte(j, this);
             }
         }
     }

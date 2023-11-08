@@ -112,55 +112,48 @@ public class Comando {
                 }
                 break;
             case HIPOTECAR:
-            {
-                Monopoly m = Monopoly.get();
-                Tablero t = m.get_tablero();
-                Jugador j = m.get_turno();
-                Casilla c = t.buscar_casilla(args.get(0));
+                {
+                    Monopoly m = Monopoly.get();
+                    Tablero t = m.get_tablero();
+                    Jugador j = m.get_turno();
+                    Casilla c = t.buscar_casilla(args.get(0));
 
-                if (c == null)
-                    throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
+                    if (c == null)
+                        throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
-                c.hipotecar(j);
-                System.out.format("el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
-                        Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                        Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
-                        Color.AMARILLO, Color.BOLD, c.get_hipoteca(), Color.RESET,
-                        Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
-                );
-            }
-            break;
-            case DESHIPOTECAR:
-            {
-                Monopoly m = Monopoly.get();
-                Tablero t = m.get_tablero();
-                Jugador j = m.get_turno();
-                Casilla c = t.buscar_casilla(args.get(0));
-
-                if (c == null)
-                    throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
-
-                c.deshipotecar(j);
-                System.out.format("el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
-                        Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                        Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
-                        Color.AMARILLO, Color.BOLD, c.get_hipoteca() * 1.1f, Color.RESET,
-                        Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
-                );
-            }
-            break;
-            case BANCARROTA:
-            {
-                Monopoly m = Monopoly.get();
-                Tablero t = m.get_tablero();
-                Jugador j = m.get_turno();
-                Casilla c = t.buscar_casilla(args.get(0));
-                Jugador actual;
-                j.bancarrota();
-                actual = m.get_turno();
-                System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, actual.get_nombre(), Color.RESET);
-            }
+                    c.hipotecar(j);
+                    System.out.format("el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
+                            Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
+                            Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
+                            Color.AMARILLO, Color.BOLD, c.get_hipoteca(), Color.RESET,
+                            Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
+                    );
+                }
                 break;
+
+            case DESHIPOTECAR:
+                {
+                    Monopoly m = Monopoly.get();
+                    Tablero t = m.get_tablero();
+                    Jugador j = m.get_turno();
+                    Casilla c = t.buscar_casilla(args.get(0));
+
+                    if (c == null)
+                        throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
+
+                    c.deshipotecar(j);
+                    System.out.format("el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
+                            Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
+                            Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
+                            Color.AMARILLO, Color.BOLD, c.get_hipoteca() * 1.1f, Color.RESET,
+                            Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
+                    );
+                }
+                break;
+
+            case BANCARROTA:
+                throw new RuntimeException("no implementado");
+
             case LANZAR:
                 switch (args.get(0)) {
                     case "dados":
@@ -176,9 +169,7 @@ public class Comando {
                              
                         if (!d.cambio_jugador(j) && d.get_dobles() == 0)
                             throw new RuntimeException("no puedes volver a tirar");
-
-                        if(j.get_fortuna()<0)
-                            throw new RuntimeException("salda tus deudas antes de volver a tirar");
+                        
                         if (args.size() == 3)
                             d.debug_set(Integer.parseInt(args.get(1)), Integer.parseInt(args.get(2)));
                         else
@@ -228,9 +219,6 @@ public class Comando {
                         Jugador j = m.get_turno();
                         Dados d = m.get_dados();
                         d.cambio_jugador(j);
-
-                        if(j.get_fortuna()<0)
-                            throw new RuntimeException("salda tus deudas antes de acabar tu turno!");
 
                         if (d.get_dobles() > 0 && !j.en_la_carcel())
                             throw new RuntimeException("has sacado dobles, no puedes terminar el turno");

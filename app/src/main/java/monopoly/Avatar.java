@@ -9,18 +9,6 @@ import consola.Color;
 
 // TODO: Tipo de avatar se implementará como subclases
 
-// TODO: Implementar modos coche y pelota
-
-/* Pelota: si el valor de los dados es mayor que 4, avanza tantas casillas como dicho valor; mientras
-que, si el valor es menor o igual que 4, retrocede el número de casillas correspondiente. En
-cualquiera de los dos casos, el avatar se parará en las casillas por las que va pasando y cuyos
-valores son impares contados desde el número 4. Por ejemplo, si el valor del dado es 9, entonces
-el avatar avanzará hasta la casilla 5, de manera que si pertenece a otro jugador y es una casilla de
-propiedad deberá pagar el alquiler, y después avanzará hasta la casilla 7, que podrá comprar si no
-pertenece a ningún jugador, y finalmente a la casilla 9, que podrá comprar o deberá pagar alquiler
-si no pertenece al jugador. Si una de esas casillas es Ir a Cárcel, entonces no se parará en las
-subsiguientes casillas. */
-
 /* Coche: si el valor de los dados es mayor que 4, avanza tantas casillas como dicho valor y puede
 seguir lanzando los dados tres veces más mientras el valor sea mayor que 4. Durante el turno solo
 se puede realizar una sola compra de propiedades, servicios o transportes, aunque se podría hacer
@@ -105,21 +93,73 @@ public class Avatar {
     }
 
     // Movimiento
-    Casilla siguiente_casilla(Casilla actual, int movimiento) {
-        Monopoly m = Monopoly.get();
-        Tablero t = m.get_tablero();
-        List<Casilla> casillas = t.get_casillas();
+    void siguiente_casilla(Casilla actual, int movimiento) {
+        // TODO: Cambiar movimientos
 
-        int a = casillas.indexOf(actual);
-        int b = a + movimiento;
-        while (b >= casillas.size()) {
-            Jugador j = get_jugador();
-            j.dar_vuelta();
-            m.comprobar_vueltas();
-            b -= casillas.size();
+        switch (tipo) {
+            case PELOTA:
+                if (movimiento < 4) {
+                    avanzar(actual, -movimiento);
+                    break;
+                }
+
+                int restantes = movimiento;
+
+                for (int i = 5; i <= movimiento; i += 2) {
+                    int avanzar = movimiento - i;
+                    actual = avanzar(actual, restantes - avanzar);
+                    restantes = avanzar;
+                    if (actual.get_nombre().equals("Ir a Cárcel"))
+                        break;
+                }
+
+                if (restantes > 0)
+                    avanzar(actual, restantes);
+
+                break;
+            case COCHE:
+                if (movimiento < 4) {
+                    avanzar(actual, -movimiento);
+                    break;
+                }
+
+                // TODO: Implementar el resto del movimiento de coche
+
+                avanzar(actual, movimiento);
+                break;
+            default:
+                avanzar(actual, movimiento);
         }
+    }
 
-        return casillas.get(b);
+    Casilla avanzar(Casilla actual, int movimiento) {
+        Monopoly m = Monopoly.get();
+        List<Casilla> casillas = m.get_tablero().get_casillas();
+        Jugador j = get_jugador();
+
+        int ini = casillas.indexOf(actual);
+        int sig = ini + movimiento;
+        int vueltas = sig / casillas.size();
+        j.dar_vueltas(vueltas);
+
+        sig %= casillas.size();
+        if (sig < 0)
+            sig += casillas.size();
+
+        Casilla siguiente = casillas.get(sig);
+
+        System.out.format("el avatar %s%s%s%s avanza %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
+            Color.AZUL_CLARITO, Color.BOLD, j.representar(), Color.RESET,
+            movimiento,
+            actual.get_color(), Color.BOLD, actual.get_nombre(), Color.RESET,
+            siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
+
+        actual.remove_jugador(j);
+        siguiente.add_jugador(j);
+
+        // TODO: Parar para preguntar si quiere comprar la casilla
+
+        return siguiente;
     }
 
     // String
