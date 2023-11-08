@@ -11,6 +11,7 @@ public class Jugador {
     Avatar avatar;
     float fortuna;
     List<Casilla> propiedades;
+    List<Casilla> hipotecas;
     int vueltas;
     int contador_carcel = 0;
     static final int turnos_carcel = 3;
@@ -20,6 +21,7 @@ public class Jugador {
         this.nombre = nombre;
         this.avatar = avatar;
         this.propiedades = new ArrayList<Casilla>();
+        this.hipotecas = new ArrayList<Casilla>();
         this.vueltas = 0;
        
         // Todos los jugadores empiezan en la salida
@@ -83,8 +85,17 @@ public class Jugador {
         add_fortuna(-precio);
     }
 
+    public void add_hipoteca(Casilla casilla, float hipoteca) {
+        hipotecas.add(casilla);
+        add_fortuna(hipoteca);
+    }
+
     public void remove_propiedad(Casilla casilla) {
         propiedades.remove(casilla);
+    }
+
+    public void remove_hipoteca(Casilla casilla) {
+        hipotecas.remove(casilla);
     }
 
     public void ir_a_carcel() {
@@ -135,6 +146,14 @@ public class Jugador {
 
     public boolean es_propietario(Casilla casilla) {
         return propiedades.contains(casilla);
+    }
+
+    public boolean es_hipotecario(Casilla casilla) {
+        return hipotecas.contains(casilla);
+    }
+
+    public boolean esta_hipotecada(Casilla casilla) {
+        return hipotecas.contains(casilla);
     }
 
     public void mover(Casilla actual, int movimiento) {
@@ -213,12 +232,13 @@ public class Jugador {
         //       De esta manera podemos tener una terminal interactiva con el tablero y la salida de los comandos
         return String.format(
             "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
-            "propiedades: %s",
+            "propiedades: %s\nhipotecas: %s" ,
             Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
             Color.BOLD, representar(), Color.RESET,
             avatar.get_tipo(),
             Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
-            propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList())
+            propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
+            hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList())
             // TODO: imprimir hipotecas y edificios con colores en la lista de propiedades
         );
     }

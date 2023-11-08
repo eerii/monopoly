@@ -8,6 +8,9 @@ public enum Cmd {
     LISTAR("listar"),
     VER("ver"),
     COMPRAR("comprar"),
+    HIPOTECAR("hipotecar"),
+    DESHIPOTECAR("deshipotecar"),
+    BANCARROTA("bancarrota"),
     LANZAR("lanzar"),
     JUGADOR("jugador"),
     ACABAR("acabar"),
@@ -15,7 +18,6 @@ public enum Cmd {
     DAR("dar"),
     SALIR("salir");
 
-    // TODO: Comando bancarrota
     // TODO: Comando estadisticas
     // TODO: Comando cambiar modo
 
@@ -49,6 +51,9 @@ public enum Cmd {
         args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa"));
         args.put(Cmd.VER, List.of("tablero"));
         args.put(Cmd.COMPRAR, List.of("*"));
+        args.put(Cmd.HIPOTECAR, List.of("*"));
+        args.put(Cmd.DESHIPOTECAR, List.of("*"));
+        args.put(Cmd.BANCARROTA, List.of(""));
         args.put(Cmd.LANZAR, List.of("dados"));
         args.put(Cmd.JUGADOR, List.of("*"));
         args.put(Cmd.ACABAR, List.of("turno"));

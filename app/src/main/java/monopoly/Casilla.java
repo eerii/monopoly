@@ -18,7 +18,7 @@ public class Casilla {
     float precio;
 
     // CasillaComprable
-    Boolean hipotecado; // TODO: Implementar hipotecar y deshipotecar
+    // TODO: Implementar hipotecar y deshipotecar
 
     // Solar
     float alquiler;
@@ -44,9 +44,6 @@ public class Casilla {
         this.nombre = nombre;
         this.jugadores = new HashSet<Jugador>();
         this.precio = 0.f;
-
-        // CasillaComprable
-        this.hipotecado = false;
     }
 
     // Solar
@@ -156,6 +153,7 @@ public class Casilla {
         return (float)Math.floor(0.5f * precio);
     }
 
+
     public Jugador get_propietario() {
         Monopoly m = Monopoly.get();
         for(Jugador j : m.get_jugadores()) {
@@ -165,6 +163,14 @@ public class Casilla {
         return null;
     }
 
+    public Jugador get_hipotecario() {
+        Monopoly m = Monopoly.get();
+        for(Jugador j : m.get_jugadores()) {
+            if(j.es_hipotecario(this))
+                return j;
+        }
+        return null;
+    }
     public void comprar(Jugador jugador) {
         if (!en_venta())
             throw new RuntimeException(String.format("la casilla %s no está en venta", nombre));
@@ -177,6 +183,28 @@ public class Casilla {
 
         Monopoly.get().get_banca().remove_propiedad(this);
         jugador.add_propiedad(this, precio);
+    }
+
+    public void hipotecar(Jugador jugador) {
+        if (jugador.esta_hipotecada(this))
+            throw new RuntimeException(String.format("%s no puede hipotecar %s, ya la tiene hipotecada", jugador.get_nombre(), nombre));
+
+        if (!jugador.es_propietario(this))
+            throw new RuntimeException(String.format("%s no puede hipotecar %s, no le pertenece",jugador.get_nombre(), nombre));
+
+        jugador.remove_propiedad(this);
+        jugador.add_hipoteca(this,this.get_hipoteca());
+    }
+
+    public void deshipotecar(Jugador jugador) {
+        if (!jugador.esta_hipotecada(this)) {
+            if (!jugador.es_propietario(this))
+                throw new RuntimeException(String.format("%s no puede deshipotecar %s, no le pertenece",jugador.get_nombre(), nombre));
+            throw new RuntimeException(String.format("%s no puede deshipotecar %s, no la tiene hipotecada", jugador.get_nombre(), nombre));
+        }
+
+        jugador.remove_hipoteca(this);
+        jugador.add_propiedad(this,this.get_hipoteca()*1.1f);
     }
 
     public void incrementar_precio() {
@@ -280,8 +308,9 @@ public class Casilla {
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
                 String sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(), Color.RESET);
                 String sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, alquiler, Color.RESET);
-                String sjp = get_propietario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : ""; 
-                return String.format("%s - tipo: %s - propietario: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sjp, sg, sp, sa, sj);
+                String sjp = get_propietario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : "";
+                String shp = get_hipotecario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_hipotecario().get_nombre(), Color.RESET) : "";
+                return String.format("%s - tipo: %s - propietario: %s - hipotecado: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sjp, shp, sg, sp, sa, sj);
             default:
                 return String.format("%s - tipo: %s - jugadores: %s", sn, st, sj);
         }

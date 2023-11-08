@@ -147,7 +147,7 @@ public class Tablero {
         Casilla c = casillas.get(i);
 
         float precio = c.get_precio();
-        if (!(c.es_comprable() || !c.en_venta()))
+        if (!c.es_comprable() || !c.en_venta())
             return String.format("%12s", "");
 
         fmt += String.format("%sM%-11.0f%s", c.get_color(), precio, Color.RESET);
