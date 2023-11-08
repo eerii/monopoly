@@ -4,23 +4,28 @@ import java.util.HashMap;
 
 public enum Color {
     NEGRO("\u001b[30m"),
-    MORADO("\u001b[38;5;141m"),
-    AZUL_CLARITO("\u001b[38;5;153m"),
-    ROSA("\u001b[38;5;212m"),
-    NARANJA("\u001b[38;5;216m"),
-    ROJO("\u001b[38;5;203m"),
-    AMARILLO("\u001b[38;5;220m"),
-    VERDE("\u001b[38;5;42m"),
-    AZUL_OSCURO("\u001b[38;5;39m"),
+    MORADO("\u001b[38;2;173;216;230m"),  // Azul Clarito (Pastel)
+    AZUL_CLARITO("\u001b[38;2;255;255;102m"),  // Amarillo Claro (Pastel)
+    ROSA("\u001b[38;2;152;255;152m"),  // Verde Menta (Pastel)
+    NARANJA("\u001b[38;2;255;182;193m"),  // Rosa Suave (Pastel)
+    ROJO("\u001b[38;2;200;160;255m"),  // Naranja Claro (Pastel)
+    AMARILLO("\u001b[38;2;200;162;200m"),  // Morado Lavanda (Pastel)
+    VERDE("\u001b[38;2;135;206;235m"),  // Azul Cielo (Pastel)
+    AZUL_OSCURO("\u001b[38;2;173;255;47m") // Verde Lima (Pastel)  // Pastel  // Pastel
+,
 
-    BG_MORADO("\u001b[48;5;141m"),
-    BG_AZUL_CLARITO("\u001b[48;5;153m"),
-    BG_ROSA("\u001b[48;5;212m"),
-    BG_NARANJA("\u001b[48;5;216m"),
-    BG_ROJO("\u001b[48;5;203m"),
-    BG_AMARILLO("\u001b[48;5;220m"),
-    BG_VERDE("\u001b[48;5;42m"),
-    BG_AZUL_OSCURO("\u001b[48;5;39m"),
+    BG_MORADO("\u001b[48;2;173;216;230m"),  // Azul Clarito (Intenso)
+    BG_AZUL_CLARITO("\u001b[48;2;255;255;102m"),  // Amarillo Claro (Intenso)
+    BG_ROSA("\u001b[48;2;152;255;152m"),  // Verde Menta (Intenso)
+    BG_NARANJA("\u001b[48;2;255;182;193m"),  // Rosa Suave (Intenso)
+    BG_ROJO("\u001b[48;2;200;160;255m"),  // Naranja Claro (Intenso)
+    BG_AMARILLO("\u001b[48;2;200;162;200m"),  // Morado Lavanda (Intenso)
+    BG_VERDE("\u001b[48;2;135;206;235m"),  // Azul Cielo (Intenso)
+    BG_AZUL_OSCURO("\u001b[48;2;173;255;47m")  // Verde Lima (Intenso)
+ // Verde Lima (Intenso)
+
+    ,  // Intenso
+
 
     RESET("\u001b[0m"),
     BOLD("\u001b[1m"),
