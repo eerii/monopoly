@@ -65,8 +65,9 @@ public class Monopoly {
         m.config.procesar(args);
 
         // TODO: Jugadores temporales para pruebas, borrar
-        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.PELOTA)));
-        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.COCHE)));
+        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.SOMBRERO)));
+        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.ESFINGE)));
+        m.add_jugador(new Jugador("Jugador3", new Avatar(Avatar.TipoAvatar.SOMBRERO)));
 
         boolean pausa = false;
         while(true) {
@@ -114,6 +115,7 @@ public class Monopoly {
 
     public void remove_jugador(Jugador jugador) {
         jugadores.remove(jugador);
+
         for (Casilla c : tablero.get_casillas())
             c.remove_jugador(jugador); 
     }
@@ -139,7 +141,7 @@ public class Monopoly {
     public Jugador get_turno() {
         if (turno < 0)
             return null;
-        return jugadores.get(turno);
+        return jugadores.get(turno%jugadores.size());
     }
 
     public void siguiente_turno() {
