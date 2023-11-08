@@ -1,10 +1,6 @@
 package consola;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Scanner;
 

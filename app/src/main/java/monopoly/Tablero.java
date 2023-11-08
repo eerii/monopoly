@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 import consola.Color;
 
@@ -148,7 +147,7 @@ public class Tablero {
         Casilla c = casillas.get(i);
 
         float precio = c.get_precio();
-        if (!(c instanceof CasillaComprable) || !((CasillaComprable)c).get_en_venta())
+        if (!(c instanceof CasillaComprable) || !((CasillaComprable)c).en_venta())
             return String.format("%12s", "");
 
         fmt += String.format("%sM%-11.0f%s", c.get_color(), precio, Color.RESET);

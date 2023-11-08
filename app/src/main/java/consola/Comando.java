@@ -51,6 +51,7 @@ public class Comando {
                 break;
 
             case LISTAR:
+                // TODO: Listar edificios
                 List<Jugador> jugadores = Monopoly.get().get_jugadores();
 
                 switch (args.get(0)) {
@@ -67,7 +68,7 @@ public class Comando {
                     case "enventa":
                         List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
                         for (Casilla c: casillas) {
-                            if(c instanceof CasillaComprable && ((CasillaComprable)c).get_en_venta()) {
+                            if(c instanceof CasillaComprable && ((CasillaComprable)c).en_venta()) {
                                 System.out.println(c);
                             }
                         }
@@ -191,6 +192,8 @@ public class Comando {
                 break;
 
             case DESCRIBIR:
+                // TODO: Describir edificios
+
                 switch (args.get(0)) {
                     case "jugador":
                         if (args.size() != 2)

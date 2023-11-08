@@ -75,6 +75,8 @@ public class Solar extends CasillaComprable {
         edificios.add(new Edificio(tipo));
     }
 
+    // TODO: Vender edificios
+
     // TODO: Lista de precios de cada combinación de edificos
 
     @Override

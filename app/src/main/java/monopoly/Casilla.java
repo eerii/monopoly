@@ -8,6 +8,8 @@ import consola.Color;
 import java.util.HashSet;
 import java.util.List;
 
+// TODO: Deshacer jerarquía de casillas ;-;
+
 public class Casilla {
     String nombre;
     TipoCasilla tipo;
@@ -139,5 +141,17 @@ public class Casilla {
             default:
                 return String.format("%s - tipo: %s - jugadores: %s", sn, st, sj);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+
+        if (!(o instanceof Casilla))
+            return false;
+
+        Casilla c = (Casilla) o;
+        return c.nombre.equals(nombre);
     }
 }

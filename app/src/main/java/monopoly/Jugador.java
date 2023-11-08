@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import consola.Color;
-import monopoly.Casilla.TipoCasilla;
 
 public class Jugador {
     String nombre;
@@ -73,12 +72,19 @@ public class Jugador {
             Monopoly.get().remove_jugador(this);
         }
         return fortuna > 0;
-        // TODO: Comprobar bancarrota
+
+        // TODO: Bancarrota
+        // Dar opción a hipotecar/vender
+        // Pasar el jugador que le deja en bancarrota (otro jugador o banca)
     }
 
     public void add_propiedad(Casilla casilla, float precio) {
         propiedades.add(casilla);
         add_fortuna(-precio);
+    }
+
+    public void remove_propiedad(Casilla casilla) {
+        propiedades.remove(casilla);
     }
 
     public void ir_a_carcel() {
@@ -127,13 +133,8 @@ public class Jugador {
         return (int)propiedades.stream().filter(c -> c.get_tipo() == Casilla.TipoCasilla.TRANSPORTE).count();
     }
 
-    public boolean es_propietario(String nombre) {
-        for (Casilla c : propiedades) {
-            if (c.get_nombre().equals(nombre)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean es_propietario(Casilla casilla) {
+        return propiedades.contains(casilla);
     }
 
     public void mover(Casilla actual, int movimiento) {

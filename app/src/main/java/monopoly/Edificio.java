@@ -17,4 +17,6 @@ public class Edificio {
     public TipoEdificio get_tipo() {
         return tipo;
     }
+
+    // TODO: Comprar/vender edificios
 }

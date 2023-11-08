@@ -15,6 +15,10 @@ public enum Cmd {
     DAR("dar"),
     SALIR("salir");
 
+    // TODO: Comando bancarrota
+    // TODO: Comando estadisticas
+    // TODO: Comando cambiar modo
+
     private final String cmd;
     private static final HashMap<Cmd, List<String>> args = new HashMap<>();
     private static final HashMap<String, Cmd> by_str = new HashMap<>(); 

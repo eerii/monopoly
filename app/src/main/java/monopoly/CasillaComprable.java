@@ -3,15 +3,11 @@ package monopoly;
 import consola.Color;
 
 public class CasillaComprable extends Casilla {
-    float hipoteca;
-    Boolean en_venta;
-    Boolean hipotecado; // TODO: Implementar (des)hipotecar
+    Boolean hipotecado; // TODO: Implementar hipotecar y deshipotecar
 
     public CasillaComprable(TipoCasilla tipo, String nombre) {
         super(tipo, nombre);
 
-        this.hipoteca = (float)Math.floor(0.5f * precio);
-        this.en_venta = true;
         this.hipotecado = false;
     }
 
@@ -19,7 +15,7 @@ public class CasillaComprable extends Casilla {
     public void add_jugador(Jugador jugador, boolean ignorar) {
         jugadores.add(jugador);
         if (!ignorar) {
-            if(!en_venta) {
+            if(!en_venta()) {
                 Jugador j = this.get_propietario();
                 if(j != null) {
                     if(this instanceof Solar)
@@ -35,28 +31,27 @@ public class CasillaComprable extends Casilla {
     @Override
     public void set_precio(float precio) {
         super.set_precio(precio);
-        this.hipoteca = (float)Math.floor(0.5f * precio);
     }
 
-    public boolean get_en_venta() {
-        return en_venta;
+    public boolean en_venta() {
+        return Monopoly.get().get_banca().es_propietario(this);
     }
 
     public float get_hipoteca() {
-        return hipoteca;
+        return (float)Math.floor(0.5f * precio);
     }
 
     public Jugador get_propietario() {
         Monopoly m = Monopoly.get();
         for(Jugador j : m.get_jugadores()) {
-            if(j.es_propietario(nombre))
+            if(j.es_propietario(this))
                 return j;
         }
         return null;
     }
 
     public void comprar(Jugador jugador) {
-        if (!en_venta)
+        if (!en_venta())
             throw new RuntimeException(String.format("la casilla %s no está en venta", nombre));
 
         if (!jugadores.contains(jugador))
@@ -65,8 +60,8 @@ public class CasillaComprable extends Casilla {
         if (jugador.get_fortuna() < precio)
             throw new RuntimeException(String.format("el jugador %s no puede permitirse comprar la casilla %s por %.0f", jugador.get_nombre(), nombre, precio));
 
+        Monopoly.get().get_banca().remove_propiedad(this);
         jugador.add_propiedad(this, precio);
-        en_venta = false;
     }
 
     public void incrementar_precio() {
