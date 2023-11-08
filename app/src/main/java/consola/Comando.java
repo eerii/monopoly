@@ -149,6 +149,18 @@ public class Comando {
                 );
             }
             break;
+            case BANCARROTA:
+            {
+                Monopoly m = Monopoly.get();
+                Tablero t = m.get_tablero();
+                Jugador j = m.get_turno();
+                Casilla c = t.buscar_casilla(args.get(0));
+                Jugador actual;
+                j.bancarrota();
+                actual = m.get_turno();
+                System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, actual.get_nombre(), Color.RESET);
+            }
+                break;
             case LANZAR:
                 switch (args.get(0)) {
                     case "dados":
@@ -164,7 +176,9 @@ public class Comando {
                              
                         if (!d.cambio_jugador(j) && d.get_dobles() == 0)
                             throw new RuntimeException("no puedes volver a tirar");
-                        
+
+                        if(j.get_fortuna()<0)
+                            throw new RuntimeException("salda tus deudas antes de volver a tirar");
                         if (args.size() == 3)
                             d.debug_set(Integer.parseInt(args.get(1)), Integer.parseInt(args.get(2)));
                         else
@@ -214,6 +228,9 @@ public class Comando {
                         Jugador j = m.get_turno();
                         Dados d = m.get_dados();
                         d.cambio_jugador(j);
+
+                        if(j.get_fortuna()<0)
+                            throw new RuntimeException("salda tus deudas antes de acabar tu turno!");
 
                         if (d.get_dobles() > 0 && !j.en_la_carcel())
                             throw new RuntimeException("has sacado dobles, no puedes terminar el turno");
