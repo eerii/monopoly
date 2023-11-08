@@ -157,22 +157,19 @@ public class Jugador {
     }
 
     public void mover(Casilla actual, int movimiento) {
-        Casilla siguiente = avatar.siguiente_casilla(actual, movimiento);
-        System.out.format("el avatar %s%s%s%s avanza %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
-            Color.AZUL_CLARITO, Color.BOLD, this.representar(), Color.RESET,
-            movimiento,
-            actual.get_color(), Color.BOLD, actual.get_nombre(), Color.RESET,
-            siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
-
-        actual.remove_jugador(this);
-        siguiente.add_jugador(this);
+        avatar.siguiente_casilla(actual, movimiento);
     }
 
-    public void dar_vuelta() {
-        vueltas += 1;
-        float media = Monopoly.get().get_tablero().precio_medio();
-        add_fortuna(media);
-        System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
+    public void dar_vueltas(int num) {
+        Monopoly m = Monopoly.get();
+
+        vueltas += num;
+        float media = m.get_tablero().precio_medio();
+        for (int i = 0; i < num; i++) {
+            add_fortuna(media);
+            m.comprobar_vueltas();
+            System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
+        }
     }
 
     public void paga_alquiler(Jugador propietario, Casilla casilla) {

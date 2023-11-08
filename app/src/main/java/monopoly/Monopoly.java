@@ -65,8 +65,8 @@ public class Monopoly {
         m.config.procesar(args);
 
         // TODO: Jugadores temporales para pruebas, borrar
-        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.COCHE)));
-        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.ESFINGE)));
+        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.PELOTA)));
+        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.COCHE)));
 
         boolean pausa = false;
         while(true) {
@@ -173,5 +173,9 @@ public class Monopoly {
                 System.out.println("el precio de todas las casillas se incrementa en un 5%");
             }
         }
-    } 
+    }
+
+    public Consola get_consola() {
+        return consola;
+    }
 }

@@ -112,43 +112,48 @@ public class Comando {
                 }
                 break;
             case HIPOTECAR:
-            {
-                Monopoly m = Monopoly.get();
-                Tablero t = m.get_tablero();
-                Jugador j = m.get_turno();
-                Casilla c = t.buscar_casilla(args.get(0));
+                {
+                    Monopoly m = Monopoly.get();
+                    Tablero t = m.get_tablero();
+                    Jugador j = m.get_turno();
+                    Casilla c = t.buscar_casilla(args.get(0));
 
-                if (c == null)
-                    throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
+                    if (c == null)
+                        throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
-                c.hipotecar(j);
-                System.out.format("el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
-                        Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                        Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
-                        Color.AMARILLO, Color.BOLD, c.get_hipoteca(), Color.RESET,
-                        Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
-                );
-            }
-            break;
+                    c.hipotecar(j);
+                    System.out.format("el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
+                            Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
+                            Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
+                            Color.AMARILLO, Color.BOLD, c.get_hipoteca(), Color.RESET,
+                            Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
+                    );
+                }
+                break;
+
             case DESHIPOTECAR:
-            {
-                Monopoly m = Monopoly.get();
-                Tablero t = m.get_tablero();
-                Jugador j = m.get_turno();
-                Casilla c = t.buscar_casilla(args.get(0));
+                {
+                    Monopoly m = Monopoly.get();
+                    Tablero t = m.get_tablero();
+                    Jugador j = m.get_turno();
+                    Casilla c = t.buscar_casilla(args.get(0));
 
-                if (c == null)
-                    throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
+                    if (c == null)
+                        throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
-                c.deshipotecar(j);
-                System.out.format("el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
-                        Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                        Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
-                        Color.AMARILLO, Color.BOLD, c.get_hipoteca() * 1.1f, Color.RESET,
-                        Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
-                );
-            }
-            break;
+                    c.deshipotecar(j);
+                    System.out.format("el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
+                            Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
+                            Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
+                            Color.AMARILLO, Color.BOLD, c.get_hipoteca() * 1.1f, Color.RESET,
+                            Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
+                    );
+                }
+                break;
+
+            case BANCARROTA:
+                throw new RuntimeException("no implementado");
+
             case LANZAR:
                 switch (args.get(0)) {
                     case "dados":
