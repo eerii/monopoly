@@ -29,7 +29,7 @@ public class Jugador {
 
         // La fortuna inicial es la suma del precio de todas las casillas comprables entre 3 
         for (Casilla c: t.get_casillas())
-            if(c.get_tipo() == Casilla.TipoCasilla.SOLAR)
+            if(c.es_solar())
                 fortuna += c.get_precio();
         fortuna /= 3.f;
 
@@ -156,10 +156,10 @@ public class Jugador {
         System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
     }
 
-    public void paga_alquiler(Jugador propietario, Solar casilla) {
+    public void paga_alquiler(Jugador propietario, Casilla casilla) {
         float alquiler = casilla.get_alquiler();
 
-        if (propietario.tiene_grupo(((Solar)casilla).get_grupo()))
+        if (propietario.tiene_grupo(casilla.get_grupo()))
             alquiler *= 2;
         // TODO: Comprobar edificios
 
@@ -172,7 +172,7 @@ public class Jugador {
         }
     }
 
-    public void paga_servicio_transporte(Jugador propietario, CasillaComprable casilla) {
+    public void paga_servicio_transporte(Jugador propietario, Casilla casilla) {
         Monopoly m = Monopoly.get();
         Dados d = m.get_dados();
         float media = m.get_tablero().precio_medio();

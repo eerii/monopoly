@@ -168,8 +168,8 @@ public class Monopoly {
             System.out.format("todos los jugadores han completado %d vueltas!\n", vueltas_totales);
             if (vueltas_totales % 4 == 0) {
                 tablero.get_casillas().stream()
-                    .filter(c -> c instanceof CasillaComprable && ((CasillaComprable)c).en_venta())
-                    .forEach(c -> ((CasillaComprable)c).incrementar_precio());
+                    .filter(c -> c.es_comprable() && c.en_venta())
+                    .forEach(c -> c.incrementar_precio());
                 System.out.println("el precio de todas las casillas se incrementa en un 5%");
             }
         }

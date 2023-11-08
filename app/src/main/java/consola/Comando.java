@@ -68,7 +68,7 @@ public class Comando {
                     case "enventa":
                         List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
                         for (Casilla c: casillas) {
-                            if(c instanceof CasillaComprable && ((CasillaComprable)c).en_venta()) {
+                            if(c.es_comprable() && c.en_venta()) {
                                 System.out.println(c);
                             }
                         }
@@ -99,10 +99,10 @@ public class Comando {
                     if (c == null)
                         throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
                    
-                    if (!(c instanceof CasillaComprable))
+                    if (!c.es_comprable())
                         throw new RuntimeException(String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
 
-                    ((CasillaComprable)c).comprar(j);
+                    c.comprar(j);
                     System.out.format("el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
                         Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
