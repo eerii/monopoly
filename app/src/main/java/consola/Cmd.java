@@ -8,6 +8,7 @@ public enum Cmd {
     LISTAR("listar"),
     VER("ver"),
     COMPRAR("comprar"),
+    EDIFICAR("edificar"),
     HIPOTECAR("hipotecar"),
     DESHIPOTECAR("deshipotecar"),
     BANCARROTA("bancarrota"),
@@ -51,6 +52,7 @@ public enum Cmd {
         args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa"));
         args.put(Cmd.VER, List.of("tablero"));
         args.put(Cmd.COMPRAR, List.of("*"));
+        args.put(Cmd.EDIFICAR, List.of("casa", "hotel", "termas", "pabellon"));
         args.put(Cmd.HIPOTECAR, List.of("*"));
         args.put(Cmd.DESHIPOTECAR, List.of("*"));
         args.put(Cmd.BANCARROTA, List.of(""));

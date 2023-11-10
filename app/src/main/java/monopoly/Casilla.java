@@ -251,8 +251,7 @@ public class Casilla {
                 if (numero_edificios(TipoEdificio.CASA) != 4)
                     throw new RuntimeException("no se puede hacer un hotel, no tienes 4 casas");
 
-                edificios = edificios.stream().filter(e -> e.get_tipo() == TipoEdificio.CASA).collect(Collectors.toList());
-
+                edificios = edificios.stream().filter(e -> e.get_tipo() != TipoEdificio.CASA).collect(Collectors.toList());
                 break;
 
             case TERMAS:
@@ -295,6 +294,11 @@ public class Casilla {
         return "[ " + s + " ]";
     }
 
+    public String lista_edificios() {
+        List<String> l = edificios.stream().map(e -> e.toStringMini()).collect(Collectors.toList());
+        return String.join("", l);
+    }
+
     @Override
     public String toString() {
         String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET);
@@ -324,10 +328,14 @@ public class Casilla {
                 String sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, alquiler, Color.RESET);
                 String sjp = get_propietario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : "";
                 String shp = get_hipotecario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_hipotecario().get_nombre(), Color.RESET) : "";
-                return String.format("%s - tipo: %s - propietario: %s - hipotecado: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sjp, shp, sg, sp, sa, sj);
+                return String.format("%s - tipo: %s - propietario: %s - edificios: %s - hipotecado: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sjp, lista_edificios(), shp, sg, sp, sa, sj);
             default:
                 return String.format("%s - tipo: %s - jugadores: %s", sn, st, sj);
         }
+    }
+
+    public String toStringMini() {
+        return String.format("%s %s", nombre, lista_edificios());
     }
 
     @Override

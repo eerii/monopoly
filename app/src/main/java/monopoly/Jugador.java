@@ -262,9 +262,8 @@ public class Jugador {
             Color.BOLD, representar(), Color.RESET,
             avatar.get_tipo(),
             Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
-            propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
+            propiedades.stream().map(p -> p.toStringMini()).collect(Collectors.toList()),
             hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList())
-            // TODO: imprimir hipotecas y edificios con colores en la lista de propiedades
         );
     }
 

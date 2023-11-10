@@ -143,16 +143,19 @@ public class Tablero {
     }
 
     String format_propiedad(int i) {
-        String fmt = new String();
         Casilla c = casillas.get(i);
-
         float precio = c.get_precio();
+
+        if (c.es_solar() && c.get_propietario() != null) {
+            String l = c.lista_edificios();
+            int len = l.codePointCount(0, l.length()); // TODO: arreglar unicode
+            return String.format("%-12s", l, " ".repeat(l.length() - len));
+        }
+
         if (!c.es_comprable() || !c.en_venta())
             return String.format("%12s", "");
 
-        fmt += String.format("%sM%-11.0f%s", c.get_color(), precio, Color.RESET);
-        
-        return fmt;
+        return String.format("%sM%-11.0f%s", c.get_color(), precio, Color.RESET);
     }
 
     String format_jugadores(int i) {

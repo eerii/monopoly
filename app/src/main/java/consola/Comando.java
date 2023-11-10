@@ -5,6 +5,7 @@ import java.util.List;
 
 import monopoly.*;
 import monopoly.Avatar.TipoAvatar;
+import monopoly.Edificio.TipoEdificio;
 
 public class Comando {
     public Comando(String cmd) {
@@ -111,6 +112,34 @@ public class Comando {
                     );
                 }
                 break;
+
+            case EDIFICAR:
+                {
+                    Monopoly m = Monopoly.get();
+                    Tablero t = m.get_tablero();
+                    Jugador j = m.get_turno();
+                    Casilla c = t.buscar_jugador(j);
+
+                    if (!j.es_propietario(c))
+                        throw new RuntimeException(String.format("no eres el propietario de la casilla '%s'\n", c.get_nombre()));
+
+                    Grupo g = c.get_grupo();
+                    if (!j.tiene_grupo(g))
+                        throw new RuntimeException(String.format("no tienes todas las casillas del grupo '%s'\n", g.get_nombre()));
+
+                    TipoEdificio tipo = TipoEdificio.from_str(args.get(0));
+                    c.comprar_edificio(j, tipo);
+
+                    System.out.format("el jugador %s%s%s%s compra un %s en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
+                        Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
+                        tipo,
+                        Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
+                        "TODO",
+                        Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
+                    );
+                }
+                break;
+
             case HIPOTECAR:
                 {
                     Monopoly m = Monopoly.get();
