@@ -93,9 +93,10 @@ public class Casilla {
                     break;
                 case SUERTE:
                 case COMUNIDAD:
-                    // TODO: Sacar cartas de la suerte y comunidad
-                    // Hacer otra clase, hacer una lista de cartas (problablmente en monopoly)
-                    // Elegir una aleatoriamente y tal
+                    List<Carta> baraja = m.barajar(tipo == TipoCasilla.SUERTE ? Carta.TipoCarta.SUERTE : Carta.TipoCarta.COMUNIDAD);
+                    Carta c = m.sacar_carta(baraja);
+                    System.out.format("el jugador %s ha caído en la casilla de %s, saca la carta: %s\n", jugador.get_nombre(), tipo, c);
+                    c.ejecutar(jugador);
                     break;
                 default:
             }

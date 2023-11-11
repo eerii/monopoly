@@ -5,6 +5,7 @@ import java.util.List;
 
 import consola.Color;
 import consola.Consola;
+import monopoly.Carta.TipoCarta;
 
 public class Monopoly {
     Consola consola;
@@ -12,6 +13,7 @@ public class Monopoly {
     Jugador banca;
     Tablero tablero;
     Dados dados;
+    List<Carta> baraja;
     Config config;
     int turno = -1;
     int vueltas_totales = 0;
@@ -25,6 +27,7 @@ public class Monopoly {
         jugadores = new ArrayList<Jugador>();
         tablero = new Tablero();
         dados = new Dados();
+        baraja = Carta.baraja;
 
         banca = new Jugador();
         for (Casilla c: tablero.get_casillas())
@@ -187,5 +190,30 @@ public class Monopoly {
 
     public Consola get_consola() {
         return consola;
+    }
+
+    public List<Carta> barajar(TipoCarta tipo) {
+        List<Carta> baraja = new ArrayList<Carta>(this.baraja);
+        baraja.removeIf(c -> c.get_tipo() != tipo);
+        java.util.Collections.shuffle(baraja);
+        return baraja;
+    }
+
+    public Carta sacar_carta(List<Carta> baraja) {
+        int n = -1;
+        while (n < 1 || n > 6) {
+            System.out.print("elige una carta del 1 al 6: ");
+            String respuesta = consola.get_raw().trim();
+            try {
+                n = Integer.parseInt(respuesta);
+            } catch (NumberFormatException e) {
+                System.out.println("debes introducir un número");
+            }
+        }
+
+        if (n > baraja.size())
+            throw new IllegalStateException("no hay tantas cartas en la baraja");
+
+        return baraja.get(n - 1);
     }
 }
