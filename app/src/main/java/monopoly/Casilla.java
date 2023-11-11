@@ -270,11 +270,18 @@ public class Casilla {
         edificios.add(new Edificio(tipo));
     }
 
+    public void vender_edificio(Jugador jugador, TipoEdificio tipo) {
+        Edificio e = edificios.stream().filter(ed -> ed.get_tipo() == tipo).findFirst().orElse(null);
+
+        if (e == null)
+            throw new RuntimeException(String.format("no se puede vender un edificio de tipo %s, no tienes ninguno", tipo));
+
+        edificios.remove(e);
+    }
+
     public boolean es_solar() {
         return tipo == TipoCasilla.SOLAR;
     }
-
-    // TODO: Vender edificios
 
     // TODO: Lista de precios de cada combinación de edificos
 

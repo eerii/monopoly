@@ -67,6 +67,15 @@ public class Monopoly {
         // TODO: Jugadores temporales para pruebas, borrar
         m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.ESFINGE)));
         m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.COCHE)));
+        List<Casilla> c = m.get_tablero().get_casillas();
+        Jugador banca = Monopoly.get().get_banca();
+        Jugador j = m.get_jugadores().get(0);
+        banca.remove_propiedad(c.get(6));
+        j.add_propiedad(c.get(6), 0);
+        banca.remove_propiedad(c.get(8));
+        j.add_propiedad(c.get(8), 0);
+        banca.remove_propiedad(c.get(9));
+        j.add_propiedad(c.get(9), 0);
 
         boolean pausa = false;
         while(true) {
