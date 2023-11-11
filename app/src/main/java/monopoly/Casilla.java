@@ -9,8 +9,6 @@ import java.util.List;
 import consola.Color;
 import monopoly.Edificio.TipoEdificio;
 
-// TODO: Deshacer jerarquía de casillas ;-;
-
 public class Casilla {
     String nombre;
     TipoCasilla tipo;
@@ -18,7 +16,6 @@ public class Casilla {
     float precio;
 
     // CasillaComprable
-    // TODO: Implementar hipotecar y deshipotecar
 
     // Solar
     float alquiler;

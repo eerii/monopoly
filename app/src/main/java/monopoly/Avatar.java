@@ -18,6 +18,7 @@ casillas correspondientes y además no puede volver a lanzar los dados en los si
 
 public class Avatar {
     char id;
+    boolean modo_avanzado = false;
     static List<Character> ocupados;
     TipoAvatar tipo;
 
@@ -92,9 +93,20 @@ public class Avatar {
         throw new RuntimeException("unreachable");
     }
 
+    public boolean es_modo_avanzado() {
+        return modo_avanzado;
+    }
+
+    public void cambiar_modo() {
+        modo_avanzado = !modo_avanzado;
+    }
+
     // Movimiento
     void siguiente_casilla(Casilla actual, int movimiento) {
-        // TODO: Cambiar movimientos
+        if (!modo_avanzado) {
+            avanzar(actual, movimiento);
+            return;
+        }
 
         switch (tipo) {
             case PELOTA:
@@ -156,8 +168,6 @@ public class Avatar {
 
         actual.remove_jugador(j);
         siguiente.add_jugador(j);
-
-        // TODO: Parar para preguntar si quiere comprar la casilla
 
         return siguiente;
     }

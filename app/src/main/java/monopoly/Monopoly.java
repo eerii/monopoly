@@ -67,7 +67,7 @@ public class Monopoly {
 
         m.config.procesar(args);
 
-        // TODO: Jugadores temporales para pruebas, borrar
+        // FIX: Jugadores temporales para pruebas, borrar
         m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.ESFINGE)));
         m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.COCHE)));
         List<Casilla> c = m.get_tablero().get_casillas();

@@ -66,6 +66,4 @@ public class Edificio {
         }
         return tipo.toString().substring(0, 1).toUpperCase();
     }
-
-    // TODO: Comprar/vender edificios
 }

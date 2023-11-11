@@ -361,6 +361,23 @@ public class Comando {
                         throw new RuntimeException("unreachable");
                 }
                 break;
+
+            case CAMBIAR:
+                 switch (args.get(0)) {
+                    case "modo":
+                        Jugador j = Monopoly.get().get_turno();
+                        Avatar a = j.get_avatar();
+                        a.cambiar_modo();
+                        System.out.format("el jugador %s%s%s%s cambia al modo %s%s%s%s\n",
+                            Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
+                            Color.AZUL_OSCURO, Color.BOLD, a.es_modo_avanzado() ? "avanzado" : "normal", Color.RESET
+                        );
+
+                        break;
+                    default:
+                        throw new RuntimeException("unreachable");
+                }
+                break;
  
             case SALIR:
                 switch (args.get(0)) {
