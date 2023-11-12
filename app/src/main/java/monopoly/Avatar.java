@@ -168,6 +168,7 @@ public class Avatar {
 
         actual.remove_jugador(j);
         siguiente.add_jugador(j);
+        siguiente.sumar_vecesVisitada();
 
         return siguiente;
     }

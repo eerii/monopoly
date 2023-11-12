@@ -13,6 +13,8 @@ public class Jugador {
     List<Casilla> propiedades;
     List<Casilla> hipotecas;
     int vueltas;
+    int tiradas;
+    float fortuna_total;
     int contador_carcel = 0;
 
     static final int turnos_carcel = 3;
@@ -24,6 +26,7 @@ public class Jugador {
         this.propiedades = new ArrayList<Casilla>();
         this.hipotecas = new ArrayList<Casilla>();
         this.vueltas = 0;
+        this.tiradas = 0;
        
         // Todos los jugadores empiezan en la salida
         Tablero t = Monopoly.get().get_tablero();
@@ -59,13 +62,27 @@ public class Jugador {
     public float get_fortuna() {
         return fortuna;
     }
-    
+
+    public float get_fortunaTotal() {
+        float total = fortuna;
+        for(Casilla c: propiedades)
+            total+=c.get_precio();
+        return total;
+    }
     public int get_vueltas() {
         return vueltas;
     }
 
+    public int get_tiradas() {
+        return tiradas;
+    }
+
     public void add_fortuna(float valor) {
         fortuna = fortuna + valor;
+    }
+
+    public void sumar_tirada() {
+        tiradas+=1;
     }
 
     public void add_propiedad(Casilla casilla, float precio) {
@@ -115,13 +132,16 @@ public class Jugador {
         for(Casilla h : hipotecas)
             otro.add_propiedad(h,0);
 
-        m.remove_jugador(this);
+
 
         if (fortuna > 0 || caida.get_propietario() == null) {
             System.out.format("el jugador %s se ha declarado en bancarrota, todas sus propiedades pasan a la banca!\n", nombre);
         } else {
             System.out.format("el jugador %s se ha declarado en bancarrota, todas sus propiedades pasan al jugador %s!\n", nombre, otro.get_nombre());
+            otro.add_fortuna(this.get_fortuna()); // Esto resta el dinero que no le pudo pagar el deudor al otro jugador
+            caida.sumar_rentabilidad(this.get_fortuna());
         }
+        m.remove_jugador(this);
     }
 
     public int turno_carcel() {
@@ -224,6 +244,8 @@ public class Jugador {
 
         m.get_stats().of(this).sumar_pago_alquileres(alquiler);
         m.get_stats().of(propietario).sumar_cobro_alquileres(alquiler);
+        casilla.sumar_rentabilidad(alquiler);
+
     }
 
     public void paga_servicio_transporte(Jugador propietario, Casilla casilla) {
@@ -260,6 +282,7 @@ public class Jugador {
 
         m.get_stats().of(this).sumar_pago_alquileres(coste);
         m.get_stats().of(propietario).sumar_cobro_alquileres(coste);
+        casilla.sumar_rentabilidad(coste);
     }
 
     // String

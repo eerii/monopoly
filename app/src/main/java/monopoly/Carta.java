@@ -47,6 +47,7 @@ public class Carta {
         System.out.format(msg, destino);
         actual.remove_jugador(j);
         siguiente.add_jugador(j);
+        siguiente.sumar_vecesVisitada();
     }
 
     static {

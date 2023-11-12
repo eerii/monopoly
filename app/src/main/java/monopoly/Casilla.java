@@ -15,6 +15,9 @@ public class Casilla {
     TipoCasilla tipo;
     Set<Jugador> jugadores; 
     float precio;
+    float rentabilidad = 0;
+    int vecesVisitada = 0;
+
 
     // CasillaComprable
 
@@ -157,6 +160,13 @@ public class Casilla {
         return edificios;
     }
 
+    public void sumar_rentabilidad(float valor){
+        rentabilidad += valor;
+    }
+
+
+    public void sumar_vecesVisitada(){ vecesVisitada +=1;}
+
     public Color get_color() {
         return grupo != null ? grupo.get_color() : Color.NONE;
     }
@@ -259,6 +269,14 @@ public class Casilla {
         }
 
         return alquiler;
+    }
+
+    public float get_rentabilidad() {
+        return rentabilidad;
+    }
+
+    public int get_vecesVisitada() {
+        return vecesVisitada;
     }
 
     public Grupo get_grupo() {

@@ -268,6 +268,8 @@ public class Comando {
                             d.debug_set(Integer.parseInt(args.get(1)), Integer.parseInt(args.get(2)));
                         else
                             d.tirar();
+
+
                         
                         int movimiento = d.get_a() + d.get_b();
                         System.out.format("los dados han sacado %s%s%d%s y %s%s%d%s\n",
@@ -283,7 +285,7 @@ public class Comando {
                         if (d.get_dobles() > 0) {
                             System.out.format("has sacado %s%sdobles%s! tienes que volver a tirar\n", Color.ROJO, Color.BOLD, Color.RESET);
                         }
-
+                        j.sumar_tirada();
                         j.mover(actual, movimiento);
                         
                         break;
@@ -374,17 +376,21 @@ public class Comando {
 
             case ESTADISTICAS:
                 {
-                    if (args.size() != 1)
+                    if (args.size() > 1)
                         throw new IllegalArgumentException("argumentos inválidos, uso: estadisticas [jugador]");
+                    if (args.get(0).equals("")) {
+                        System.out.println(Monopoly.get().get_stats());
+                    } else {
+                        String n = args.get(0);
+                        Monopoly m = Monopoly.get();
+                        Jugador j = m.buscar_jugador(n);
 
-                    String n = args.get(0);
-                    Monopoly m = Monopoly.get();
-                    Jugador j = m.buscar_jugador(n);
-                    
-                    if (j == null)
-                        throw new RuntimeException(String.format("el jugador '%s' no existe", n));
-                    
-                    System.out.println(m.get_stats().of(j));
+                        if (j == null)
+                            throw new RuntimeException(String.format("el jugador '%s' no existe", n));
+
+                        System.out.println(m.get_stats().of(j));
+                    }
+
                 }
                 break;
 

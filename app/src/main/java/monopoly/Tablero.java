@@ -94,6 +94,9 @@ public class Tablero {
     public List<Casilla> get_casillas() {
         return casillas;
     }
+    public List<Grupo> get_grupos() {
+        return grupos;
+    }
 
     public Grupo get_grupo(String nombre) {
         for(Grupo g: grupos) {
@@ -102,6 +105,8 @@ public class Tablero {
         }
         return null;
     }
+
+
 
     public Casilla buscar_casilla(String nombre) {
         for (Casilla c : casillas) {
