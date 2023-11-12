@@ -9,12 +9,6 @@ import consola.Color;
 
 // TODO: Tipo de avatar se implementará como subclases
 
-/* Coche: si el valor de los dados es mayor que 4, avanza tantas casillas como dicho valor y puede
-seguir lanzando los dados tres veces más mientras el valor sea mayor que 4. Durante el turno solo
-se puede realizar una sola compra de propiedades, servicios o transportes, aunque se podría hacer
-en cualesquiera de los 4 intentos posibles. Sin embargo, se puede edificar cualquier tipo de edificio
-en cualquier intento. */
-
 public class Avatar {
     char id;
     boolean modo_avanzado = false;

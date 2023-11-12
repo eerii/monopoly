@@ -69,8 +69,8 @@ public class Monopoly {
         m.config.procesar(args);
 
         // FIX: Jugadores temporales para pruebas, borrar
-        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.COCHE)));
-        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.ESFINGE)));
+        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.ESFINGE)));
+        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.PELOTA)));
         List<Casilla> c = m.get_tablero().get_casillas();
         Jugador banca = Monopoly.get().get_banca();
         Jugador j = m.get_jugadores().get(0);
