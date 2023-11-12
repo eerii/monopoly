@@ -52,7 +52,6 @@ public class Comando {
                 break;
 
             case LISTAR:
-                // TODO: Listar edificios
                 List<Jugador> jugadores = Monopoly.get().get_jugadores();
                 List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
 

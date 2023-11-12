@@ -1,10 +1,10 @@
 package monopoly;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Edificio {
     TipoEdificio tipo;
+    Casilla casilla;
 
     public enum TipoEdificio {
         CASA("casa"),
@@ -47,27 +47,35 @@ public class Edificio {
         }
     }
 
-    public Edificio(TipoEdificio tipo) {
+    public Edificio(TipoEdificio tipo, Casilla casilla) {
         this.tipo = tipo;
+        this.casilla = casilla;
     }
 
     public TipoEdificio get_tipo() {
         return tipo;
     }
 
-    public Casilla get_casilla(){
-        List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
-        for(Casilla c: casillas){
-            if(c.get_edificios().contains(this))
-                return c;
+    public Float coste() {
+        float base = (float) Math.floor(casilla.get_precio() * 0.2f);
+        switch (tipo) {
+            case CASA:
+                return base;
+            case HOTEL:
+                return base * 2;
+            case TERMAS:
+                return base * 3;
+            case PABELLON:
+                return base * 4;
+            default:
+                return 0.0f;
         }
-        return null;
     }
 
     @Override
     public String toString() {
-        Casilla c = this.get_casilla();
-        return String.format("%s - propietario: %s - casilla: %s - grupo: %s - coste: TODO\n", tipo, c.get_propietario().get_nombre(), c.get_nombre(), c.get_grupo().get_nombre());
+        return String.format("%s - propietario: %s - casilla: %s - grupo: %s - coste: TODO\n",
+            tipo, casilla.get_propietario().get_nombre(), casilla.get_nombre(), casilla.get_grupo().get_nombre());
     }
 
     public String representar() {
