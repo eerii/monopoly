@@ -254,8 +254,6 @@ public class Comando {
                         else
                             d.tirar();
 
-
-                        
                         int movimiento = d.get_a() + d.get_b();
                         System.out.format("los dados han sacado %s%s%d%s y %s%s%d%s\n",
                             Color.ROJO, Color.BOLD, d.get_a(), Color.RESET,
@@ -307,7 +305,7 @@ public class Comando {
                         if (d.get_dobles() > 0 && j.puede_tirar())
                             throw new RuntimeException("has sacado dobles, no puedes terminar el turno");
 
-                        if (d.get_dobles() < 0)
+                        if (d.get_dobles() < 0 && j.puede_tirar())
                             throw new RuntimeException("aún no has tirado, no puedes terminar el turno");
 
                         if (j.get_fortuna() < 0)

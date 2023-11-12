@@ -140,8 +140,6 @@ public class Jugador {
         for(Casilla h : hipotecas)
             otro.add_propiedad(h,0);
 
-
-
         if (fortuna > 0 || caida.get_propietario() == null) {
             System.out.format("el jugador %s se ha declarado en bancarrota, todas sus propiedades pasan a la banca!\n", nombre);
         } else {
