@@ -13,8 +13,7 @@ import consola.Color;
 seguir lanzando los dados tres veces más mientras el valor sea mayor que 4. Durante el turno solo
 se puede realizar una sola compra de propiedades, servicios o transportes, aunque se podría hacer
 en cualesquiera de los 4 intentos posibles. Sin embargo, se puede edificar cualquier tipo de edificio
-en cualquier intento. Si el valor de los dados es menor que 4, el avatar retrocederá el número de
-casillas correspondientes y además no puede volver a lanzar los dados en los siguientes dos turnos. */
+en cualquier intento. */
 
 public class Avatar {
     char id;
@@ -130,12 +129,16 @@ public class Avatar {
 
                 break;
             case COCHE:
+                Jugador j = get_jugador();
+
                 if (movimiento < 4) {
                     avanzar(actual, -movimiento);
+                    j.add_penalizacion(2);
+                    j.add_turno_extra(-1);
                     break;
                 }
 
-                // TODO: Implementar el resto del movimiento de coche
+                j.add_turno_extra(3);
 
                 avanzar(actual, movimiento);
                 break;

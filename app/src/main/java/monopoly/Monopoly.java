@@ -69,8 +69,8 @@ public class Monopoly {
         m.config.procesar(args);
 
         // FIX: Jugadores temporales para pruebas, borrar
-        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.ESFINGE)));
-        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.COCHE)));
+        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.COCHE)));
+        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.ESFINGE)));
         List<Casilla> c = m.get_tablero().get_casillas();
         Jugador banca = Monopoly.get().get_banca();
         Jugador j = m.get_jugadores().get(0);
@@ -165,10 +165,7 @@ public class Monopoly {
 
     public void siguiente_turno() {
         Jugador j = get_turno();
-        int tc = j.turno_carcel();
-        if (tc > 0)
-            System.out.format("al jugador %s le quedan %d turnos en la cárcel\n", j.get_nombre(), tc);            
-
+        j.turno();
         turno = (turno + 1) % jugadores.size();
         j = get_turno();
         System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, j.get_nombre(), Color.RESET);

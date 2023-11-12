@@ -16,6 +16,9 @@ public class Jugador {
     int tiradas;
     float fortuna_total;
     int contador_carcel = 0;
+    int turnos_extra = 0;
+    int turnos_penalizacion = 0;
+    boolean ha_comprado = false;
 
     static final int turnos_carcel = 3;
     
@@ -86,6 +89,11 @@ public class Jugador {
     }
 
     public void add_propiedad(Casilla casilla, float precio) {
+        if (avatar != null && avatar.get_tipo() == Avatar.TipoAvatar.COCHE && avatar.es_modo_avanzado() && ha_comprado)
+            throw new RuntimeException(String.format("el jugador %s ya ha comprado una propiedad en este turno\n", nombre));
+
+        ha_comprado = true;
+
         propiedades.add(casilla);
         add_fortuna(-precio);
     }
@@ -144,9 +152,10 @@ public class Jugador {
         m.remove_jugador(this);
     }
 
-    public int turno_carcel() {
+    public void turno() {
         contador_carcel = contador_carcel > 0 ? contador_carcel - 1 : 0;
-        return contador_carcel;
+        turnos_penalizacion = turnos_penalizacion > 0 ? turnos_penalizacion - 1 : 0;
+        ha_comprado = false;
     }
 
     public boolean en_la_carcel() {
@@ -162,6 +171,22 @@ public class Jugador {
         
         fortuna -= c.get_precio();
         contador_carcel = 0;
+    }
+
+    public void add_penalizacion(int penalizacion) {
+        this.turnos_penalizacion = penalizacion;
+    }
+
+    public boolean puede_tirar() {
+        return contador_carcel == 0 && turnos_penalizacion == 0;
+    }
+
+    public void add_turno_extra(int extra) {
+        turnos_extra = extra < 0 ? 0 : turnos_extra + extra;
+    }
+
+    public boolean tiene_turno_extra() {
+        return turnos_extra > 0;
     }
 
     public boolean tiene_grupo(Grupo grupo) {
@@ -190,6 +215,7 @@ public class Jugador {
 
     public void mover(Casilla actual, int movimiento) {
         avatar.siguiente_casilla(actual, movimiento);
+        turnos_extra = turnos_extra > 0 ? turnos_extra - 1 : 0;
     }
 
     public void dar_vueltas(int num) {
