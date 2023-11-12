@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import consola.Color;
+import estadisticas.EstadisticasJugador;
 import monopoly.Edificio.TipoEdificio;
 
 public class Casilla {
@@ -63,23 +64,24 @@ public class Casilla {
         jugadores.add(jugador);
         if (!ignorar) {
             Monopoly m = Monopoly.get();
+            EstadisticasJugador s = m.get_stats().of(jugador);
 
             switch (tipo) {
                 case SALIDA:
                     float media = m.get_tablero().precio_medio(); 
                     jugador.add_fortuna(media);
                     System.out.format("el jugador %s ha caído en la salida, recibe %.0f extra!\n", jugador.get_nombre(), media);
-                    jugador.get_stats().add_pasarPorSalida(media);
+                    s.summar_pasar_salida(media);
                     break;
                 case IMPUESTOS:
                     jugador.add_fortuna(precio * -1.f);
                     m.get_banca().add_fortuna(precio);
                     System.out.format("el jugador %s ha caído la casilla de impuestos, paga %.0f a la banca!\n", jugador.get_nombre(), precio);
-                    jugador.get_stats().add_pagoTasaseImpuestos(precio);
+                    s.sumar_pago_tasa_impuestos(precio);
                     break;
                 case A_LA_CARCEL: 
                     jugador.ir_a_carcel();
-                    jugador.get_stats().sumar_vecesEnLaCarcel();
+                    s.sumar_veces_carcel();
                     break;
                 case CARCEL:
                     if (!jugador.en_la_carcel())
@@ -90,7 +92,7 @@ public class Casilla {
                     jugador.add_fortuna(bote);
                     m.get_banca().add_fortuna(bote * -1.f);
                     System.out.format("el jugador %s ha caído en el parking, recibe %.0f extra del bote!\n", jugador.get_nombre(), bote);
-                    jugador.get_stats().add_premioInversionesOBote(bote);
+                    s.sumar_premios(bote);
                     break;
                 case SUERTE:
                 case COMUNIDAD:
@@ -119,12 +121,12 @@ public class Casilla {
                 return;
             }
             
-            Jugador j = this.get_propietario();
-            if(j != null) {
+            Jugador propietario = this.get_propietario();
+            if (propietario != null && propietario != jugador) {
                 if(es_solar())
-                    jugador.paga_alquiler(j, this);
+                    jugador.paga_alquiler(propietario, this);
                 else
-                    jugador.paga_servicio_transporte(j, this);
+                    jugador.paga_servicio_transporte(propietario, this);
             }
         }
     }
@@ -192,6 +194,8 @@ public class Casilla {
         return null;
     }
     public void comprar(Jugador jugador) {
+        Monopoly m = Monopoly.get();
+
         if (!en_venta())
             throw new RuntimeException(String.format("la casilla %s no está en venta", nombre));
 
@@ -201,9 +205,9 @@ public class Casilla {
         if (jugador.get_fortuna() < precio)
             throw new RuntimeException(String.format("el jugador %s no puede permitirse comprar la casilla %s por %.0f", jugador.get_nombre(), nombre, precio));
 
-        Monopoly.get().get_banca().remove_propiedad(this);
+        m.get_banca().remove_propiedad(this);
         jugador.add_propiedad(this, precio);
-        jugador.get_stats().add_dineroInvertido(precio);
+        m.get_stats().of(jugador).sumar_dinero_invertido(precio);
     }
 
     public void hipotecar(Jugador jugador) {

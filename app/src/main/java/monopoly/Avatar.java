@@ -159,21 +159,13 @@ public class Avatar {
             sig += casillas.size();
 
         Casilla siguiente = casillas.get(sig);
-        if (movimiento<0)
-        {
-            System.out.format("el avatar %s%s%s%s retrocede %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
-                    Color.AZUL_CLARITO, Color.BOLD, j.representar(), Color.RESET,
-                    movimiento * -1,
-                    actual.get_color(), Color.BOLD, actual.get_nombre(), Color.RESET,
-                    siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
-        }
-        else {
-            System.out.format("el avatar %s%s%s%s avanza %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
-                    Color.AZUL_CLARITO, Color.BOLD, j.representar(), Color.RESET,
-                    movimiento,
-                    actual.get_color(), Color.BOLD, actual.get_nombre(), Color.RESET,
-                    siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
-        }
+        System.out.format("el avatar %s%s%s%s %s %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
+            Color.AZUL_CLARITO, Color.BOLD, j.representar(), Color.RESET,
+            movimiento < 0 ? "retrocede" : "avanza",
+            Math.abs(movimiento),
+            actual.get_color(), Color.BOLD, actual.get_nombre(), Color.RESET,
+            siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
+
         actual.remove_jugador(j);
         siguiente.add_jugador(j);
 

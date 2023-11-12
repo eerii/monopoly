@@ -156,8 +156,8 @@ public class Tablero {
 
         if (c.es_solar() && c.get_propietario() != null) {
             String l = c.lista_edificios();
-            int len = l.codePointCount(0, l.length()); // TODO: arreglar unicode
-            return String.format("%-12s", l, " ".repeat(l.length() - len));
+            int len = l.codePointCount(0, l.length());
+            return String.format("%-12s%s", l, " ".repeat(l.length() - len));
         }
 
         if (!c.es_comprable() || !c.en_venta())

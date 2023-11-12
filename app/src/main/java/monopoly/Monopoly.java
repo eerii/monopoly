@@ -5,6 +5,7 @@ import java.util.List;
 
 import consola.Color;
 import consola.Consola;
+import estadisticas.Estadisticas;
 import monopoly.Carta.TipoCarta;
 
 public class Monopoly {
@@ -14,11 +15,10 @@ public class Monopoly {
     Tablero tablero;
     Dados dados;
     List<Carta> baraja;
+    Estadisticas stats;
     Config config;
     int turno = -1;
     int vueltas_totales = 0;
-
-    // TODO: Hacer estadísiticas del juego (probablemente una clase en consola)
 
     static Monopoly instance = null;
 
@@ -28,6 +28,7 @@ public class Monopoly {
         tablero = new Tablero();
         dados = new Dados();
         baraja = Carta.baraja;
+        stats = new Estadisticas();
 
         banca = new Jugador();
         for (Casilla c: tablero.get_casillas())
@@ -70,6 +71,8 @@ public class Monopoly {
         // FIX: Jugadores temporales para pruebas, borrar
         m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.ESFINGE)));
         m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.COCHE)));
+        m.add_jugador(new Jugador("Jugador3", new Avatar(Avatar.TipoAvatar.PELOTA)));
+        m.add_jugador(new Jugador("Jugador4", new Avatar(Avatar.TipoAvatar.SOMBRERO)));
         List<Casilla> c = m.get_tablero().get_casillas();
         Jugador banca = Monopoly.get().get_banca();
         Jugador j = m.get_jugadores().get(0);
@@ -110,6 +113,10 @@ public class Monopoly {
         return dados;
     }
 
+    public Estadisticas get_stats() {
+        return stats;
+    }
+
     public Config get_config() {
         return config;
     }
@@ -118,10 +125,13 @@ public class Monopoly {
         if (jugadores.size() >= 6) {
             throw new IllegalStateException("hay demasiados jugadores");
         }
+
         jugadores.add(jugador);
         if (jugadores.size() == 1) {
             turno = 0;
         }
+
+        stats.add_jugador(jugador);
     }
 
     public void remove_jugador(Jugador jugador) {

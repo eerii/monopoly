@@ -40,16 +40,19 @@ public class Carta {
         return String.format("%s: '%s'", tipo, texto);
     }
 
-    static {
+    static void viaje(Jugador j, String destino, String msg) {
+        Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
+        Casilla siguiente = Monopoly.get().get_tablero().buscar_casilla(destino);
 
+        System.out.format(msg, destino);
+        actual.remove_jugador(j);
+        siguiente.add_jugador(j);
+    }
+
+    static {
         baraja = new ArrayList<Carta>(Arrays.asList(
-            new Carta("Viaje", Carta.TipoCarta.SUERTE, j -> {
-                Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
-                System.out.println("decides hacer un viaje de placer hasta Vigo!\n");
-                actual.remove_jugador(j);
-                Casilla c = Monopoly.get().get_tablero().buscar_casilla("Vigo");
-                c.add_jugador(j);
-            }),
+            new Carta("Viaje", Carta.TipoCarta.SUERTE, j -> viaje(j, "Vigo", "decides hacer un viaje por placer hasta %s!\n")),
+            
             new Carta("Loteria", Carta.TipoCarta.SUERTE, j -> {
                 System.out.println("has ganado la loteria!, recibes 100000!\n");
                 j.add_fortuna(100000);
@@ -73,6 +76,8 @@ public class Carta {
                 System.out.println("has recibido un ingreso por venta de acciones, recibes 150000!\n");
                 j.add_fortuna(150000);
             }),
+
+            new Carta("Viaje", Carta.TipoCarta.COMUNIDAD, j -> viaje(j, "Ferrol", "viajas hasta %s para comprar antigüedades exóticas!\n")),
 
             new Carta("Balneario", Carta.TipoCarta.COMUNIDAD, j -> {
                 System.out.println("paga 50000 por un fin de semana en un balneario!\n");
@@ -100,14 +105,6 @@ public class Carta {
             new Carta("Beneficio", Carta.TipoCarta.COMUNIDAD, j -> {
                 System.out.println("tu compañia de internet obtiene beneficios, recibes 20000!\n");
                 j.add_fortuna(20000);
-            }),
-
-            new Carta("Viaje", Carta.TipoCarta.COMUNIDAD, j -> {
-                Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
-                System.out.println("viajas hasta Ferrol para comprar antigüedades exóticas!\n");
-                actual.remove_jugador(j);
-                Casilla c = Monopoly.get().get_tablero().buscar_casilla("Ferrol");
-                c.add_jugador(j);
             })
         ));
     }
