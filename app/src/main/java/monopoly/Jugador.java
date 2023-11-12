@@ -247,9 +247,37 @@ public class Jugador {
     public void paga_alquiler(Jugador propietario, Casilla casilla) {
         Monopoly m = Monopoly.get();
         float alquiler = casilla.get_alquiler();
-
+        float alquiler_casas = 0;
+        float alquiler_hoteles = 0;
+        float alquiler_termas = 0;
+        float alquiler_pabellones = 0;
         if (propietario.tiene_grupo(casilla.get_grupo()))
             alquiler *= 2;
+        int num = casilla.numero_edificios(Edificio.TipoEdificio.CASA);
+        switch (num){
+            case 1:
+                alquiler_casas = alquiler * 5;
+                break;
+            case 2:
+                alquiler_casas = alquiler * 15;
+                break;
+            case 3:
+                alquiler_casas = alquiler * 35;
+                break;
+            case 4:
+                alquiler_casas = alquiler * 50;
+                break;
+        }
+        num = casilla.numero_edificios(Edificio.TipoEdificio.HOTEL);
+        alquiler_hoteles = alquiler * 70 * num;
+
+        num = casilla.numero_edificios(Edificio.TipoEdificio.TERMAS);
+        alquiler_termas = alquiler * 25 * num;
+
+        num = casilla.numero_edificios(Edificio.TipoEdificio.PABELLON);
+        alquiler_pabellones = alquiler * 25 * num;
+
+        alquiler+= alquiler_hoteles + alquiler_casas + alquiler_termas + alquiler_pabellones;
 
         add_fortuna(alquiler * -1.f);
         propietario.add_fortuna(alquiler);

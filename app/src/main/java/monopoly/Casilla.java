@@ -339,13 +339,20 @@ public class Casilla {
         Edificio e = new Edificio(tipo, this);
         float coste = e.coste();
 
+
         if (jugador.get_fortuna() < coste)
             throw new RuntimeException(String.format("no se puede comprar un%s %s por %.0f", tipo == TipoEdificio.CASA ? "a" : "", tipo, coste));
         
         jugador.add_fortuna(coste * -1.f);
         edificios.add(e);
 
-        System.out.format("el jugador %s compra un%s %s por %.0f\n", jugador.get_nombre(), tipo == TipoEdificio.CASA ? "a" : "", tipo, coste);
+        System.out.format("el jugador %s%s%s%s compra un%s %s en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
+                Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
+                tipo == TipoEdificio.CASA ? "a" : "", tipo,
+                Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET,coste
+                ,
+                Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET
+        );
     }
 
     public void vender_edificio(Jugador jugador, TipoEdificio tipo) {
@@ -356,8 +363,13 @@ public class Casilla {
         float coste = (float) Math.floor(e.coste() * 0.8f);
         edificios.remove(e);
         jugador.add_fortuna(coste);
-
-        System.out.format("el jugador %s vende un%s %s por %.0f\n", jugador.get_nombre(), tipo == TipoEdificio.CASA ? "a" : "", tipo, coste);
+        System.out.format("el jugador %s%s%s%s vende un%s %s en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
+                Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
+                tipo == TipoEdificio.CASA ? "a" : "", tipo,
+                Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET,
+                coste,
+                Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET
+        );
     }
 
     public boolean es_solar() {

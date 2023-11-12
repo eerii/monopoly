@@ -74,8 +74,8 @@ public class Edificio {
 
     @Override
     public String toString() {
-        return String.format("%s - propietario: %s - casilla: %s - grupo: %s - coste: TODO\n",
-            tipo, casilla.get_propietario().get_nombre(), casilla.get_nombre(), casilla.get_grupo().get_nombre());
+        return String.format("%s - propietario: %s - casilla: %s - grupo: %s - coste: %.2f\n",
+            tipo, casilla.get_propietario().get_nombre(), casilla.get_nombre(), casilla.get_grupo().get_nombre(),coste());
     }
 
     public String representar() {
