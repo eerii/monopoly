@@ -192,17 +192,16 @@ public class Jugador {
     }
 
     public List<Edificio> get_edificios(){
-        List<Edificio> edificiosCasilla;
-        List<Edificio> edificiosJugador = new ArrayList<>();
-        Monopoly m= Monopoly.get();
+        List<Edificio> edificios = new ArrayList<>();
+        Monopoly m = Monopoly.get();
         List<Casilla> casillas = m.get_tablero().get_casillas();
+        
         for(Casilla c: casillas){
-            if(c.get_propietario()==this){
-                edificiosCasilla = c.get_edificios();
-                edificiosJugador.addAll(edificiosCasilla);
+            if(c.get_propietario() == this) {
+                edificios.addAll(c.get_edificios());
             }
         }
-        return edificiosJugador;
+        return edificios;
     }
 
     public void paga_alquiler(Jugador propietario, Casilla casilla) {
@@ -285,14 +284,13 @@ public class Jugador {
         //       De esta manera podemos tener una terminal interactiva con el tablero y la salida de los comandos
         return String.format(
             "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
-            "propiedades: %s\nhipotecas: %s\nedificios: %s" ,
+            "propiedades: %s\nhipotecas: %s" ,
             Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
             Color.BOLD, representar(), Color.RESET,
             avatar.get_tipo(),
             Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
             propiedades.stream().map(p -> p.toStringMini()).collect(Collectors.toList()),
-            hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()),
-            this.get_edificios().stream().map(e -> e.representar()).collect(Collectors.toList())
+            hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList())
         );
     }
 

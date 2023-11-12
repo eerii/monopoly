@@ -151,7 +151,9 @@ public class Casilla {
         return tipo;
     }
 
-    public List<Edificio> get_edificios() { return edificios;}
+    public List<Edificio> get_edificios() {
+        return edificios;
+    }
 
     public Color get_color() {
         return grupo != null ? grupo.get_color() : Color.NONE;
@@ -307,7 +309,7 @@ public class Casilla {
     }
 
     public String lista_edificios() {
-        List<String> l = edificios.stream().map(e -> e.toStringMini()).collect(Collectors.toList());
+        List<String> l = edificios.stream().map(e -> e.representar()).collect(Collectors.toList());
         return String.join("", l);
     }
 

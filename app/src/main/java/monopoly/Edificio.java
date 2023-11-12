@@ -70,17 +70,7 @@ public class Edificio {
         return String.format("%s - propietario: %s - casilla: %s - grupo: %s - coste: TODO\n", tipo, c.get_propietario().get_nombre(), c.get_nombre(), c.get_grupo().get_nombre());
     }
 
-    public String representar(){
-        if(this.get_tipo()==TipoEdificio.CASA)
-            return "c";
-        else if(this.get_tipo()==TipoEdificio.PABELLON)
-            return "p";
-        else if(this.get_tipo()==TipoEdificio.TERMAS)
-            return "t";
-        else
-            return "h";
-    }
-    public String toStringMini() {
+    public String representar() {
         Monopoly.Config c = Monopoly.get().get_config();
         if (c.get_iconos()) {
             return tipo.get_icono();

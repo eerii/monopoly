@@ -3,7 +3,6 @@ package monopoly;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import consola.Color;
@@ -96,9 +95,8 @@ public class Tablero {
         return casillas;
     }
 
-    public Grupo get_grupo(String nombre){
-        for(Grupo g: grupos)
-        {
+    public Grupo get_grupo(String nombre) {
+        for(Grupo g: grupos) {
             if(g.get_nombre().equals(nombre))
                 return g;
         }

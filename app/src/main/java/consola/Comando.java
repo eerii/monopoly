@@ -75,37 +75,35 @@ public class Comando {
                         }
                         break;
                     case "edificios":
-                        int contador = 0;
-                        if(args.size()!=2)
-                        {
-                            for(Casilla c: casillas){
-                                if(c.get_tipo()== Casilla.TipoCasilla.SOLAR) {
-                                    if (!c.get_edificios().isEmpty())
-                                    {
-                                        for(Edificio e: c.get_edificios())
-                                            System.out.println(e);
-                                    }
-
-                                    else contador = contador + 1;
-                                }
-                            }
-                            if(contador==22)
-                                throw new RuntimeException("no existen edificios construidos!");
-                        }
-                        else{
-                            Grupo g = Monopoly.get().get_tablero().get_grupo(args.get(1));
-                            if(g==null)
-                                throw new RuntimeException(String.format("el grupo '%s' no existe\n", args.get(1)));
-                            for(Casilla c: g.get_casillas())
-                            {
-                                if(!c.get_edificios().isEmpty())
+                        int vacios = 0;
+                        if(args.size() == 1) {
+                            for(Casilla c: casillas) {
+                                if(c.es_solar()) {
                                     for(Edificio e: c.get_edificios())
                                         System.out.println(e);
-                                else contador = contador +1;
+                                    if(c.get_edificios().isEmpty())
+                                        vacios += 1;
+                                }
                             }
-                            if(contador== g.get_casillas().size())
-                                throw new RuntimeException("no existen edificios construidos en el grupo!");
+                            if(vacios == 22)
+                                throw new RuntimeException("no existen edificios construidos en el tablero!");
+                            return;
                         }
+                    
+                        Grupo g = Monopoly.get().get_tablero().get_grupo(args.get(1));
+                        if(g==null)
+                            throw new RuntimeException(String.format("el grupo '%s' no existe\n", args.get(1)));
+                        List<Casilla> casillas_grupo = g.get_casillas();
+
+                        for(Casilla c: casillas_grupo) {
+                            for (Edificio e: c.get_edificios())
+                                System.out.println(e);
+                            if(c.get_edificios().isEmpty())
+                                vacios += 1;    
+                        }
+                        if(vacios == casillas_grupo.size())
+                            throw new RuntimeException("no existen edificios construidos en el grupo!");
+
                         break;
 
 
@@ -334,7 +332,6 @@ public class Comando {
                 break;
 
             case DESCRIBIR:
-
                 switch (args.get(0)) {
                     case "jugador":
                         if (args.size() != 2)
