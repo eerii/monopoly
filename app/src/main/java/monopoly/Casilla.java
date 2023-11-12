@@ -41,6 +41,7 @@ public class Casilla {
         this.nombre = nombre;
         this.jugadores = new HashSet<Jugador>();
         this.precio = 0.f;
+        this.edificios = new ArrayList<>();
     }
 
     // Solar
@@ -52,7 +53,6 @@ public class Casilla {
         this.grupo = grupo;
         grupo.add(this);
 
-        this.edificios = new ArrayList<>();
     }
 
     public void add_jugador(Jugador jugador) {
@@ -145,7 +145,9 @@ public class Casilla {
  
     public TipoCasilla get_tipo() {
         return tipo;
-    } 
+    }
+
+    public List<Edificio> get_edificios() { return edificios;}
 
     public Color get_color() {
         return grupo != null ? grupo.get_color() : Color.NONE;

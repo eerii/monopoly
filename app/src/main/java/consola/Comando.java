@@ -54,6 +54,7 @@ public class Comando {
             case LISTAR:
                 // TODO: Listar edificios
                 List<Jugador> jugadores = Monopoly.get().get_jugadores();
+                List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
 
                 switch (args.get(0)) {
                     case "jugadores":
@@ -67,13 +68,47 @@ public class Comando {
                         }
                         break;
                     case "enventa":
-                        List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
                         for (Casilla c: casillas) {
                             if(c.es_comprable() && c.en_venta()) {
                                 System.out.println(c);
                             }
                         }
                         break;
+                    case "edificios":
+                        int contador = 0;
+                        if(args.size()!=2)
+                        {
+                            for(Casilla c: casillas){
+                                if(c.get_tipo()== Casilla.TipoCasilla.SOLAR) {
+                                    if (!c.get_edificios().isEmpty())
+                                    {
+                                        for(Edificio e: c.get_edificios())
+                                            System.out.println(e);
+                                    }
+
+                                    else contador = contador + 1;
+                                }
+                            }
+                            if(contador==22)
+                                throw new RuntimeException("no existen edificios construidos!");
+                        }
+                        else{
+                            Grupo g = Monopoly.get().get_tablero().get_grupo(args.get(1));
+                            if(g==null)
+                                throw new RuntimeException(String.format("el grupo '%s' no existe\n", args.get(1)));
+                            for(Casilla c: g.get_casillas())
+                            {
+                                if(!c.get_edificios().isEmpty())
+                                    for(Edificio e: c.get_edificios())
+                                        System.out.println(e);
+                                else contador = contador +1;
+                            }
+                            if(contador== g.get_casillas().size())
+                                throw new RuntimeException("no existen edificios construidos en el grupo!");
+                        }
+                        break;
+
+
                     default:
                         throw new RuntimeException("unreachable");
                 }
@@ -299,7 +334,6 @@ public class Comando {
                 break;
 
             case DESCRIBIR:
-                // TODO: Describir edificios
 
                 switch (args.get(0)) {
                     case "jugador":

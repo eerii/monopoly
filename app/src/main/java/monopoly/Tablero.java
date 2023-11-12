@@ -3,6 +3,7 @@ package monopoly;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import consola.Color;
@@ -18,14 +19,14 @@ public class Tablero {
 
     public Tablero() {
         grupos = new ArrayList<Grupo>(Arrays.asList(
-            new Grupo(Color.MORADO, "Morado"),
-            new Grupo(Color.AZUL_CLARITO, "Azul clarito"),
-            new Grupo(Color.ROSA, "Rosa"),
-            new Grupo(Color.NARANJA, "Naranja"),
-            new Grupo(Color.ROJO, "Rojo"),
-            new Grupo(Color.AMARILLO, "Amarillo"),
-            new Grupo(Color.VERDE, "Verde"),
-            new Grupo(Color.AZUL_OSCURO, "Azul oscuro")
+            new Grupo(Color.MORADO, "morado"),
+            new Grupo(Color.AZUL_CLARITO, "azul clarito"),
+            new Grupo(Color.ROSA, "rosa"),
+            new Grupo(Color.NARANJA, "naranja"),
+            new Grupo(Color.ROJO, "rojo"),
+            new Grupo(Color.AMARILLO, "amarillo"),
+            new Grupo(Color.VERDE, "verde"),
+            new Grupo(Color.AZUL_OSCURO, "azul oscuro")
         ));
 
         casillas = new ArrayList<Casilla>(Arrays.asList(
@@ -93,6 +94,15 @@ public class Tablero {
 
     public List<Casilla> get_casillas() {
         return casillas;
+    }
+
+    public Grupo get_grupo(String nombre){
+        for(Grupo g: grupos)
+        {
+            if(g.get_nombre().equals(nombre))
+                return g;
+        }
+        return null;
     }
 
     public Casilla buscar_casilla(String nombre) {

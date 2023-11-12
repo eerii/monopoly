@@ -1,6 +1,7 @@
 package monopoly;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Edificio {
     TipoEdificio tipo;
@@ -54,11 +55,31 @@ public class Edificio {
         return tipo;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s - propietario: %s - casilla: %s - grupo: %s", tipo.toString(), "TODO", "", "");
+    public Casilla get_casilla(){
+        List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
+        for(Casilla c: casillas){
+            if(c.get_edificios().contains(this))
+                return c;
+        }
+        return null;
     }
 
+    @Override
+    public String toString() {
+        Casilla c = this.get_casilla();
+        return String.format("%s - propietario: %s - casilla: %s - grupo: %s - coste: TODO\n", tipo, c.get_propietario().get_nombre(), c.get_nombre(), c.get_grupo().get_nombre());
+    }
+
+    public String representar(){
+        if(this.get_tipo()==TipoEdificio.CASA)
+            return "c";
+        else if(this.get_tipo()==TipoEdificio.PABELLON)
+            return "p";
+        else if(this.get_tipo()==TipoEdificio.TERMAS)
+            return "t";
+        else
+            return "h";
+    }
     public String toStringMini() {
         Monopoly.Config c = Monopoly.get().get_config();
         if (c.get_iconos()) {

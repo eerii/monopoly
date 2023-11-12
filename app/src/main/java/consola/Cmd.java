@@ -50,7 +50,7 @@ public enum Cmd {
     static {
         // TAREA: Lista de cómandos válidos
         args.put(Cmd.CREAR, List.of("jugador"));
-        args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa"));
+        args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa","edificios"));
         args.put(Cmd.VER, List.of("tablero"));
         args.put(Cmd.COMPRAR, List.of("*"));
         args.put(Cmd.EDIFICAR, List.of("casa", "hotel", "termas", "pabellon"));
