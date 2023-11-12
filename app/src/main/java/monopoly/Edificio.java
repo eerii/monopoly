@@ -56,7 +56,7 @@ public class Edificio {
         return tipo;
     }
 
-    public Float coste() {
+    public float coste() {
         float base = (float) Math.floor(casilla.get_precio() * 0.2f);
         switch (tipo) {
             case CASA:

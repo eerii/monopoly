@@ -239,6 +239,25 @@ public class Casilla {
     // Solar
 
     public float get_alquiler() {
+        final float alquileres[] = {5, 15, 35, 50};
+        float alquiler = this.alquiler;
+        int casas = 0;
+
+        for (Edificio e : edificios) {
+            switch (e.get_tipo()) {
+                case CASA:
+                    alquiler += this.alquiler * alquileres[casas++];
+                    break;
+                case HOTEL:
+                    alquiler += this.alquiler * 70;
+                    break;
+                case TERMAS:
+                case PABELLON:
+                    alquiler += this.alquiler * 25;
+                    break;
+            }
+        }
+
         return alquiler;
     }
 
@@ -355,7 +374,7 @@ public class Casilla {
             case SOLAR:
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
                 String sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(), Color.RESET);
-                String sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, alquiler, Color.RESET);
+                String sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, get_alquiler(), Color.RESET);
                 String sjp = get_propietario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : "";
                 String shp = get_hipotecario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_hipotecario().get_nombre(), Color.RESET) : "";
                 return String.format("%s - tipo: %s - propietario: %s - edificios: %s - hipotecado: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sjp, lista_edificios(), shp, sg, sp, sa, sj);

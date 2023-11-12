@@ -204,7 +204,6 @@ public class Jugador {
 
         if (propietario.tiene_grupo(casilla.get_grupo()))
             alquiler *= 2;
-        // TODO: Comprobar edificios
 
         add_fortuna(alquiler * -1.f);
         propietario.add_fortuna(alquiler);
