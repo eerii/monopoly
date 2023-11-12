@@ -287,15 +287,34 @@ public class Casilla {
         return (int)edificios.stream().filter(e -> e.get_tipo() == tipo).count();
     }
 
+    public int numero_edificiosGrupo(TipoEdificio tipo)
+    {
+        int total = 0;
+        List<Casilla> casillas = this.get_grupo().get_casillas();
+        for(Casilla c: casillas)
+        {
+            for(Edificio e : c.get_edificios())
+            {
+                if(e.get_tipo()==tipo)
+                    total+=1;
+            }
+        }
+        return total;
+    }
+
     public void comprar_edificio(Jugador jugador, TipoEdificio tipo) {
+        int num = this.get_grupo().get_casillas().size();
         switch (tipo) {
             case CASA:
+                if(numero_edificiosGrupo(TipoEdificio.CASA)==num && numero_edificiosGrupo(TipoEdificio.HOTEL)==num)
+                    throw new RuntimeException("ya tienes el numero máximo de casas y hoteles permitidos en el grupo");
                 if (numero_edificios(TipoEdificio.CASA) == 4)
                     throw new RuntimeException("no se pueden comprar más casas, ya tienes 4");
-                
                 break;
 
             case HOTEL:
+                if(numero_edificiosGrupo(TipoEdificio.HOTEL)==num)
+                    throw new RuntimeException("ya tienes el maximo numero de hoteles permitidos en el grupo");
                 if (numero_edificios(TipoEdificio.CASA) != 4)
                     throw new RuntimeException("no se puede hacer un hotel, no tienes 4 casas");
 
@@ -303,17 +322,19 @@ public class Casilla {
                 break;
 
             case TERMAS:
+                if(numero_edificiosGrupo(TipoEdificio.TERMAS)==num)
+                    throw new RuntimeException("ya tienes el maximo numero de termas permitidos en el grupo");
                 if (numero_edificios(TipoEdificio.HOTEL) < 1 && numero_edificios(TipoEdificio.CASA) < 2)
                     throw new RuntimeException("no se puede comprar unas termas, necesitas al menos 2 casas y un hotel");
-
                 break;
 
             case PABELLON:
+                if(numero_edificiosGrupo(TipoEdificio.PABELLON)==num)
+                    throw new RuntimeException("ya tienes el maximo numero de pabellones permitidos en el grupo");
                 if (numero_edificios(TipoEdificio.HOTEL) < 2)
                     throw new RuntimeException("no se puede comprar un pabellón, necesitas al menos 2 hoteles");
+                break;
         }
-
-        // TODO: Límite de edificios por grupo
 
         Edificio e = new Edificio(tipo, this);
         float coste = e.coste();

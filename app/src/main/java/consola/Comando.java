@@ -157,7 +157,7 @@ public class Comando {
 
                     Grupo g = c.get_grupo();
                     if (!j.tiene_grupo(g))
-                        throw new RuntimeException(String.format("no tienes todas las casillas del grupo '%s'\n", g.get_nombre()));
+                        throw new RuntimeException(String.format("no tienes en propiedad todas las casillas del grupo '%s'\n", g.get_nombre()));
 
                     TipoEdificio tipo = TipoEdificio.from_str(args.get(0));
                     c.comprar_edificio(j, tipo);
@@ -206,11 +206,11 @@ public class Comando {
                         throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
                     c.hipotecar(j);
-                    System.out.format("el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
+                    System.out.format("el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s. No puede recibir alquileres ni hipotecar en el grupo %s%s%s%s\n",
                             Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
                             Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
                             Color.AMARILLO, Color.BOLD, c.get_hipoteca(), Color.RESET,
-                            Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
+                            Color.ROSA, Color.BOLD, c.get_grupo().get_nombre(), Color.RESET
                     );
                 }
                 break;
@@ -226,11 +226,11 @@ public class Comando {
                         throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
                     c.deshipotecar(j);
-                    System.out.format("el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
+                    System.out.format("el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s. Ahora puede recibir alquileres y edificar en el grupo %s%s%s%s\n",
                             Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
                             Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
                             Color.AMARILLO, Color.BOLD, c.get_hipoteca() * 1.1f, Color.RESET,
-                            Color.ROSA, Color.BOLD, j.get_fortuna(), Color.RESET
+                            Color.ROSA, Color.BOLD, c.get_grupo().get_nombre(), Color.RESET
                     );
                 }
                 break;
