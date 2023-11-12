@@ -18,10 +18,10 @@ public enum Cmd {
     ACABAR("acabar"),
     DESCRIBIR("describir"),
     DAR("dar"),
+    ESTADISTICAS("estadisticas"),
     CAMBIAR("cambiar"),
     SALIR("salir");
 
-    // TODO: Comando estadisticas
 
     private final String cmd;
     private static final HashMap<Cmd, List<String>> args = new HashMap<>();
@@ -63,6 +63,7 @@ public enum Cmd {
         args.put(Cmd.ACABAR, List.of("turno"));
         args.put(Cmd.DESCRIBIR, List.of("*", "jugador", "avatar"));
         args.put(Cmd.DAR, List.of("dinero"));
+        args.put(Cmd.ESTADISTICAS, List.of("*",""));
         args.put(Cmd.CAMBIAR, List.of("modo"));
         args.put(Cmd.SALIR, List.of("", "carcel"));
     }

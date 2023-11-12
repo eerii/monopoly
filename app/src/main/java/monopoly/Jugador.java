@@ -14,6 +14,8 @@ public class Jugador {
     List<Casilla> hipotecas;
     int vueltas;
     int contador_carcel = 0;
+
+    EstadisticasJugador stats;
     static final int turnos_carcel = 3;
     
     // Constructor de un jugador normal
@@ -23,6 +25,7 @@ public class Jugador {
         this.propiedades = new ArrayList<Casilla>();
         this.hipotecas = new ArrayList<Casilla>();
         this.vueltas = 0;
+        this.stats = new EstadisticasJugador();
        
         // Todos los jugadores empiezan en la salida
         Tablero t = Monopoly.get().get_tablero();
@@ -53,6 +56,10 @@ public class Jugador {
 
     public Avatar get_avatar() {
         return avatar;
+    }
+
+    public EstadisticasJugador get_stats() {
+        return stats;
     }
 
     public float get_fortuna() {
@@ -180,6 +187,7 @@ public class Jugador {
             add_fortuna(media);
             m.comprobar_vueltas();
             System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
+            stats.add_pasarPorSalida(media);
         }
     }
 
@@ -220,6 +228,8 @@ public class Jugador {
                     casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
         }
+        stats.add_pagoAlquileres(alquiler);
+        propietario.get_stats().add_cobroAlquileres(alquiler);
     }
 
 
@@ -255,6 +265,8 @@ public class Jugador {
                     casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
         }
+        stats.add_pagoAlquileres(coste);
+        propietario.get_stats().add_cobroAlquileres(coste);
     }
 
     // String

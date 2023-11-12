@@ -69,14 +69,17 @@ public class Casilla {
                     float media = m.get_tablero().precio_medio(); 
                     jugador.add_fortuna(media);
                     System.out.format("el jugador %s ha caído en la salida, recibe %.0f extra!\n", jugador.get_nombre(), media);
+                    jugador.get_stats().add_pasarPorSalida(media);
                     break;
                 case IMPUESTOS:
                     jugador.add_fortuna(precio * -1.f);
                     m.get_banca().add_fortuna(precio);
                     System.out.format("el jugador %s ha caído la casilla de impuestos, paga %.0f a la banca!\n", jugador.get_nombre(), precio);
+                    jugador.get_stats().add_pagoTasaseImpuestos(precio);
                     break;
                 case A_LA_CARCEL: 
                     jugador.ir_a_carcel();
+                    jugador.get_stats().sumar_vecesEnLaCarcel();
                     break;
                 case CARCEL:
                     if (!jugador.en_la_carcel())
@@ -87,6 +90,7 @@ public class Casilla {
                     jugador.add_fortuna(bote);
                     m.get_banca().add_fortuna(bote * -1.f);
                     System.out.format("el jugador %s ha caído en el parking, recibe %.0f extra del bote!\n", jugador.get_nombre(), bote);
+                    jugador.get_stats().add_premioInversionesOBote(bote);
                     break;
                 case SUERTE:
                 case COMUNIDAD:
@@ -197,6 +201,7 @@ public class Casilla {
 
         Monopoly.get().get_banca().remove_propiedad(this);
         jugador.add_propiedad(this, precio);
+        jugador.get_stats().add_dineroInvertido(precio);
     }
 
     public void hipotecar(Jugador jugador) {

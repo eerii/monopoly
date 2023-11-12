@@ -375,7 +375,18 @@ public class Comando {
                         System.out.println(casilla);
                 }
                 break;
+            case ESTADISTICAS: {
+                Monopoly m = Monopoly.get();
+                if (args.size() != 1)
+                    throw new IllegalArgumentException("argumentos inválidos, uso: estadisticas [jugador]");
 
+                String n = args.get(0);
+                Jugador j = Monopoly.get().buscar_jugador(n);
+                if (j == null)
+                    throw new RuntimeException(String.format("el jugador '%s' no existe", n));
+                System.out.println(j.get_stats());
+                }
+                break;
             case DAR:
                  switch (args.get(0)) {
                     case "dinero":
