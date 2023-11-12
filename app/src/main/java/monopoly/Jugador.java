@@ -222,6 +222,8 @@ public class Jugador {
         }
     }
 
+
+
     public void paga_servicio_transporte(Jugador propietario, Casilla casilla) {
         Monopoly m = Monopoly.get();
         Dados d = m.get_dados();
