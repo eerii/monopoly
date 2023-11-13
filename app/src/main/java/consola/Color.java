@@ -11,7 +11,7 @@ public enum Color {
     ROJO("\u001b[38;2;200;160;255m"),  // Naranja Claro (Pastel)
     AMARILLO("\u001b[38;2;200;162;200m"),  // Morado Lavanda (Pastel)
     VERDE("\u001b[38;2;135;206;235m"),  // Azul Cielo (Pastel)
-    AZUL_OSCURO("\u001b[38;2;173;255;47m") // Verde Lima (Pastel)  // Pastel  // Pastel
+    AZUL_OSCURO("\u001b[38;2;173;255;47m") // Verde Lima (Pastel)
 ,
 
     BG_MORADO("\u001b[48;2;173;216;230m"),  // Azul Clarito (Intenso)
@@ -21,11 +21,7 @@ public enum Color {
     BG_ROJO("\u001b[48;2;200;160;255m"),  // Naranja Claro (Intenso)
     BG_AMARILLO("\u001b[48;2;200;162;200m"),  // Morado Lavanda (Intenso)
     BG_VERDE("\u001b[48;2;135;206;235m"),  // Azul Cielo (Intenso)
-    BG_AZUL_OSCURO("\u001b[48;2;173;255;47m")  // Verde Lima (Intenso)
- // Verde Lima (Intenso)
-
-    ,  // Intenso
-
+    BG_AZUL_OSCURO("\u001b[48;2;173;255;47m"),  // Verde Lima (Intenso)
 
     RESET("\u001b[0m"),
     BOLD("\u001b[1m"),

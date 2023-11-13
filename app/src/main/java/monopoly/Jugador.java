@@ -13,7 +13,13 @@ public class Jugador {
     List<Casilla> propiedades;
     List<Casilla> hipotecas;
     int vueltas;
+    int tiradas;
+    float fortuna_total;
     int contador_carcel = 0;
+    int turnos_extra = 0;
+    int turnos_penalizacion = 0;
+    boolean ha_comprado = false;
+
     static final int turnos_carcel = 3;
     
     // Constructor de un jugador normal
@@ -23,6 +29,7 @@ public class Jugador {
         this.propiedades = new ArrayList<Casilla>();
         this.hipotecas = new ArrayList<Casilla>();
         this.vueltas = 0;
+        this.tiradas = 0;
        
         // Todos los jugadores empiezan en la salida
         Tablero t = Monopoly.get().get_tablero();
@@ -58,29 +65,35 @@ public class Jugador {
     public float get_fortuna() {
         return fortuna;
     }
-    
+
+    public float get_fortunaTotal() {
+        float total = fortuna;
+        for(Casilla c: propiedades)
+            total+=c.get_precio();
+        return total;
+    }
     public int get_vueltas() {
         return vueltas;
     }
 
-    public boolean add_fortuna(float valor) {
-        fortuna = fortuna + valor;
-        if (fortuna < 0) {
-            System.out.format("%s%s%s%s está en %s%sbancarrota%s! :(\n",
-                Color.AZUL_OSCURO, Color.BOLD, nombre, Color.RESET,
-                Color.ROJO, Color.BOLD, Color.RESET
-            );
-            System.out.println("ni hipotecar ni bancarrota están implementados todavía");
-            Monopoly.get().remove_jugador(this);
-        }
-        return fortuna > 0;
+    public int get_tiradas() {
+        return tiradas;
+    }
 
-        // TODO: Bancarrota
-        // Dar opción a hipotecar/vender
-        // Pasar el jugador que le deja en bancarrota (otro jugador o banca)
+    public void add_fortuna(float valor) {
+        fortuna = fortuna + valor;
+    }
+
+    public void sumar_tirada() {
+        tiradas+=1;
     }
 
     public void add_propiedad(Casilla casilla, float precio) {
+        if (avatar != null && avatar.get_tipo() == Avatar.TipoAvatar.COCHE && avatar.es_modo_avanzado() && ha_comprado)
+            throw new RuntimeException(String.format("el jugador %s ya ha comprado una propiedad en este turno\n", nombre));
+
+        ha_comprado = true;
+
         propiedades.add(casilla);
         add_fortuna(-precio);
     }
@@ -112,9 +125,35 @@ public class Jugador {
         Monopoly.get().siguiente_turno();
     }
 
-    public int turno_carcel() {
+    public void bancarrota(){
+        Monopoly m = Monopoly.get();
+        Casilla caida = m.get_tablero().buscar_jugador(this);
+
+        Jugador otro = fortuna > 0 || caida.get_propietario() == null ? m.get_banca() : caida.get_propietario();
+        if (otro != m.get_banca()) {
+            otro.add_fortuna(fortuna);
+        }
+
+        for(Casilla c : propiedades)
+            otro.add_propiedad(c,0);
+
+        for(Casilla h : hipotecas)
+            otro.add_propiedad(h,0);
+
+        if (fortuna > 0 || caida.get_propietario() == null) {
+            System.out.format("el jugador %s se ha declarado en bancarrota, todas sus propiedades pasan a la banca!\n", nombre);
+        } else {
+            System.out.format("el jugador %s se ha declarado en bancarrota, todas sus propiedades pasan al jugador %s!\n", nombre, otro.get_nombre());
+            otro.add_fortuna(this.get_fortuna()); // Esto resta el dinero que no le pudo pagar el deudor al otro jugador
+            caida.sumar_rentabilidad(this.get_fortuna());
+        }
+        m.remove_jugador(this);
+    }
+
+    public void turno() {
         contador_carcel = contador_carcel > 0 ? contador_carcel - 1 : 0;
-        return contador_carcel;
+        turnos_penalizacion = turnos_penalizacion > 0 ? turnos_penalizacion - 1 : 0;
+        ha_comprado = false;
     }
 
     public boolean en_la_carcel() {
@@ -130,6 +169,22 @@ public class Jugador {
         
         fortuna -= c.get_precio();
         contador_carcel = 0;
+    }
+
+    public void add_penalizacion(int penalizacion) {
+        this.turnos_penalizacion = penalizacion;
+    }
+
+    public boolean puede_tirar() {
+        return contador_carcel == 0 && turnos_penalizacion == 0;
+    }
+
+    public void add_turno_extra(int extra) {
+        turnos_extra = extra < 0 ? 0 : turnos_extra + extra;
+    }
+
+    public boolean tiene_turno_extra() {
+        return turnos_extra > 0;
     }
 
     public boolean tiene_grupo(Grupo grupo) {
@@ -157,38 +212,92 @@ public class Jugador {
     }
 
     public void mover(Casilla actual, int movimiento) {
-        Casilla siguiente = avatar.siguiente_casilla(actual, movimiento);
-        System.out.format("el avatar %s%s%s%s avanza %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
-            Color.AZUL_CLARITO, Color.BOLD, this.representar(), Color.RESET,
-            movimiento,
-            actual.get_color(), Color.BOLD, actual.get_nombre(), Color.RESET,
-            siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
-
-        actual.remove_jugador(this);
-        siguiente.add_jugador(this);
+        avatar.siguiente_casilla(actual, movimiento);
+        turnos_extra = turnos_extra > 0 ? turnos_extra - 1 : 0;
     }
 
-    public void dar_vuelta() {
-        vueltas += 1;
-        float media = Monopoly.get().get_tablero().precio_medio();
-        add_fortuna(media);
-        System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
+    public void dar_vueltas(int num) {
+        Monopoly m = Monopoly.get();
+
+        vueltas += num;
+        float media = m.get_tablero().precio_medio();
+        for (int i = 0; i < num; i++) {
+            add_fortuna(media);
+            m.comprobar_vueltas();
+            System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
+            m.get_stats().of(this).summar_pasar_salida(media);
+        }
+    }
+
+    public List<Edificio> get_edificios(){
+        List<Edificio> edificios = new ArrayList<>();
+        Monopoly m = Monopoly.get();
+        List<Casilla> casillas = m.get_tablero().get_casillas();
+        
+        for(Casilla c: casillas){
+            if(c.get_propietario() == this) {
+                edificios.addAll(c.get_edificios());
+            }
+        }
+        return edificios;
     }
 
     public void paga_alquiler(Jugador propietario, Casilla casilla) {
+        Monopoly m = Monopoly.get();
         float alquiler = casilla.get_alquiler();
-
+        float alquiler_casas = 0;
+        float alquiler_hoteles = 0;
+        float alquiler_termas = 0;
+        float alquiler_pabellones = 0;
         if (propietario.tiene_grupo(casilla.get_grupo()))
             alquiler *= 2;
-        // TODO: Comprobar edificios
+        int num = casilla.numero_edificios(Edificio.TipoEdificio.CASA);
+        switch (num){
+            case 1:
+                alquiler_casas = alquiler * 5;
+                break;
+            case 2:
+                alquiler_casas = alquiler * 15;
+                break;
+            case 3:
+                alquiler_casas = alquiler * 35;
+                break;
+            case 4:
+                alquiler_casas = alquiler * 50;
+                break;
+        }
+        num = casilla.numero_edificios(Edificio.TipoEdificio.HOTEL);
+        alquiler_hoteles = alquiler * 70 * num;
 
-        if (this.add_fortuna(alquiler * -1.f) && propietario.add_fortuna(alquiler)) {
+        num = casilla.numero_edificios(Edificio.TipoEdificio.TERMAS);
+        alquiler_termas = alquiler * 25 * num;
+
+        num = casilla.numero_edificios(Edificio.TipoEdificio.PABELLON);
+        alquiler_pabellones = alquiler * 25 * num;
+
+        alquiler+= alquiler_hoteles + alquiler_casas + alquiler_termas + alquiler_pabellones;
+
+        add_fortuna(alquiler * -1.f);
+        propietario.add_fortuna(alquiler);
+
+        if (fortuna >= 0) {
             System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
                 Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                 casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
                 casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
                 Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
+        } else {
+            System.out.format("%s%s%s%s no puede permitirse pagar %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
+                    casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
+                    Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
         }
+
+        m.get_stats().of(this).sumar_pago_alquileres(alquiler);
+        m.get_stats().of(propietario).sumar_cobro_alquileres(alquiler);
+        casilla.sumar_rentabilidad(alquiler);
+
     }
 
     public void paga_servicio_transporte(Jugador propietario, Casilla casilla) {
@@ -206,14 +315,26 @@ public class Jugador {
                 break;
             default:
         }
+        this.add_fortuna(coste * -1.f);
+        propietario.add_fortuna(coste);
 
-        if (this.add_fortuna(coste * -1.f) && propietario.add_fortuna(coste)) {
-            System.out.format("%s%s%s%s paga %s%s%.0f%s de por el uso de %s%s%s%s a %s%s%s%s\n",
+        if (fortuna >= 0) {
+            System.out.format("%s%s%s%s paga %s%s%.0f%s por el uso de %s%s%s%s a %s%s%s%s\n",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    casilla.get_color(), Color.BOLD, coste, Color.RESET,
+                    casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
+                    Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
+        } else {
+            System.out.format("%s%s%s%s no se puede permitir el coste de %s%s%.0f%s de uso de %s%s%s%s a %s%s%s%s\n",
                     Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                     casilla.get_color(), Color.BOLD, coste, Color.RESET,
                     casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
         }
+
+        m.get_stats().of(this).sumar_pago_alquileres(coste);
+        m.get_stats().of(propietario).sumar_cobro_alquileres(coste);
+        casilla.sumar_rentabilidad(coste);
     }
 
     // String
@@ -237,9 +358,8 @@ public class Jugador {
             Color.BOLD, representar(), Color.RESET,
             avatar.get_tipo(),
             Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
-            propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
+            propiedades.stream().map(p -> p.toStringMini()).collect(Collectors.toList()),
             hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList())
-            // TODO: imprimir hipotecas y edificios con colores en la lista de propiedades
         );
     }
 

@@ -8,6 +8,8 @@ public enum Cmd {
     LISTAR("listar"),
     VER("ver"),
     COMPRAR("comprar"),
+    EDIFICAR("edificar"),
+    VENDER("vender"),
     HIPOTECAR("hipotecar"),
     DESHIPOTECAR("deshipotecar"),
     BANCARROTA("bancarrota"),
@@ -16,10 +18,10 @@ public enum Cmd {
     ACABAR("acabar"),
     DESCRIBIR("describir"),
     DAR("dar"),
+    ESTADISTICAS("estadisticas"),
+    CAMBIAR("cambiar"),
     SALIR("salir");
 
-    // TODO: Comando estadisticas
-    // TODO: Comando cambiar modo
 
     private final String cmd;
     private static final HashMap<Cmd, List<String>> args = new HashMap<>();
@@ -48,9 +50,11 @@ public enum Cmd {
     static {
         // TAREA: Lista de cómandos válidos
         args.put(Cmd.CREAR, List.of("jugador"));
-        args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa"));
+        args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa","edificios"));
         args.put(Cmd.VER, List.of("tablero"));
         args.put(Cmd.COMPRAR, List.of("*"));
+        args.put(Cmd.EDIFICAR, List.of("casa", "hotel", "termas", "pabellon"));
+        args.put(Cmd.VENDER, List.of("casa", "hotel", "termas", "pabellon"));
         args.put(Cmd.HIPOTECAR, List.of("*"));
         args.put(Cmd.DESHIPOTECAR, List.of("*"));
         args.put(Cmd.BANCARROTA, List.of(""));
@@ -59,6 +63,8 @@ public enum Cmd {
         args.put(Cmd.ACABAR, List.of("turno"));
         args.put(Cmd.DESCRIBIR, List.of("*", "jugador", "avatar"));
         args.put(Cmd.DAR, List.of("dinero"));
+        args.put(Cmd.ESTADISTICAS, List.of("*", ""));
+        args.put(Cmd.CAMBIAR, List.of("modo"));
         args.put(Cmd.SALIR, List.of("", "carcel"));
     }
 

@@ -5,6 +5,8 @@ import java.util.List;
 
 import consola.Color;
 import consola.Consola;
+import estadisticas.Estadisticas;
+import monopoly.Carta.TipoCarta;
 
 public class Monopoly {
     Consola consola;
@@ -12,11 +14,11 @@ public class Monopoly {
     Jugador banca;
     Tablero tablero;
     Dados dados;
+    List<Carta> baraja;
+    Estadisticas stats;
     Config config;
     int turno = -1;
     int vueltas_totales = 0;
-
-    // TODO: Hacer estadísiticas del juego (probablemente una clase en consola)
 
     static Monopoly instance = null;
 
@@ -25,6 +27,8 @@ public class Monopoly {
         jugadores = new ArrayList<Jugador>();
         tablero = new Tablero();
         dados = new Dados();
+        baraja = Carta.baraja;
+        stats = new Estadisticas();
 
         banca = new Jugador();
         for (Casilla c: tablero.get_casillas())
@@ -64,9 +68,18 @@ public class Monopoly {
 
         m.config.procesar(args);
 
-        // TODO: Jugadores temporales para pruebas, borrar
-        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.COCHE)));
-        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.ESFINGE)));
+        // FIX: Jugadores temporales para pruebas, borrar
+        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.ESFINGE)));
+        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.PELOTA)));
+        List<Casilla> c = m.get_tablero().get_casillas();
+        Jugador banca = Monopoly.get().get_banca();
+        Jugador j = m.get_jugadores().get(0);
+        banca.remove_propiedad(c.get(6));
+        j.add_propiedad(c.get(6), 0);
+        banca.remove_propiedad(c.get(8));
+        j.add_propiedad(c.get(8), 0);
+        banca.remove_propiedad(c.get(9));
+        j.add_propiedad(c.get(9), 0);
 
         boolean pausa = false;
         while(true) {
@@ -98,6 +111,10 @@ public class Monopoly {
         return dados;
     }
 
+    public Estadisticas get_stats() {
+        return stats;
+    }
+
     public Config get_config() {
         return config;
     }
@@ -106,14 +123,18 @@ public class Monopoly {
         if (jugadores.size() >= 6) {
             throw new IllegalStateException("hay demasiados jugadores");
         }
+
         jugadores.add(jugador);
         if (jugadores.size() == 1) {
             turno = 0;
         }
+
+        stats.add_jugador(jugador);
     }
 
     public void remove_jugador(Jugador jugador) {
         jugadores.remove(jugador);
+
         for (Casilla c : tablero.get_casillas())
             c.remove_jugador(jugador); 
     }
@@ -144,10 +165,7 @@ public class Monopoly {
 
     public void siguiente_turno() {
         Jugador j = get_turno();
-        int tc = j.turno_carcel();
-        if (tc > 0)
-            System.out.format("al jugador %s le quedan %d turnos en la cárcel\n", j.get_nombre(), tc);            
-
+        j.turno();
         turno = (turno + 1) % jugadores.size();
         j = get_turno();
         System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, j.get_nombre(), Color.RESET);
@@ -173,5 +191,34 @@ public class Monopoly {
                 System.out.println("el precio de todas las casillas se incrementa en un 5%");
             }
         }
-    } 
+    }
+
+    public Consola get_consola() {
+        return consola;
+    }
+
+    public List<Carta> barajar(TipoCarta tipo) {
+        List<Carta> baraja = new ArrayList<Carta>(this.baraja);
+        baraja.removeIf(c -> c.get_tipo() != tipo);
+        java.util.Collections.shuffle(baraja);
+        return baraja;
+    }
+
+    public Carta sacar_carta(List<Carta> baraja) {
+        int n = -1;
+        while (n < 1 || n > 6) {
+            System.out.print("elige una carta del 1 al 6: ");
+            String respuesta = consola.get_raw().trim();
+            try {
+                n = Integer.parseInt(respuesta);
+            } catch (NumberFormatException e) {
+                System.out.println("debes introducir un número");
+            }
+        }
+
+        if (n > baraja.size())
+            throw new IllegalStateException("no hay tantas cartas en la baraja");
+
+        return baraja.get(n - 1);
+    }
 }
