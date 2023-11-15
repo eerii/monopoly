@@ -7,7 +7,7 @@ import java.util.Random;
 
 import consola.Color;
 
-// TODO: Tipo de avatar se implementará como subclases
+// TODO: Jerarquía de avatares
 
 public class Avatar {
     char id;

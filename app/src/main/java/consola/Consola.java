@@ -7,6 +7,10 @@ import java.util.Scanner;
 import monopoly.Monopoly;
 
 public class Consola {
+    // TODO: Cambiar a interfaz consola con métodos para leer y escribir
+    // Aquí podemos implementar automáticamente colores para x cosas
+    // Hay que cambiar todos los System.out.print por c.print o lo que sea
+
     Scanner sc;
     ByteArrayOutputStream os;
     PrintStream ps, out;
@@ -38,6 +42,8 @@ public class Consola {
             Comando cmd = new Comando(line);
             cmd.run();
         } catch (RuntimeException e) {
+            // TODO: Cambiar estas RuntimeException por excepciones propias
+            // Minimo 5 tipo y 3 niveles
             System.out.println(e.getMessage());
         }
 

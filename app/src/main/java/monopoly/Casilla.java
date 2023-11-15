@@ -18,6 +18,9 @@ public class Casilla {
     float rentabilidad = 0;
     int vecesVisitada = 0;
 
+    // TODO: Jerarquía de casillas
+    //          Propiedad, Accion, Impuesto, Grupo, Especial
+    //          Propiedad: Solar, Transporte, Servicios
 
     // CasillaComprable
 

@@ -9,6 +9,18 @@ import estadisticas.Estadisticas;
 import monopoly.Carta.TipoCarta;
 
 public class Monopoly {
+    // TODO: Usar modificadores abstract y final en las jerarquías
+
+    // TODO: Cambiar visibilidades a private
+
+    // TODO: Implementar métodos abstractos
+
+    // TODO: Utilizar el método super del padre en algun hijo
+
+    // TODO: Usar instanceof para definir comportamientos
+
+    // TODO: Declarar constantes (en config por ejemplo)
+
     Consola consola;
     List<Jugador> jugadores;
     Jugador banca;

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class Carta {
+    // TODO: Cambiar a jerarquía de cartas (Comunidad, Suerte)
+
     enum TipoCarta {
         COMUNIDAD,
         SUERTE;

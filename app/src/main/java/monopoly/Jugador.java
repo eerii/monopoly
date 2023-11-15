@@ -7,6 +7,17 @@ import java.util.stream.Collectors;
 import consola.Color;
 
 public class Jugador {
+    // TODO: Tratos con otros jugadores
+    // Cambiar combinaciones de propiedades, dinero y turnos sin pagar
+    
+    // TODO: Aceptar trato
+    
+    // TODO: Listar tratos
+
+    // TODO: Eliminar trato
+
+    // TODO: Limpiar mucho los getters y setters de esta clase (son un desastre)
+
     String nombre;
     Avatar avatar;
     float fortuna;

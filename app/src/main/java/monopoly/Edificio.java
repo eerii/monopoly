@@ -6,6 +6,8 @@ public class Edificio {
     TipoEdificio tipo;
     Casilla casilla;
 
+    // TODO: Cambiar a jerarquía de edificios
+
     public enum TipoEdificio {
         CASA("casa"),
         HOTEL("hotel"),

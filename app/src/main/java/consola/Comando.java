@@ -8,6 +8,8 @@ import monopoly.Avatar.TipoAvatar;
 import monopoly.Edificio.TipoEdificio;
 
 public class Comando {
+    // TODO: Cambiar un poco esto por una interfaz comando
+
     public Comando(String cmd) {
         args = new ArrayList<String>(List.of(cmd.split(" ")));
         if (args.size() == 1)
