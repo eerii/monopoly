@@ -160,7 +160,7 @@ public class Monopoly {
     public Jugador get_turno() {
         if (turno < 0)
             return null;
-        return jugadores.get(turno);
+        return jugadores.get(turno % jugadores.size());
     }
 
     public void siguiente_turno() {

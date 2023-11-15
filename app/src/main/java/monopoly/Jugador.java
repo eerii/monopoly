@@ -179,6 +179,10 @@ public class Jugador {
         return contador_carcel == 0 && turnos_penalizacion == 0;
     }
 
+    public boolean puede_comprar() {
+        return !ha_comprado;
+    }
+
     public void add_turno_extra(int extra) {
         turnos_extra = extra < 0 ? 0 : turnos_extra + extra;
     }

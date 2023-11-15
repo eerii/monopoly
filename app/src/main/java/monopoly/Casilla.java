@@ -109,6 +109,9 @@ public class Casilla {
 
             // CasillaComprable
             if (es_comprable() && en_venta()) {
+                if (jugador.get_fortuna() < precio || !jugador.puede_comprar())
+                    return;
+
                 System.out.format("¿Quieres comprar %s por %.0f? (s/N)\n", nombre, precio);
                 String respuesta = m.get_consola().get_raw().trim();
                 if (respuesta.equalsIgnoreCase("s")) {
@@ -214,6 +217,9 @@ public class Casilla {
         
         if (jugador.get_fortuna() < precio)
             throw new RuntimeException(String.format("el jugador %s no puede permitirse comprar la casilla %s por %.0f", jugador.get_nombre(), nombre, precio));
+
+        if (!jugador.puede_comprar())
+            throw new RuntimeException(String.format("el jugador %s no puede comprar la casilla %s, ya lo ha hecho este turno", jugador.get_nombre(), nombre));
 
         m.get_banca().remove_propiedad(this);
         jugador.add_propiedad(this, precio);
