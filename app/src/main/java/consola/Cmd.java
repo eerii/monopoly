@@ -20,6 +20,9 @@ public enum Cmd {
     DAR("dar"),
     ESTADISTICAS("estadisticas"),
     CAMBIAR("cambiar"),
+    TRATO("trato"),
+    ACEPTAR("aceptar"),
+    ELIMINAR("eliminar"),
     SALIR("salir");
 
     private final String cmd;
@@ -49,7 +52,7 @@ public enum Cmd {
     static {
         // TAREA: Lista de cómandos válidos
         args.put(Cmd.CREAR, List.of("jugador"));
-        args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa", "edificios"));
+        args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa", "edificios","tratos"));
         args.put(Cmd.VER, List.of("tablero"));
         args.put(Cmd.COMPRAR, List.of("*"));
         args.put(Cmd.EDIFICAR, List.of("casa", "hotel", "termas", "pabellon"));
@@ -65,6 +68,9 @@ public enum Cmd {
         args.put(Cmd.ESTADISTICAS, List.of("*", ""));
         args.put(Cmd.CAMBIAR, List.of("modo"));
         args.put(Cmd.SALIR, List.of("", "carcel"));
+        args.put(Cmd.TRATO, List.of("*"));
+        args.put(Cmd.ELIMINAR, List.of("*"));
+        args.put(Cmd.ACEPTAR, List.of("*"));
     }
 
     static {

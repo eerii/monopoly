@@ -29,7 +29,7 @@ public class Comando {
     List<String> args;
 
     // Gestionar todas las acciones
-    public void run() throws PruebaException {
+    public void run() {
         switch (cmd) {
             case CREAR:
                 switch (args.get(0)) {
@@ -75,6 +75,9 @@ public class Comando {
                                 System.out.println(c);
                             }
                         }
+                        break;
+                    case "tratos":
+                        Monopoly.get().listar_tratos();
                         break;
                     case "edificios":
                         int vacios = 0;
@@ -133,7 +136,7 @@ public class Comando {
                     throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
                 if (!c.es_comprable())
-                    throw new PruebaException(String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
+                    throw new RuntimeException(String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
 
                 c.comprar(j);
                 System.out.format(
@@ -416,7 +419,39 @@ public class Comando {
                         throw new RuntimeException("unreachable");
                 }
                 break;
+            case TRATO:
+                Trato t = new Trato(String.join(" ",args),Monopoly.get().get_turno().get_nombre());
+                System.out.println(t);
+                Monopoly.get().add_trato(t);
+                break;
+            case ACEPTAR: {
+                if (args.size() != 1)
+                    throw new IllegalArgumentException("argumentos inválidos, uso: aceptar [id]");
+                String aux = args.get(0).replace("trato","");
+                int id = Integer.parseInt(aux);
+                Trato trato = Monopoly.get().buscar_trato(id);
+                if (trato == null)
+                    throw new RuntimeException(String.format("el trato '%d' no existe!", id));
+                if(!trato.getJugadorRecibe().equals(Monopoly.get().get_turno().get_nombre()))
+                    throw new RuntimeException(String.format("el trato '%d' no es para ti!", id));
+                trato.aceptar_trato();
+                Monopoly.get().remove_trato(trato);}
+                break;
+            case ELIMINAR: {
+                if (args.size() != 1)
+                    throw new IllegalArgumentException("argumentos inválidos, uso: eliminar trato[id]");
+                String aux = args.get(0).replace("trato","");
+                if(aux.isEmpty())
+                    throw new RuntimeException("no has introducido un id");
+                int id = Integer.parseInt(aux);
+                Trato trato = Monopoly.get().buscar_trato(id);
+                if (trato == null)
+                    throw new RuntimeException(String.format("el trato '%d' no existe!", id));
+                Monopoly.get().remove_trato(trato);
+                System.out.printf("el trato %s%d%s ha sido eliminado\n",Color.ROJO, id, Color.RESET);
+            }
 
+                break;
             case SALIR:
                 switch (args.get(0)) {
                     case "carcel":

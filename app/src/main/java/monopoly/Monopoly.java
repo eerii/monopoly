@@ -27,6 +27,7 @@ public class Monopoly {
     Tablero tablero;
     Dados dados;
     List<Carta> baraja;
+    List<Trato> tratos;
     Estadisticas stats;
     Config config;
     int turno = -1;
@@ -41,6 +42,7 @@ public class Monopoly {
         dados = new Dados();
         baraja = Carta.baraja;
         stats = new Estadisticas();
+        tratos = new ArrayList<Trato>();
 
         banca = new Jugador();
         for (Casilla c : tablero.get_casillas())
@@ -92,6 +94,9 @@ public class Monopoly {
         j.add_propiedad(c.get(8), 0);
         banca.remove_propiedad(c.get(9));
         j.add_propiedad(c.get(9), 0);
+        j=m.get_jugadores().get(1);
+        banca.remove_propiedad(c.get(1));
+        j.add_propiedad(c.get(1), 0);
 
         boolean pausa = false;
         while (true) {
@@ -143,6 +148,37 @@ public class Monopoly {
         }
 
         stats.add_jugador(jugador);
+    }
+
+    public void add_trato(Trato trato) {
+        tratos.add(trato);
+    }
+    public void remove_trato(Trato trato) {
+        tratos.remove(trato);
+    }
+
+    public Trato buscar_trato(int id) {
+        for (Trato t : tratos) {
+            if (t.id == id) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    public void listar_tratos(){
+        int cont = 0;
+        System.out.println("Tratos:");
+        for (Trato t : tratos) {
+            if(t.getJugadorRecibe().equals(get_turno().get_nombre()))
+            {
+                System.out.format(t.representar());
+                cont = 1;
+            }
+
+        }
+        if(cont == 0)
+            System.out.println("No hay tratos disponibles\n");
     }
 
     public void remove_jugador(Jugador jugador) {

@@ -398,7 +398,6 @@ public class Casilla {
     public boolean es_solar() {
         return tipo == TipoCasilla.SOLAR;
     }
-
     // String
     public String representar() {
         String str_jugadores = new String("");
