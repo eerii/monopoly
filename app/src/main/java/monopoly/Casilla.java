@@ -13,14 +13,14 @@ import monopoly.Edificio.TipoEdificio;
 public class Casilla {
     String nombre;
     TipoCasilla tipo;
-    Set<Jugador> jugadores; 
+    Set<Jugador> jugadores;
     float precio;
     float rentabilidad = 0;
     int vecesVisitada = 0;
 
     // TODO: Jerarquía de casillas
-    //          Propiedad, Accion, Impuesto, Grupo, Especial
-    //          Propiedad: Solar, Transporte, Servicios
+    // Propiedad, Accion, Impuesto, Grupo, Especial
+    // Propiedad: Solar, Transporte, Servicios
 
     // CasillaComprable
 
@@ -56,7 +56,7 @@ public class Casilla {
         this(tipo, nombre);
 
         this.precio = precio;
-        this.alquiler = (float)Math.floor(0.1f * precio);
+        this.alquiler = (float) Math.floor(0.1f * precio);
         this.grupo = grupo;
         grupo.add(this);
 
@@ -74,18 +74,20 @@ public class Casilla {
 
             switch (tipo) {
                 case SALIDA:
-                    float media = m.get_tablero().precio_medio(); 
+                    float media = m.get_tablero().precio_medio();
                     jugador.add_fortuna(media);
-                    System.out.format("el jugador %s ha caído en la salida, recibe %.0f extra!\n", jugador.get_nombre(), media);
+                    System.out.format("el jugador %s ha caído en la salida, recibe %.0f extra!\n", jugador.get_nombre(),
+                            media);
                     s.summar_pasar_salida(media);
                     break;
                 case IMPUESTOS:
                     jugador.add_fortuna(precio * -1.f);
                     m.get_banca().add_fortuna(precio);
-                    System.out.format("el jugador %s ha caído la casilla de impuestos, paga %.0f a la banca!\n", jugador.get_nombre(), precio);
+                    System.out.format("el jugador %s ha caído la casilla de impuestos, paga %.0f a la banca!\n",
+                            jugador.get_nombre(), precio);
                     s.sumar_pago_tasa_impuestos(precio);
                     break;
-                case A_LA_CARCEL: 
+                case A_LA_CARCEL:
                     jugador.ir_a_carcel();
                     s.sumar_veces_carcel();
                     break;
@@ -97,14 +99,17 @@ public class Casilla {
                     float bote = m.get_banca().get_fortuna();
                     jugador.add_fortuna(bote);
                     m.get_banca().add_fortuna(bote * -1.f);
-                    System.out.format("el jugador %s ha caído en el parking, recibe %.0f extra del bote!\n", jugador.get_nombre(), bote);
+                    System.out.format("el jugador %s ha caído en el parking, recibe %.0f extra del bote!\n",
+                            jugador.get_nombre(), bote);
                     s.sumar_premios(bote);
                     break;
                 case SUERTE:
                 case COMUNIDAD:
-                    List<Carta> baraja = m.barajar(tipo == TipoCasilla.SUERTE ? Carta.TipoCarta.SUERTE : Carta.TipoCarta.COMUNIDAD);
+                    List<Carta> baraja = m
+                            .barajar(tipo == TipoCasilla.SUERTE ? Carta.TipoCarta.SUERTE : Carta.TipoCarta.COMUNIDAD);
                     Carta c = m.sacar_carta(baraja);
-                    System.out.format("el jugador %s ha caído en la casilla de %s, saca la carta: %s\n", jugador.get_nombre(), tipo, c);
+                    System.out.format("el jugador %s ha caído en la casilla de %s, saca la carta: %s\n",
+                            jugador.get_nombre(), tipo, c);
                     c.ejecutar(jugador);
                     break;
                 default:
@@ -119,20 +124,20 @@ public class Casilla {
                 String respuesta = m.get_consola().get_raw().trim();
                 if (respuesta.equalsIgnoreCase("s")) {
                     comprar(jugador);
-                    System.out.format("el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
-                        Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
-                        Color.AZUL_OSCURO, Color.BOLD, nombre, Color.RESET,
-                        Color.AMARILLO, Color.BOLD, precio, Color.RESET,
-                        Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET
-                    );
+                    System.out.format(
+                            "el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
+                            Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
+                            Color.AZUL_OSCURO, Color.BOLD, nombre, Color.RESET,
+                            Color.AMARILLO, Color.BOLD, precio, Color.RESET,
+                            Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET);
                     return;
                 }
                 return;
             }
-            
+
             Jugador propietario = this.get_propietario();
             if (propietario != null && propietario != jugador) {
-                if(es_solar())
+                if (es_solar())
                     jugador.paga_alquiler(propietario, this);
                 else
                     jugador.paga_servicio_transporte(propietario, this);
@@ -149,15 +154,15 @@ public class Casilla {
     }
 
     public void set_precio(float precio) {
-        this.precio = (float)Math.floor(precio);
+        this.precio = (float) Math.floor(precio);
         // Solar
-        this.alquiler = (float)Math.floor(0.1f * precio);
+        this.alquiler = (float) Math.floor(0.1f * precio);
     }
 
     public float get_precio() {
         return precio;
-    } 
- 
+    }
+
     public TipoCasilla get_tipo() {
         return tipo;
     }
@@ -166,12 +171,13 @@ public class Casilla {
         return edificios;
     }
 
-    public void sumar_rentabilidad(float valor){
+    public void sumar_rentabilidad(float valor) {
         rentabilidad += valor;
     }
 
-
-    public void sumar_vecesVisitada(){ vecesVisitada +=1;}
+    public void sumar_vecesVisitada() {
+        vecesVisitada += 1;
+    }
 
     public Color get_color() {
         return grupo != null ? grupo.get_color() : Color.NONE;
@@ -188,14 +194,13 @@ public class Casilla {
     }
 
     public float get_hipoteca() {
-        return (float)Math.floor(0.5f * precio);
+        return (float) Math.floor(0.5f * precio);
     }
-
 
     public Jugador get_propietario() {
         Monopoly m = Monopoly.get();
-        for(Jugador j : m.get_jugadores()) {
-            if(j.es_propietario(this))
+        for (Jugador j : m.get_jugadores()) {
+            if (j.es_propietario(this))
                 return j;
         }
         return null;
@@ -203,12 +208,13 @@ public class Casilla {
 
     public Jugador get_hipotecario() {
         Monopoly m = Monopoly.get();
-        for(Jugador j : m.get_jugadores()) {
-            if(j.es_hipotecario(this))
+        for (Jugador j : m.get_jugadores()) {
+            if (j.es_hipotecario(this))
                 return j;
         }
         return null;
     }
+
     public void comprar(Jugador jugador) {
         Monopoly m = Monopoly.get();
 
@@ -216,13 +222,18 @@ public class Casilla {
             throw new RuntimeException(String.format("la casilla %s no está en venta", nombre));
 
         if (!jugadores.contains(jugador))
-            throw new RuntimeException(String.format("el jugador %s no está en la casilla %s por lo que no puede comprarla", jugador.get_nombre(), nombre));
-        
+            throw new RuntimeException(
+                    String.format("el jugador %s no está en la casilla %s por lo que no puede comprarla",
+                            jugador.get_nombre(), nombre));
+
         if (jugador.get_fortuna() < precio)
-            throw new RuntimeException(String.format("el jugador %s no puede permitirse comprar la casilla %s por %.0f", jugador.get_nombre(), nombre, precio));
+            throw new RuntimeException(String.format("el jugador %s no puede permitirse comprar la casilla %s por %.0f",
+                    jugador.get_nombre(), nombre, precio));
 
         if (!jugador.puede_comprar())
-            throw new RuntimeException(String.format("el jugador %s no puede comprar la casilla %s, ya lo ha hecho este turno", jugador.get_nombre(), nombre));
+            throw new RuntimeException(
+                    String.format("el jugador %s no puede comprar la casilla %s, ya lo ha hecho este turno",
+                            jugador.get_nombre(), nombre));
 
         m.get_banca().remove_propiedad(this);
         jugador.add_propiedad(this, precio);
@@ -231,34 +242,38 @@ public class Casilla {
 
     public void hipotecar(Jugador jugador) {
         if (jugador.esta_hipotecada(this))
-            throw new RuntimeException(String.format("%s no puede hipotecar %s, ya la tiene hipotecada", jugador.get_nombre(), nombre));
+            throw new RuntimeException(
+                    String.format("%s no puede hipotecar %s, ya la tiene hipotecada", jugador.get_nombre(), nombre));
 
         if (!jugador.es_propietario(this))
-            throw new RuntimeException(String.format("%s no puede hipotecar %s, no le pertenece",jugador.get_nombre(), nombre));
+            throw new RuntimeException(
+                    String.format("%s no puede hipotecar %s, no le pertenece", jugador.get_nombre(), nombre));
 
         jugador.remove_propiedad(this);
-        jugador.add_hipoteca(this,this.get_hipoteca());
+        jugador.add_hipoteca(this, this.get_hipoteca());
     }
 
     public void deshipotecar(Jugador jugador) {
         if (!jugador.esta_hipotecada(this)) {
             if (!jugador.es_propietario(this))
-                throw new RuntimeException(String.format("%s no puede deshipotecar %s, no le pertenece",jugador.get_nombre(), nombre));
-            throw new RuntimeException(String.format("%s no puede deshipotecar %s, no la tiene hipotecada", jugador.get_nombre(), nombre));
+                throw new RuntimeException(
+                        String.format("%s no puede deshipotecar %s, no le pertenece", jugador.get_nombre(), nombre));
+            throw new RuntimeException(
+                    String.format("%s no puede deshipotecar %s, no la tiene hipotecada", jugador.get_nombre(), nombre));
         }
 
         jugador.remove_hipoteca(this);
-        jugador.add_propiedad(this,this.get_hipoteca()*1.1f);
+        jugador.add_propiedad(this, this.get_hipoteca() * 1.1f);
     }
 
     public void incrementar_precio() {
-        precio = (float)Math.floor(precio * 1.05f);
+        precio = (float) Math.floor(precio * 1.05f);
     }
 
     // Solar
 
     public float get_alquiler() {
-        final float alquileres[] = {5, 15, 35, 50};
+        final float alquileres[] = { 5, 15, 35, 50 };
         float alquiler = this.alquiler;
         int casas = 0;
 
@@ -293,16 +308,16 @@ public class Casilla {
     }
 
     public int numero_edificios(TipoEdificio tipo) {
-        return (int)edificios.stream().filter(e -> e.get_tipo() == tipo).count();
+        return (int) edificios.stream().filter(e -> e.get_tipo() == tipo).count();
     }
 
     public int numero_edificiosGrupo(TipoEdificio tipo) {
         int total = 0;
         List<Casilla> casillas = this.get_grupo().get_casillas();
-        for (Casilla c: casillas) {
+        for (Casilla c : casillas) {
             for (Edificio e : c.get_edificios()) {
-                if(e.get_tipo()==tipo)
-                    total+=1;
+                if (e.get_tipo() == tipo)
+                    total += 1;
             }
         }
         return total;
@@ -324,14 +339,16 @@ public class Casilla {
                 if (numero_edificios(TipoEdificio.CASA) != 4)
                     throw new RuntimeException("no se puede hacer un hotel, no tienes 4 casas");
 
-                edificios = edificios.stream().filter(e -> e.get_tipo() != TipoEdificio.CASA).collect(Collectors.toList());
+                edificios = edificios.stream().filter(e -> e.get_tipo() != TipoEdificio.CASA)
+                        .collect(Collectors.toList());
                 break;
 
             case TERMAS:
                 if (numero_edificiosGrupo(TipoEdificio.TERMAS) == num)
                     throw new RuntimeException("ya tienes el maximo numero de termas permitidos en el grupo");
                 if (numero_edificios(TipoEdificio.HOTEL) < 1 && numero_edificios(TipoEdificio.CASA) < 2)
-                    throw new RuntimeException("no se puede comprar unas termas, necesitas al menos 2 casas y un hotel");
+                    throw new RuntimeException(
+                            "no se puede comprar unas termas, necesitas al menos 2 casas y un hotel");
                 break;
 
             case PABELLON:
@@ -345,37 +362,37 @@ public class Casilla {
         Edificio e = new Edificio(tipo, this);
         float coste = e.coste();
 
-
         if (jugador.get_fortuna() < coste)
-            throw new RuntimeException(String.format("no se puede comprar un%s %s por %.0f", tipo == TipoEdificio.CASA ? "a" : "", tipo, coste));
-        
+            throw new RuntimeException(String.format("no se puede comprar un%s %s por %.0f",
+                    tipo == TipoEdificio.CASA ? "a" : "", tipo, coste));
+
         jugador.add_fortuna(coste * -1.f);
         edificios.add(e);
 
-        System.out.format("el jugador %s%s%s%s compra un%s %s en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
+        System.out.format(
+                "el jugador %s%s%s%s compra un%s %s en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                 tipo == TipoEdificio.CASA ? "a" : "", tipo,
-                Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET,coste
-                ,
-                Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET
-        );
+                Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET, coste,
+                Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET);
     }
 
     public void vender_edificio(Jugador jugador, TipoEdificio tipo) {
         Edificio e = edificios.stream().filter(ed -> ed.get_tipo() == tipo).findFirst().orElse(null);
         if (e == null)
-            throw new RuntimeException(String.format("no se puede vender un edificio de tipo %s, no tienes ninguno", tipo));
+            throw new RuntimeException(
+                    String.format("no se puede vender un edificio de tipo %s, no tienes ninguno", tipo));
 
         float coste = (float) Math.floor(e.coste() * 0.8f);
         edificios.remove(e);
         jugador.add_fortuna(coste);
-        System.out.format("el jugador %s%s%s%s vende un%s %s en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
+        System.out.format(
+                "el jugador %s%s%s%s vende un%s %s en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                 tipo == TipoEdificio.CASA ? "a" : "", tipo,
                 Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET,
                 coste,
-                Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET
-        );
+                Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET);
     }
 
     public boolean es_solar() {
@@ -393,7 +410,7 @@ public class Casilla {
     }
 
     String lista_jugadores() {
-        List<String> js = jugadores.stream().map( Jugador::get_nombre ).collect( Collectors.toList() );
+        List<String> js = jugadores.stream().map(Jugador::get_nombre).collect(Collectors.toList());
         String s = String.join(", ", js);
         return "[ " + s + " ]";
     }
@@ -415,7 +432,8 @@ public class Casilla {
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
                 return String.format("%s - tipo: %s - a pagar: %s - jugadores: %s", sn, st, sp, sj);
             case PARKING:
-                sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, Monopoly.get().get_banca().get_fortuna(), Color.RESET);
+                sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, Monopoly.get().get_banca().get_fortuna(),
+                        Color.RESET);
                 return String.format("%s - tipo: %s - bote: %s - jugadores: %s", sn, st, sp, sj);
             case CARCEL:
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
@@ -428,11 +446,16 @@ public class Casilla {
             // Solar
             case SOLAR:
                 sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
-                String sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(), Color.RESET);
+                String sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(),
+                        Color.RESET);
                 String sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, get_alquiler(), Color.RESET);
-                String sjp = get_propietario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_propietario().get_nombre(), Color.RESET) : "";
-                String shp = get_hipotecario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_hipotecario().get_nombre(), Color.RESET) : "";
-                return String.format("%s - tipo: %s - propietario: %s - edificios: %s - hipotecado: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s", sn, st, sjp, lista_edificios(), shp, sg, sp, sa, sj);
+                String sjp = get_propietario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD,
+                        this.get_propietario().get_nombre(), Color.RESET) : "";
+                String shp = get_hipotecario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD,
+                        this.get_hipotecario().get_nombre(), Color.RESET) : "";
+                return String.format(
+                        "%s - tipo: %s - propietario: %s - edificios: %s - hipotecado: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s",
+                        sn, st, sjp, lista_edificios(), shp, sg, sp, sa, sj);
             default:
                 return String.format("%s - tipo: %s - jugadores: %s", sn, st, sj);
         }

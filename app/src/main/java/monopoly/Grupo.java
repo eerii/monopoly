@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import consola.Color;
 
-public class Grupo{
+public class Grupo {
     Color color;
     String nombre;
     List<Casilla> casillas;
@@ -23,7 +23,7 @@ public class Grupo{
         return color;
     }
 
-    public String get_nombre(){
+    public String get_nombre() {
         return nombre;
     }
 

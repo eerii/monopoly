@@ -15,7 +15,7 @@ public class Edificio {
         PABELLON("pabellon");
 
         public final String nombre;
-        static final HashMap<String, TipoEdificio> by_str = new HashMap<>(); 
+        static final HashMap<String, TipoEdificio> by_str = new HashMap<>();
         static final HashMap<TipoEdificio, String> iconos = new HashMap<>();
 
         private TipoEdificio(String nombre) {
@@ -39,7 +39,7 @@ public class Edificio {
         }
 
         static {
-            for (TipoEdificio t: values()) {
+            for (TipoEdificio t : values()) {
                 by_str.put(t.nombre, t);
             }
             iconos.put(CASA, "");
@@ -77,7 +77,8 @@ public class Edificio {
     @Override
     public String toString() {
         return String.format("%s - propietario: %s - casilla: %s - grupo: %s - coste: %.2f\n",
-            tipo, casilla.get_propietario().get_nombre(), casilla.get_nombre(), casilla.get_grupo().get_nombre(),coste());
+                tipo, casilla.get_propietario().get_nombre(), casilla.get_nombre(), casilla.get_grupo().get_nombre(),
+                coste());
     }
 
     public String representar() {

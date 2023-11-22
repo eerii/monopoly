@@ -22,7 +22,6 @@ public class Consola {
         out = System.out;
     };
 
-
     public void limpiar_pantalla() {
         System.out.print("\u001b[33;0H\u001b[1J\u001b[H");
     }
@@ -37,7 +36,7 @@ public class Consola {
         limpiar_resultado();
 
         System.setOut(ps);
-    
+
         try {
             Comando cmd = new Comando(line);
             cmd.run();
