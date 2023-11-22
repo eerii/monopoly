@@ -29,98 +29,84 @@ public class Estadisticas {
         jugador.put(j, new EstadisticasJugador());
     }
 
-
     public EstadisticasJugador of(Jugador j) {
         return jugador.get(j);
     }
 
-    public void buscar_casillaMasRentable(){
+    public void buscar_casillaMasRentable() {
         List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
-        float max=0;
-        for(Casilla c: casillas)
-        {
-            if(c.get_rentabilidad()>max)
-            {
-                max=c.get_rentabilidad();
-                casillaMasRentable=c.get_nombre();
+        float max = 0;
+        for (Casilla c : casillas) {
+            if (c.get_rentabilidad() > max) {
+                max = c.get_rentabilidad();
+                casillaMasRentable = c.get_nombre();
             }
         }
     }
 
-    public void buscar_grupoMasRentable(){
+    public void buscar_grupoMasRentable() {
         List<Grupo> grupos = Monopoly.get().get_tablero().get_grupos();
-        float max=0;
-        for(Grupo g: grupos)
-        {
+        float max = 0;
+        for (Grupo g : grupos) {
             List<Casilla> casillas = g.get_casillas();
-            float total=0;
-            for(Casilla c: casillas)
-            {
-                total+=c.get_rentabilidad();
+            float total = 0;
+            for (Casilla c : casillas) {
+                total += c.get_rentabilidad();
             }
-            if(total>max)
-            {
-                max=total;
-                grupoMasRentable=g.get_nombre();
+            if (total > max) {
+                max = total;
+                grupoMasRentable = g.get_nombre();
             }
 
         }
     }
 
-    public void buscar_casillaMasVisitada(){
+    public void buscar_casillaMasVisitada() {
         List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
-        float max=0;
-        for(Casilla c: casillas)
-        {
-            if(c.get_vecesVisitada()>max)
-            {
-                max=c.get_vecesVisitada();
-                casillaMasFrecuentada=c.get_nombre();
+        float max = 0;
+        for (Casilla c : casillas) {
+            if (c.get_vecesVisitada() > max) {
+                max = c.get_vecesVisitada();
+                casillaMasFrecuentada = c.get_nombre();
             }
         }
     }
 
-    public void buscar_jugadorMasVueltas(){
+    public void buscar_jugadorMasVueltas() {
         List<Jugador> jugadores = Monopoly.get().get_jugadores();
-        float max=0;
-        for(Jugador j : jugadores)
-        {
-            if(j.get_vueltas()>max)
-            {
-                max=j.get_vueltas();
-                jugadorMasVueltas=j.get_nombre();
+        float max = 0;
+        for (Jugador j : jugadores) {
+            if (j.get_vueltas() > max) {
+                max = j.get_vueltas();
+                jugadorMasVueltas = j.get_nombre();
             }
         }
     }
 
-    public void buscar_jugadorMasTiradas(){
+    public void buscar_jugadorMasTiradas() {
         List<Jugador> jugadores = Monopoly.get().get_jugadores();
-        float max=0;
-        for(Jugador j : jugadores)
-        {
-            if(j.get_tiradas()>max)
-            {
-                max=j.get_tiradas();
-                jugadorMasVecesDados=j.get_nombre();
+        float max = 0;
+        for (Jugador j : jugadores) {
+            if (j.get_tiradas() > max) {
+                max = j.get_tiradas();
+                jugadorMasVecesDados = j.get_nombre();
             }
         }
     }
 
-    public void buscar_jugadorEnCabeza(){
+    public void buscar_jugadorEnCabeza() {
         List<Jugador> jugadores = Monopoly.get().get_jugadores();
-        float max=0;
-        for(Jugador j : jugadores)
-        {
-            if(j.get_fortunaTotal()>max)
-            {
-                max=j.get_fortunaTotal();
-                jugadorEnCabeza=j.get_nombre();
+        float max = 0;
+        for (Jugador j : jugadores) {
+            if (j.get_fortunaTotal() > max) {
+                max = j.get_fortunaTotal();
+                jugadorEnCabeza = j.get_nombre();
             }
         }
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         buscar_jugadorMasVueltas();
         buscar_jugadorEnCabeza();
         buscar_grupoMasRentable();
@@ -128,40 +114,41 @@ public class Estadisticas {
         buscar_casillaMasRentable();
         buscar_jugadorMasTiradas();
         String n = casillaMasRentable;
-        if(n==null)
-            n=" - ";
+        if (n == null)
+            n = " - ";
         String s1 = String.format("%s%scasilla mas rentable%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
                 Color.BOLD, n, Color.RESET);
         n = grupoMasRentable;
-        if(n==null)
-            n=" - ";
+        if (n == null)
+            n = " - ";
         String s2 = String.format("%s%sgrupo mas rentable%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
                 Color.BOLD, n, Color.RESET);
 
         n = casillaMasFrecuentada;
-        if(n==null)
-            n=" - ";
+        if (n == null)
+            n = " - ";
         String s3 = String.format("%s%scasilla mas visitada%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
                 Color.BOLD, n, Color.RESET);
 
         n = jugadorMasVueltas;
-        if(n==null)
-            n=" - ";
-        String s4 = String.format("%s%sjugador con mas vueltas dadas%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
+        if (n == null)
+            n = " - ";
+        String s4 = String.format("%s%sjugador con mas vueltas dadas%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD,
+                Color.RESET,
                 Color.BOLD, n, Color.RESET);
 
         n = jugadorMasVecesDados;
-        if(n==null)
-            n=" - ";
+        if (n == null)
+            n = " - ";
         String s5 = String.format("%s%sjugador con mas tiradas%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
                 Color.BOLD, n, Color.RESET);
 
         n = jugadorEnCabeza;
-        if(n==null)
-            n=" - ";
+        if (n == null)
+            n = " - ";
         String s6 = String.format("%s%sjugador en cabeza%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
                 Color.BOLD, n, Color.RESET);
 
-        return String.format("%s,\n%s,\n%s,\n%s,\n%s,\n%s\n",s1,s2,s3,s4,s5,s6);
+        return String.format("%s,\n%s,\n%s,\n%s,\n%s,\n%s\n", s1, s2, s3, s4, s5, s6);
     }
 }

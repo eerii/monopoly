@@ -7,6 +7,10 @@ import java.util.Scanner;
 import monopoly.Monopoly;
 
 public class Consola {
+    // TODO: Cambiar a interfaz consola con métodos para leer y escribir
+    // Aquí podemos implementar automáticamente colores para x cosas
+    // Hay que cambiar todos los System.out.print por c.print o lo que sea
+
     Scanner sc;
     ByteArrayOutputStream os;
     PrintStream ps, out;
@@ -17,7 +21,6 @@ public class Consola {
         ps = new PrintStream(os);
         out = System.out;
     };
-
 
     public void limpiar_pantalla() {
         System.out.print("\u001b[33;0H\u001b[1J\u001b[H");
@@ -33,11 +36,13 @@ public class Consola {
         limpiar_resultado();
 
         System.setOut(ps);
-    
+
         try {
             Comando cmd = new Comando(line);
             cmd.run();
         } catch (RuntimeException e) {
+            // TODO: Cambiar estas RuntimeException por excepciones propias
+            // Minimo 5 tipo y 3 niveles
             System.out.println(e.getMessage());
         }
 

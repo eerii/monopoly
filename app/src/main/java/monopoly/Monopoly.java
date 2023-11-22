@@ -9,6 +9,18 @@ import estadisticas.Estadisticas;
 import monopoly.Carta.TipoCarta;
 
 public class Monopoly {
+    // TODO: Usar modificadores abstract y final en las jerarquías
+
+    // TODO: Cambiar visibilidades a private
+
+    // TODO: Implementar métodos abstractos
+
+    // TODO: Utilizar el método super del padre en algun hijo
+
+    // TODO: Usar instanceof para definir comportamientos
+
+    // TODO: Declarar constantes (en config por ejemplo)
+
     Consola consola;
     List<Jugador> jugadores;
     Jugador banca;
@@ -31,7 +43,7 @@ public class Monopoly {
         stats = new Estadisticas();
 
         banca = new Jugador();
-        for (Casilla c: tablero.get_casillas())
+        for (Casilla c : tablero.get_casillas())
             banca.add_propiedad(c, 0.f);
 
         config = new Config();
@@ -82,10 +94,11 @@ public class Monopoly {
         j.add_propiedad(c.get(9), 0);
 
         boolean pausa = false;
-        while(true) {
+        while (true) {
             m.consola.limpiar_pantalla();
             System.out.println(m.tablero);
-            if (pausa) m.consola.limpiar_resultado();
+            if (pausa)
+                m.consola.limpiar_resultado();
             pausa = m.consola.entrada();
 
             if (m.jugadores.size() == 1) {
@@ -102,7 +115,7 @@ public class Monopoly {
     public List<Jugador> get_jugadores() {
         return jugadores;
     }
-    
+
     public Jugador get_banca() {
         return banca;
     }
@@ -136,7 +149,7 @@ public class Monopoly {
         jugadores.remove(jugador);
 
         for (Casilla c : tablero.get_casillas())
-            c.remove_jugador(jugador); 
+            c.remove_jugador(jugador);
     }
 
     public Jugador buscar_jugador(String nombre) {
@@ -160,7 +173,7 @@ public class Monopoly {
     public Jugador get_turno() {
         if (turno < 0)
             return null;
-        return jugadores.get(turno);
+        return jugadores.get(turno % jugadores.size());
     }
 
     public void siguiente_turno() {
@@ -168,7 +181,8 @@ public class Monopoly {
         j.turno();
         turno = (turno + 1) % jugadores.size();
         j = get_turno();
-        System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, j.get_nombre(), Color.RESET);
+        System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, j.get_nombre(),
+                Color.RESET);
     }
 
     public void debug_set_turno(Jugador j) {
@@ -186,8 +200,8 @@ public class Monopoly {
             System.out.format("todos los jugadores han completado %d vueltas!\n", vueltas_totales);
             if (vueltas_totales % 4 == 0) {
                 tablero.get_casillas().stream()
-                    .filter(c -> c.es_comprable() && c.en_venta())
-                    .forEach(c -> c.incrementar_precio());
+                        .filter(c -> c.es_comprable() && c.en_venta())
+                        .forEach(c -> c.incrementar_precio());
                 System.out.println("el precio de todas las casillas se incrementa en un 5%");
             }
         }

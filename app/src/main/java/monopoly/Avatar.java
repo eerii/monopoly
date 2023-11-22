@@ -7,7 +7,7 @@ import java.util.Random;
 
 import consola.Color;
 
-// TODO: Tipo de avatar se implementará como subclases
+// TODO: Jerarquía de avatares
 
 public class Avatar {
     char id;
@@ -22,7 +22,7 @@ public class Avatar {
         COCHE("coche");
 
         public final String nombre;
-        static final HashMap<String, TipoAvatar> by_str = new HashMap<>(); 
+        static final HashMap<String, TipoAvatar> by_str = new HashMap<>();
         static final HashMap<TipoAvatar, String> iconos = new HashMap<>();
 
         private TipoAvatar(String nombre) {
@@ -46,7 +46,7 @@ public class Avatar {
         }
 
         static {
-            for (TipoAvatar t: values()) {
+            for (TipoAvatar t : values()) {
                 by_str.put(t.nombre, t);
             }
             iconos.put(ESFINGE, "󰄛");
@@ -63,11 +63,11 @@ public class Avatar {
     public Avatar(TipoAvatar tipo) {
         Random r = new Random();
         do {
-            id = (char)(r.nextInt(26) + 'A');
+            id = (char) (r.nextInt(26) + 'A');
         } while (ocupados.contains(id));
         ocupados.add(id);
         this.tipo = tipo;
-    } 
+    }
 
     public char get_id() {
         return id;
@@ -157,11 +157,11 @@ public class Avatar {
 
         Casilla siguiente = casillas.get(sig);
         System.out.format("el avatar %s%s%s%s %s %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
-            Color.AZUL_CLARITO, Color.BOLD, j.representar(), Color.RESET,
-            movimiento < 0 ? "retrocede" : "avanza",
-            Math.abs(movimiento),
-            actual.get_color(), Color.BOLD, actual.get_nombre(), Color.RESET,
-            siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
+                Color.AZUL_CLARITO, Color.BOLD, j.representar(), Color.RESET,
+                movimiento < 0 ? "retrocede" : "avanza",
+                Math.abs(movimiento),
+                actual.get_color(), Color.BOLD, actual.get_nombre(), Color.RESET,
+                siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
 
         actual.remove_jugador(j);
         siguiente.add_jugador(j);
@@ -178,12 +178,11 @@ public class Avatar {
         Casilla c = t.buscar_jugador(j);
 
         return String.format(
-            "%s%s%s%s - tipo: %s%s%s - jugador: %s%s%s%s - casilla: %s%s%s%s",
-            Color.AZUL_OSCURO, Color.BOLD, String.valueOf(id), Color.RESET,
-            Color.BOLD, tipo, Color.RESET,
-            Color.AMARILLO, Color.BOLD, j.get_nombre(), Color.RESET,
-            Color.VERDE, Color.BOLD, c.get_nombre(), Color.RESET
-        );
+                "%s%s%s%s - tipo: %s%s%s - jugador: %s%s%s%s - casilla: %s%s%s%s",
+                Color.AZUL_OSCURO, Color.BOLD, String.valueOf(id), Color.RESET,
+                Color.BOLD, tipo, Color.RESET,
+                Color.AMARILLO, Color.BOLD, j.get_nombre(), Color.RESET,
+                Color.VERDE, Color.BOLD, c.get_nombre(), Color.RESET);
     }
 
     static {

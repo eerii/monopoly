@@ -22,11 +22,10 @@ public enum Cmd {
     CAMBIAR("cambiar"),
     SALIR("salir");
 
-
     private final String cmd;
     private static final HashMap<Cmd, List<String>> args = new HashMap<>();
-    private static final HashMap<String, Cmd> by_str = new HashMap<>(); 
- 
+    private static final HashMap<String, Cmd> by_str = new HashMap<>();
+
     Cmd(String cmd) {
         this.cmd = cmd;
     }
@@ -35,7 +34,7 @@ public enum Cmd {
         if (!by_str.containsKey(cmd)) {
             throw new IllegalArgumentException("comando inválido");
         }
-        Cmd value = by_str.get(cmd); 
+        Cmd value = by_str.get(cmd);
 
         if (!args.get(value).contains(arg) && !args.get(value).contains("*")) {
             throw new IllegalArgumentException("argumentos inválidos");
@@ -50,7 +49,7 @@ public enum Cmd {
     static {
         // TAREA: Lista de cómandos válidos
         args.put(Cmd.CREAR, List.of("jugador"));
-        args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa","edificios"));
+        args.put(Cmd.LISTAR, List.of("jugadores", "avatares", "enventa", "edificios"));
         args.put(Cmd.VER, List.of("tablero"));
         args.put(Cmd.COMPRAR, List.of("*"));
         args.put(Cmd.EDIFICAR, List.of("casa", "hotel", "termas", "pabellon"));
@@ -69,7 +68,7 @@ public enum Cmd {
     }
 
     static {
-        for (Cmd c: values()) {
+        for (Cmd c : values()) {
             by_str.put(c.cmd, c);
         }
     }
