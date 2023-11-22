@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import monopoly.casilla.*;
+
 public class Carta {
     // TODO: Cambiar a jerarquía de cartas (Comunidad, Suerte)
 
-    enum TipoCarta {
+    public enum TipoCarta {
         COMUNIDAD,
         SUERTE;
 
@@ -49,7 +51,7 @@ public class Carta {
         System.out.format(msg, destino);
         actual.remove_jugador(j);
         siguiente.add_jugador(j);
-        siguiente.sumar_vecesVisitada();
+        siguiente.sumar_veces_visitada();
     }
 
     static {

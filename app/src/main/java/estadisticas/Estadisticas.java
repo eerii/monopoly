@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import consola.Color;
-import monopoly.Casilla;
-import monopoly.Grupo;
 import monopoly.Jugador;
 import monopoly.Monopoly;
+import monopoly.casilla.*;
 
 public class Estadisticas {
     Map<Jugador, EstadisticasJugador> jugador;
@@ -33,24 +32,27 @@ public class Estadisticas {
         return jugador.get(j);
     }
 
-    public void buscar_casillaMasRentable() {
+    public void casilla_mas_rentable() {
         List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
         float max = 0;
         for (Casilla c : casillas) {
-            if (c.get_rentabilidad() > max) {
-                max = c.get_rentabilidad();
-                casillaMasRentable = c.get_nombre();
+            if (c instanceof Propiedad) {
+                Propiedad p = (Propiedad) c;
+                if (p.get_rentabilidad() > max) {
+                    max = p.get_rentabilidad();
+                    casillaMasRentable = c.get_nombre();
+                }
             }
         }
     }
 
-    public void buscar_grupoMasRentable() {
+    public void grupo_mas_rentable() {
         List<Grupo> grupos = Monopoly.get().get_tablero().get_grupos();
         float max = 0;
         for (Grupo g : grupos) {
-            List<Casilla> casillas = g.get_casillas();
+            List<Solar> casillas = g.get_casillas();
             float total = 0;
-            for (Casilla c : casillas) {
+            for (Solar c : casillas) {
                 total += c.get_rentabilidad();
             }
             if (total > max) {
@@ -61,18 +63,18 @@ public class Estadisticas {
         }
     }
 
-    public void buscar_casillaMasVisitada() {
+    public void casilla_mas_visitada() {
         List<Casilla> casillas = Monopoly.get().get_tablero().get_casillas();
         float max = 0;
         for (Casilla c : casillas) {
-            if (c.get_vecesVisitada() > max) {
-                max = c.get_vecesVisitada();
+            if (c.get_veces_visitada() > max) {
+                max = c.get_veces_visitada();
                 casillaMasFrecuentada = c.get_nombre();
             }
         }
     }
 
-    public void buscar_jugadorMasVueltas() {
+    public void jugador_mas_vueltas() {
         List<Jugador> jugadores = Monopoly.get().get_jugadores();
         float max = 0;
         for (Jugador j : jugadores) {
@@ -83,7 +85,7 @@ public class Estadisticas {
         }
     }
 
-    public void buscar_jugadorMasTiradas() {
+    public void jugador_mas_tiradas() {
         List<Jugador> jugadores = Monopoly.get().get_jugadores();
         float max = 0;
         for (Jugador j : jugadores) {
@@ -94,7 +96,7 @@ public class Estadisticas {
         }
     }
 
-    public void buscar_jugadorEnCabeza() {
+    public void jugador_en_cabeza() {
         List<Jugador> jugadores = Monopoly.get().get_jugadores();
         float max = 0;
         for (Jugador j : jugadores) {
@@ -107,12 +109,12 @@ public class Estadisticas {
 
     @Override
     public String toString() {
-        buscar_jugadorMasVueltas();
-        buscar_jugadorEnCabeza();
-        buscar_grupoMasRentable();
-        buscar_casillaMasVisitada();
-        buscar_casillaMasRentable();
-        buscar_jugadorMasTiradas();
+        jugador_mas_vueltas();
+        jugador_en_cabeza();
+        grupo_mas_rentable();
+        casilla_mas_visitada();
+        casilla_mas_rentable();
+        jugador_mas_tiradas();
         String n = casillaMasRentable;
         if (n == null)
             n = " - ";

@@ -1,4 +1,4 @@
-package monopoly;
+package monopoly.casilla;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,15 +7,15 @@ import consola.Color;
 public class Grupo {
     Color color;
     String nombre;
-    List<Casilla> casillas;
+    List<Solar> casillas;
 
     public Grupo(Color color, String nombre) {
         this.color = color;
         this.nombre = nombre;
-        this.casillas = new ArrayList<Casilla>();
+        this.casillas = new ArrayList<>();
     }
 
-    public void add(Casilla casilla) {
+    public void add(Solar casilla) {
         casillas.add(casilla);
     }
 
@@ -27,7 +27,7 @@ public class Grupo {
         return nombre;
     }
 
-    public List<Casilla> get_casillas() {
+    public List<Solar> get_casillas() {
         return casillas;
     }
 }
