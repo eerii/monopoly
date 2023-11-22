@@ -1,9 +1,13 @@
 package monopoly;
 
+import consola.Color;
+import consola.excepciones.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+
 
 public class Carta {
     // TODO: Cambiar a jerarquía de cartas (Comunidad, Suerte)
@@ -42,7 +46,7 @@ public class Carta {
         return String.format("%s: '%s'", tipo, texto);
     }
 
-    static void viaje(Jugador j, String destino, String msg) {
+    static void viaje(Jugador j, String destino, String msg) throws ConsolaException {
         Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
         Casilla siguiente = Monopoly.get().get_tablero().buscar_casilla(destino);
 
@@ -52,64 +56,74 @@ public class Carta {
         siguiente.sumar_vecesVisitada();
     }
 
-    static {
-        baraja = new ArrayList<Carta>(Arrays.asList(
-                new Carta("Viaje", Carta.TipoCarta.SUERTE,
-                        j -> viaje(j, "Vigo", "decides hacer un viaje por placer hasta %s!\n")),
+    static{
+        try {
+            baraja = new ArrayList<Carta>(Arrays.asList(
 
-                new Carta("Loteria", Carta.TipoCarta.SUERTE, j -> {
-                    System.out.println("has ganado la loteria!, recibes 100000!\n");
-                    j.add_fortuna(100000);
-                }),
-                new Carta("Carcel", Carta.TipoCarta.SUERTE, j -> {
-                    System.out.println("te persiguen por impago, vas a la carcel!\n");
-                    j.ir_a_carcel();
-                }),
-                new Carta("Trafico", Carta.TipoCarta.SUERTE, j -> {
-                    System.out.println("hora punta de trafico, retrocedes tres casillas!\n");
-                    Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
-                    j.get_avatar().avanzar(actual, -3);
-                }),
+                    new Carta("Viaje", Carta.TipoCarta.SUERTE,
+                            j -> viaje(j, "Vigo", "decides hacer un viaje por placer hasta %s!\n")),
 
-                new Carta("Multa", Carta.TipoCarta.SUERTE, j -> {
-                    System.out.println("has recibido una multa por usar el movil conduciendo, pagas 15000!\n");
-                    j.add_fortuna(-15000);
-                }),
+                    new Carta("Loteria", Carta.TipoCarta.SUERTE, j -> {
+                        System.out.println("has ganado la loteria!, recibes 100000!\n");
+                        j.add_fortuna(100000);
+                    }),
+                    new Carta("Carcel", Carta.TipoCarta.SUERTE, j -> {
+                        System.out.println("te persiguen por impago, vas a la carcel!\n");
+                        j.ir_a_carcel();
+                    }),
+                    new Carta("Trafico", Carta.TipoCarta.SUERTE, j -> {
+                        System.out.println("hora punta de trafico, retrocedes tres casillas!\n");
+                        Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
+                        j.get_avatar().avanzar(actual, -3);
+                    }),
 
-                new Carta("Beneficio", Carta.TipoCarta.SUERTE, j -> {
-                    System.out.println("has recibido un ingreso por venta de acciones, recibes 150000!\n");
-                    j.add_fortuna(150000);
-                }),
+                    new Carta("Multa", Carta.TipoCarta.SUERTE, j -> {
+                        System.out.println("has recibido una multa por usar el movil conduciendo, pagas 15000!\n");
+                        j.add_fortuna(-15000);
+                    }),
 
-                new Carta("Viaje", Carta.TipoCarta.COMUNIDAD,
-                        j -> viaje(j, "Ferrol", "viajas hasta %s para comprar antigüedades exóticas!\n")),
+                    new Carta("Beneficio", Carta.TipoCarta.SUERTE, j -> {
+                        System.out.println("has recibido un ingreso por venta de acciones, recibes 150000!\n");
+                        j.add_fortuna(150000);
+                    }),
 
-                new Carta("Balneario", Carta.TipoCarta.COMUNIDAD, j -> {
-                    System.out.println("paga 50000 por un fin de semana en un balneario!\n");
-                    j.add_fortuna(-50000);
-                }),
+                    new Carta("Viaje", Carta.TipoCarta.COMUNIDAD,
+                            j -> viaje(j, "Ferrol", "viajas hasta %s para comprar antigüedades exóticas!\n")),
 
-                new Carta("Fraude", Carta.TipoCarta.COMUNIDAD, j -> {
-                    System.out.println("te investigan por fraude, vas a la carcel!\n");
-                    j.ir_a_carcel();
-                }),
+                    new Carta("Balneario", Carta.TipoCarta.COMUNIDAD, j -> {
+                        System.out.println("paga 50000 por un fin de semana en un balneario!\n");
+                        j.add_fortuna(-50000);
+                    }),
 
-                new Carta("Salida", Carta.TipoCarta.COMUNIDAD, j -> {
-                    System.out.println("ve a la salida para cobrar!\n");
-                    Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
-                    actual.remove_jugador(j);
-                    Casilla c = Monopoly.get().get_tablero().buscar_casilla("Salida");
-                    c.add_jugador(j);
-                }),
+                    new Carta("Fraude", Carta.TipoCarta.COMUNIDAD, j -> {
+                        System.out.println("te investigan por fraude, vas a la carcel!\n");
+                        j.ir_a_carcel();
+                    }),
 
-                new Carta("Hacienda", Carta.TipoCarta.COMUNIDAD, j -> {
-                    System.out.println("recibes una devolucion de hacienda de 50000!\n");
-                    j.add_fortuna(50000);
-                }),
+                    new Carta("Salida", Carta.TipoCarta.COMUNIDAD, j -> {
+                        System.out.println("ve a la salida para cobrar!\n");
+                        Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
+                        actual.remove_jugador(j);
+                        Casilla c = Monopoly.get().get_tablero().buscar_casilla("Salida");
+                        c.add_jugador(j);
+                    }),
 
-                new Carta("Beneficio", Carta.TipoCarta.COMUNIDAD, j -> {
-                    System.out.println("tu compañia de internet obtiene beneficios, recibes 20000!\n");
-                    j.add_fortuna(20000);
-                })));
+                    new Carta("Hacienda", Carta.TipoCarta.COMUNIDAD, j -> {
+                        System.out.println("recibes una devolucion de hacienda de 50000!\n");
+                        j.add_fortuna(50000);
+                    }),
+
+                    new Carta("Beneficio", Carta.TipoCarta.COMUNIDAD, j -> {
+                        System.out.println("tu compañia de internet obtiene beneficios, recibes 20000!\n");
+                        j.add_fortuna(20000);
+                    })));
+        }catch (ConsolaException e) {
+
+            System.out.println(e.getMessage());
+        }
+
+        return "";
+
     }
+
 }

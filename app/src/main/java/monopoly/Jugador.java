@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import consola.Color;
 
+import consola.excepciones.*;
+
 public class Jugador {
     // TODO: Tratos con otros jugadores
     // Cambiar combinaciones de propiedades, dinero y turnos sin pagar
@@ -34,7 +36,7 @@ public class Jugador {
     static final int turnos_carcel = 3;
 
     // Constructor de un jugador normal
-    public Jugador(String nombre, Avatar avatar) {
+    public Jugador(String nombre, Avatar avatar) throws ConsolaException{
         this.nombre = nombre;
         this.avatar = avatar;
         this.propiedades = new ArrayList<Casilla>();
@@ -101,9 +103,9 @@ public class Jugador {
         tiradas += 1;
     }
 
-    public void add_propiedad(Casilla casilla, float precio) {
+    public void add_propiedad(Casilla casilla, float precio) throws ComprarException {
         if (avatar != null && avatar.get_tipo() == Avatar.TipoAvatar.COCHE && avatar.es_modo_avanzado() && ha_comprado)
-            throw new RuntimeException(
+            throw new ComprarException(
                     String.format("el jugador %s ya ha comprado una propiedad en este turno\n", nombre));
 
         ha_comprado = true;
@@ -125,7 +127,7 @@ public class Jugador {
         hipotecas.remove(casilla);
     }
 
-    public void ir_a_carcel() {
+    public void ir_a_carcel() throws ConsolaException{
         Tablero t = Monopoly.get().get_tablero();
         Casilla c = t.buscar_casilla("Cárcel");
         Casilla actual = t.buscar_jugador(this);
@@ -139,7 +141,7 @@ public class Jugador {
         Monopoly.get().siguiente_turno();
     }
 
-    public void bancarrota() {
+    public void bancarrota() throws ConsolaException{
         Monopoly m = Monopoly.get();
         Casilla caida = m.get_tablero().buscar_jugador(this);
 
@@ -177,12 +179,12 @@ public class Jugador {
         return contador_carcel > 0;
     }
 
-    public void salir_carcel() {
+    public void salir_carcel() throws ConsolaException{
         Tablero t = Monopoly.get().get_tablero();
         Casilla c = t.buscar_casilla("Cárcel");
 
         if (fortuna < c.get_precio())
-            throw new RuntimeException(String.format(
+            throw new CarcelException(String.format(
                     "el jugador %s no puede salir de la cárcel porque no tiene %.0f, quedan %d turnos para salir gratis\n",
                     nombre, c.get_precio(), contador_carcel));
 
@@ -234,12 +236,12 @@ public class Jugador {
         return hipotecas.contains(casilla);
     }
 
-    public void mover(Casilla actual, int movimiento) {
+    public void mover(Casilla actual, int movimiento) throws ConsolaException{
         avatar.siguiente_casilla(actual, movimiento);
         turnos_extra = turnos_extra > 0 ? turnos_extra - 1 : 0;
     }
 
-    public void dar_vueltas(int num) {
+    public void dar_vueltas(int num) throws ConsolaException{
         Monopoly m = Monopoly.get();
 
         vueltas += num;
@@ -252,7 +254,7 @@ public class Jugador {
         }
     }
 
-    public List<Edificio> get_edificios() {
+    public List<Edificio> get_edificios() throws ConsolaException{
         List<Edificio> edificios = new ArrayList<>();
         Monopoly m = Monopoly.get();
         List<Casilla> casillas = m.get_tablero().get_casillas();
@@ -265,7 +267,7 @@ public class Jugador {
         return edificios;
     }
 
-    public void paga_alquiler(Jugador propietario, Casilla casilla) {
+    public void paga_alquiler(Jugador propietario, Casilla casilla) throws ConsolaException{
         Monopoly m = Monopoly.get();
         float alquiler = casilla.get_alquiler();
         float alquiler_casas = 0;
@@ -323,7 +325,7 @@ public class Jugador {
 
     }
 
-    public void paga_servicio_transporte(Jugador propietario, Casilla casilla) {
+    public void paga_servicio_transporte(Jugador propietario, Casilla casilla) throws ConsolaException{
         Monopoly m = Monopoly.get();
         Dados d = m.get_dados();
         float media = m.get_tablero().precio_medio();
@@ -362,7 +364,7 @@ public class Jugador {
     }
 
     // String
-    public String representar() {
+    public String representar() throws ConsolaException{
         Monopoly.Config c = Monopoly.get().get_config();
         if (c.get_iconos()) {
             Avatar.TipoAvatar t = avatar.get_tipo();
@@ -373,21 +375,27 @@ public class Jugador {
 
     @Override
     public String toString() {
-        // NOTA: El formato es diferente al del ejemplo para hacerlo más compacto
-        // De esta manera podemos tener una terminal interactiva con el tablero y la
-        // salida de los comandos
-        return String.format(
-                "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
-                        "propiedades: %s\nhipotecas: %s",
-                Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                Color.BOLD, representar(), Color.RESET,
-                avatar.get_tipo(),
-                Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
-                propiedades.stream().map(p -> p.toStringMini()).collect(Collectors.toList()),
-                hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
+
+        try {
+            return String.format(
+                    "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
+                            "propiedades: %s\nhipotecas: %s",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    Color.BOLD, representar(), Color.RESET,
+                    avatar.get_tipo(),
+                    Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
+                    propiedades.stream().map(p -> p.toStringMini()).collect(Collectors.toList()),
+                    hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
+
+        }catch (ConsolaException e) {
+
+            System.out.println(e.getMessage());
+        }
+
+        return "";
     }
 
-    public String toStringMini() {
+    public String toStringMini() throws ConsolaException{
         return String.format("%s%s%s%s - avatar %s%s%s (%s)",
                 Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                 Color.BOLD, representar(), Color.RESET,

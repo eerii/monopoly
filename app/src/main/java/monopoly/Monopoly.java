@@ -7,6 +7,7 @@ import consola.Color;
 import consola.Consola;
 import estadisticas.Estadisticas;
 import monopoly.Carta.TipoCarta;
+import consola.excepciones.*;
 
 public class Monopoly {
     // TODO: Usar modificadores abstract y final en las jerarquías
@@ -34,7 +35,7 @@ public class Monopoly {
 
     static Monopoly instance = null;
 
-    Monopoly() {
+    Monopoly() throws ConsolaException {
         consola = new Consola();
         jugadores = new ArrayList<Jugador>();
         tablero = new Tablero();
@@ -49,7 +50,7 @@ public class Monopoly {
         config = new Config();
     }
 
-    public static Monopoly get() {
+    public static Monopoly get() throws ConsolaException {
         if (instance == null)
             instance = new Monopoly();
         return instance;
@@ -73,7 +74,7 @@ public class Monopoly {
         }
     }
 
-    public static void jugar(String[] args) {
+    public static void jugar(String[] args) throws ConsolaException{
         Monopoly m = Monopoly.get();
         m.consola.limpiar_pantalla();
         m.consola.limpiar_resultado();
@@ -190,7 +191,7 @@ public class Monopoly {
         dados.cambio_jugador(null);
     }
 
-    public void comprobar_vueltas() {
+    public void comprobar_vueltas() throws ConsolaException {
         int min = 10000;
         for (Jugador j : jugadores) {
             min = j.get_vueltas() < min ? j.get_vueltas() : min;
@@ -218,7 +219,7 @@ public class Monopoly {
         return baraja;
     }
 
-    public Carta sacar_carta(List<Carta> baraja) {
+    public Carta sacar_carta(List<Carta> baraja) throws ConsolaException{
         int n = -1;
         while (n < 1 || n > 6) {
             System.out.print("elige una carta del 1 al 6: ");

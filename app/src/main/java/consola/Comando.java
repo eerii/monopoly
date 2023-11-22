@@ -2,8 +2,11 @@ package consola;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import consola.excepciones.PruebaException;
+import consola.excepciones.*;
+
+
 import monopoly.*;
 import monopoly.Avatar.TipoAvatar;
 import monopoly.Edificio.TipoEdificio;
@@ -29,7 +32,7 @@ public class Comando {
     List<String> args;
 
     // Gestionar todas las acciones
-    public void run() throws PruebaException {
+    public void run() throws ConsolaException {
         switch (cmd) {
             case CREAR:
                 switch (args.get(0)) {
@@ -88,13 +91,13 @@ public class Comando {
                                 }
                             }
                             if (vacios == 22)
-                                throw new RuntimeException("no existen edificios construidos en el tablero!");
+                                throw new NoSuchElementException("no existen edificios construidos en el tablero!");
                             return;
                         }
 
                         Grupo g = Monopoly.get().get_tablero().get_grupo(args.get(1));
                         if (g == null)
-                            throw new RuntimeException(String.format("el grupo '%s' no existe\n", args.get(1)));
+                            throw new NoSuchElementException(String.format("el grupo '%s' no existe\n", args.get(1)));
                         List<Casilla> casillas_grupo = g.get_casillas();
 
                         for (Casilla c : casillas_grupo) {
@@ -104,7 +107,7 @@ public class Comando {
                                 vacios += 1;
                         }
                         if (vacios == casillas_grupo.size())
-                            throw new RuntimeException("no existen edificios construidos en el grupo!");
+                            throw new NoSuchElementException("no existen edificios construidos en el grupo!");
 
                         break;
 
@@ -119,7 +122,6 @@ public class Comando {
                         System.out.println(t);
                         break;
                     default:
-                        throw new RuntimeException("unreachable");
                 }
                 break;
 
@@ -130,10 +132,10 @@ public class Comando {
                 Casilla c = t.buscar_casilla(args.get(0));
 
                 if (c == null)
-                    throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
+                    throw new NoSuchElementException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
                 if (!c.es_comprable())
-                    throw new PruebaException(String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
+                    throw new ComprarException(String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
 
                 c.comprar(j);
                 System.out.format(
@@ -152,12 +154,12 @@ public class Comando {
                 Casilla c = t.buscar_jugador(j);
 
                 if (!j.es_propietario(c))
-                    throw new RuntimeException(
+                    throw new PropiedadException(
                             String.format("no eres el propietario de la casilla '%s'\n", c.get_nombre()));
 
                 Grupo g = c.get_grupo();
                 if (!j.tiene_grupo(g))
-                    throw new RuntimeException(String
+                    throw new PropiedadException(String
                             .format("no tienes en propiedad todas las casillas del grupo '%s'\n", g.get_nombre()));
 
                 TipoEdificio tipo = TipoEdificio.from_str(args.get(0));
@@ -173,7 +175,7 @@ public class Comando {
                 Casilla c = t.buscar_jugador(j);
 
                 if (!j.es_propietario(c))
-                    throw new RuntimeException(
+                    throw new PropiedadException(
                             String.format("no eres el propietario de la casilla '%s'\n", c.get_nombre()));
 
                 TipoEdificio tipo = TipoEdificio.from_str(args.get(0));
@@ -189,7 +191,7 @@ public class Comando {
                 Casilla c = t.buscar_casilla(args.get(0));
 
                 if (c == null)
-                    throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
+                    throw new NoSuchElementException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
                 c.hipotecar(j);
                 System.out.format(
@@ -208,7 +210,7 @@ public class Comando {
                 Casilla c = t.buscar_casilla(args.get(0));
 
                 if (c == null)
-                    throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
+                    throw new NoSuchElementException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
                 c.deshipotecar(j);
                 System.out.format(
@@ -242,11 +244,11 @@ public class Comando {
                         Casilla actual = t.buscar_jugador(j);
 
                         if (!j.puede_tirar())
-                            throw new RuntimeException("no puedes tirar");
+                            throw new LanzarDadosException("no puedes tirar");
                         if (!j.tiene_turno_extra() && !d.cambio_jugador(j) && d.get_dobles() == 0)
-                            throw new RuntimeException("no puedes volver a tirar");
+                            throw new LanzarDadosException("no puedes volver a tirar");
                         if (j.get_fortuna() < 0)
-                            throw new RuntimeException("salda tus deudas antes de volver a tirar");
+                            throw new LanzarDadosException("salda tus deudas antes de volver a tirar");
 
                         if (args.size() == 3)
                             d.debug_set(Integer.parseInt(args.get(1)), Integer.parseInt(args.get(2)));
@@ -273,7 +275,6 @@ public class Comando {
 
                         break;
                     default:
-                        throw new RuntimeException("unreachable");
                 }
                 break;
 
@@ -299,21 +300,20 @@ public class Comando {
                         d.cambio_jugador(j);
 
                         if (j.tiene_turno_extra())
-                            throw new RuntimeException("aún tienes un turno extra, no puedes terminar el turno");
+                            throw new LanzarDadosException("aún tienes un turno extra, no puedes terminar el turno");
 
                         if (d.get_dobles() > 0 && j.puede_tirar())
-                            throw new RuntimeException("has sacado dobles, no puedes terminar el turno");
+                            throw new LanzarDadosException("has sacado dobles, no puedes terminar el turno");
 
                         if (d.get_dobles() < 0 && j.puede_tirar())
-                            throw new RuntimeException("aún no has tirado, no puedes terminar el turno");
+                            throw new LanzarDadosException("aún no has tirado, no puedes terminar el turno");
 
                         if (j.get_fortuna() < 0)
-                            throw new RuntimeException("salda tus deudas antes de acabar tu turno!");
+                            throw new LanzarDadosException("salda tus deudas antes de acabar tu turno!");
 
                         m.siguiente_turno();
                         break;
                     default:
-                        throw new RuntimeException("unreachable");
                 }
                 break;
 
@@ -327,7 +327,7 @@ public class Comando {
                         Jugador j = Monopoly.get().buscar_jugador(nombre);
 
                         if (j == null)
-                            throw new RuntimeException(String.format("el jugador '%s' no existe", nombre));
+                            throw new NoSuchElementException(String.format("el jugador '%s' no existe", nombre));
                         System.out.println(j);
 
                         break;
@@ -340,7 +340,7 @@ public class Comando {
                         Jugador jugador = Monopoly.get().buscar_avatar(caracter);
 
                         if (jugador == null)
-                            throw new RuntimeException(String.format("el jugador '%c' no existe", caracter));
+                            throw new NoSuchElementException(String.format("el jugador '%c' no existe", caracter));
 
                         Avatar a = jugador.get_avatar();
                         System.out.println(a);
@@ -354,7 +354,7 @@ public class Comando {
                         Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(n);
 
                         if (casilla == null)
-                            throw new RuntimeException(String.format("la casilla '%s' no existe", n));
+                            throw new NoSuchElementException(String.format("la casilla '%s' no existe", n));
 
                         System.out.println(casilla);
                 }
@@ -371,7 +371,7 @@ public class Comando {
                     Jugador j = m.buscar_jugador(n);
 
                     if (j == null)
-                        throw new RuntimeException(String.format("el jugador '%s' no existe", n));
+                        throw new NoSuchElementException(String.format("el jugador '%s' no existe", n));
 
                     System.out.println(m.get_stats().of(j));
                 }
@@ -391,12 +391,11 @@ public class Comando {
                         Jugador j = Monopoly.get().buscar_jugador(nombre);
 
                         if (j == null)
-                            throw new RuntimeException(String.format("el jugador '%s' no existe", nombre));
+                            throw new NoSuchElementException(String.format("el jugador '%s' no existe", nombre));
                         j.add_fortuna(dinero);
 
                         break;
                     default:
-                        throw new RuntimeException("unreachable");
                 }
                 break;
 
@@ -413,7 +412,6 @@ public class Comando {
 
                         break;
                     default:
-                        throw new RuntimeException("unreachable");
                 }
                 break;
 
@@ -431,7 +429,6 @@ public class Comando {
                         System.exit(0);
                         break;
                     default:
-                        throw new RuntimeException("unreachable");
                 }
                 break;
         }

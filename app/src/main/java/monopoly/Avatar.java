@@ -7,6 +7,9 @@ import java.util.Random;
 
 import consola.Color;
 
+import consola.Comando;
+import  consola.excepciones.*;
+
 // TODO: Jerarquía de avatares
 
 public class Avatar {
@@ -77,7 +80,7 @@ public class Avatar {
         return tipo;
     }
 
-    Jugador get_jugador() {
+    Jugador get_jugador() throws ConsolaException {
         List<Jugador> jugadores = Monopoly.get().get_jugadores();
         for (Jugador j : jugadores) {
             if (j.get_avatar() == this)
@@ -95,7 +98,7 @@ public class Avatar {
     }
 
     // Movimiento
-    void siguiente_casilla(Casilla actual, int movimiento) {
+    void siguiente_casilla(Casilla actual, int movimiento) throws ConsolaException{
         if (!modo_avanzado) {
             avanzar(actual, movimiento);
             return;
@@ -141,7 +144,7 @@ public class Avatar {
         }
     }
 
-    Casilla avanzar(Casilla actual, int movimiento) {
+    Casilla avanzar(Casilla actual, int movimiento) throws ConsolaException{
         Monopoly m = Monopoly.get();
         List<Casilla> casillas = m.get_tablero().get_casillas();
         Jugador j = get_jugador();
@@ -173,16 +176,24 @@ public class Avatar {
     // String
     @Override
     public String toString() {
-        Jugador j = get_jugador();
-        Tablero t = Monopoly.get().get_tablero();
-        Casilla c = t.buscar_jugador(j);
+        try {
+            Jugador j = get_jugador();
+            Tablero t = Monopoly.get().get_tablero();
+            Casilla c = t.buscar_jugador(j);
+            return String.format(
+                    "%s%s%s%s - tipo: %s%s%s - jugador: %s%s%s%s - casilla: %s%s%s%s",
+                    Color.AZUL_OSCURO, Color.BOLD, String.valueOf(id), Color.RESET,
+                    Color.BOLD, tipo, Color.RESET,
+                    Color.AMARILLO, Color.BOLD, j.get_nombre(), Color.RESET,
+                    Color.VERDE, Color.BOLD, c.get_nombre(), Color.RESET);
 
-        return String.format(
-                "%s%s%s%s - tipo: %s%s%s - jugador: %s%s%s%s - casilla: %s%s%s%s",
-                Color.AZUL_OSCURO, Color.BOLD, String.valueOf(id), Color.RESET,
-                Color.BOLD, tipo, Color.RESET,
-                Color.AMARILLO, Color.BOLD, j.get_nombre(), Color.RESET,
-                Color.VERDE, Color.BOLD, c.get_nombre(), Color.RESET);
+        }catch (ConsolaException e) {
+
+            System.out.println(e.getMessage());
+        }
+
+        return "";
+
     }
 
     static {
