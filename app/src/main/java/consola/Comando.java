@@ -3,6 +3,7 @@ package consola;
 import java.util.ArrayList;
 import java.util.List;
 
+import consola.excepciones.PruebaException;
 import monopoly.*;
 import monopoly.Avatar.TipoAvatar;
 import monopoly.Edificio.TipoEdificio;
@@ -28,7 +29,7 @@ public class Comando {
     List<String> args;
 
     // Gestionar todas las acciones
-    public void run() {
+    public void run() throws PruebaException {
         switch (cmd) {
             case CREAR:
                 switch (args.get(0)) {
@@ -50,7 +51,6 @@ public class Comando {
 
                         break;
                     default:
-                        throw new RuntimeException("unreachable");
                 }
                 break;
 
@@ -109,7 +109,6 @@ public class Comando {
                         break;
 
                     default:
-                        throw new RuntimeException("unreachable");
                 }
                 break;
 
@@ -134,7 +133,7 @@ public class Comando {
                     throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
                 if (!c.es_comprable())
-                    throw new RuntimeException(String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
+                    throw new PruebaException(String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
 
                 c.comprar(j);
                 System.out.format(
