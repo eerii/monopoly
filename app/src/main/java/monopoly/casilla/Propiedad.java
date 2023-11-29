@@ -58,8 +58,9 @@ public class Propiedad extends Casilla {
                             jugador.get_nombre(), nombre));
 
         if (jugador.get_fortuna() < precio)
-            throw new ComprarCasillaException(String.format("el jugador %s no puede permitirse comprar la casilla %s por %.0f",
-                    jugador.get_nombre(), nombre, precio));
+            throw new ComprarCasillaException(
+                    String.format("el jugador %s no puede permitirse comprar la casilla %s por %.0f",
+                            jugador.get_nombre(), nombre, precio));
 
         if (!jugador.puede_comprar())
             throw new ComprarCasillaException(
@@ -94,7 +95,11 @@ public class Propiedad extends Casilla {
         }
 
         jugador.remove_hipoteca(this);
-        jugador.add_propiedad(this, this.get_hipoteca() * 1.1f);
+        try {
+            jugador.add_propiedad(this, this.get_hipoteca() * 1.1f);
+        } catch (ComprarCasillaException e) {
+            throw new HipotecaException(e.getMessage());
+        }
     }
 
     public void incrementar_precio() {

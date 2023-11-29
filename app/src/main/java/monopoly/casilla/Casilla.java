@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import consola.Color;
+import consola.excepciones.ComprarCasillaException;
 import estadisticas.EstadisticasJugador;
 
 import monopoly.*;
@@ -104,7 +105,12 @@ public class Casilla {
                     System.out.format("¿Quieres comprar %s por %.0f? (s/N)\n", nombre, precio);
                     String respuesta = m.get_consola().get_raw().trim();
                     if (respuesta.equalsIgnoreCase("s")) {
-                        p.comprar(jugador);
+                        try {
+                            p.comprar(jugador);
+                        } catch (ComprarCasillaException e) {
+                            System.out.println(e.getMessage());
+                            return;
+                        }
                         System.out.format(
                                 "el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
                                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,

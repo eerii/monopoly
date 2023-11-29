@@ -37,7 +37,7 @@ public class Monopoly {
 
     static Monopoly instance = null;
 
-    Monopoly() throws ConsolaException {
+    Monopoly() {
         consola = new Consola();
         jugadores = new ArrayList<Jugador>();
         tablero = new Tablero();
@@ -49,12 +49,17 @@ public class Monopoly {
         banca = new Jugador();
         for (Casilla c : tablero.get_casillas())
             if (c instanceof Propiedad)
-                banca.add_propiedad((Propiedad) c, 0.f);
+                try {
+                    banca.add_propiedad((Propiedad) c, 0.f);
+                } catch (ComprarCasillaException e) {
+                    // No hacemos nada porque la banca no está comprando realmente las casillas
+                    System.out.println("Aviso: " + e.getMessage());
+                }
 
         config = new Config();
     }
 
-    public static Monopoly get() throws ConsolaException {
+    public static Monopoly get() {
         if (instance == null)
             instance = new Monopoly();
         return instance;
@@ -78,7 +83,7 @@ public class Monopoly {
         }
     }
 
-    public static void jugar(String[] args) throws ConsolaException {
+    public static void jugar(String[] args) {
         Monopoly m = Monopoly.get();
         m.consola.limpiar_pantalla();
         m.consola.limpiar_resultado();
@@ -144,6 +149,7 @@ public class Monopoly {
     public void add_trato(Trato trato) {
         tratos.add(trato);
     }
+
     public void remove_trato(Trato trato) {
         tratos.remove(trato);
     }
@@ -157,18 +163,17 @@ public class Monopoly {
         return null;
     }
 
-    public void listar_tratos(){
+    public void listar_tratos() {
         int cont = 0;
         System.out.println("Tratos:");
         for (Trato t : tratos) {
-            if(t.getJugadorRecibe().equals(get_turno().get_nombre()))
-            {
+            if (t.getJugadorRecibe().equals(get_turno().get_nombre())) {
                 System.out.format(t.representar());
                 cont = 1;
             }
 
         }
-        if(cont == 0)
+        if (cont == 0)
             System.out.println("No hay tratos disponibles\n");
     }
 
@@ -217,7 +222,7 @@ public class Monopoly {
         dados.cambio_jugador(null);
     }
 
-    public void comprobar_vueltas() throws ConsolaException {
+    public void comprobar_vueltas() {
         int min = 10000;
         for (Jugador j : jugadores) {
             min = j.get_vueltas() < min ? j.get_vueltas() : min;
@@ -245,7 +250,7 @@ public class Monopoly {
         return baraja;
     }
 
-    public Carta sacar_carta(List<Carta> baraja) throws ConsolaException{
+    public Carta sacar_carta(List<Carta> baraja) {
         int n = -1;
         while (n < 1 || n > 6) {
             System.out.print("elige una carta del 1 al 6: ");

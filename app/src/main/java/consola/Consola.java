@@ -2,6 +2,7 @@ package consola;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import consola.excepciones.ConsolaException;
@@ -43,6 +44,12 @@ public class Consola {
             cmd.run();
         } catch (ConsolaException e) {
             System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Comando no reconocido, " + e.getMessage());
+            // TODO: Arreglar esto para múltiples tipos de argumentos inválidos
+            System.out
+                    .println("Opciones: "
+                            + String.join(", ", Arrays.stream(Cmd.values()).map(Cmd::toString).toArray(String[]::new)));
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
         }
@@ -64,7 +71,7 @@ public class Consola {
         return pausa;
     }
 
-    public String get_raw() throws ConsolaException{
+    public String get_raw() {
         System.out.flush();
         System.setOut(out);
 

@@ -8,7 +8,7 @@ import java.util.Random;
 import consola.Color;
 import monopoly.casilla.*;
 
-import  consola.excepciones.*;
+import consola.excepciones.*;
 
 // TODO: Jerarquía de avatares
 
@@ -86,6 +86,7 @@ public class Avatar {
             if (j.get_avatar() == this)
                 return j;
         }
+        return null;
     }
 
     public boolean es_modo_avanzado() {
@@ -97,7 +98,7 @@ public class Avatar {
     }
 
     // Movimiento
-    void siguiente_casilla(Casilla actual, int movimiento) throws ConsolaException{
+    void siguiente_casilla(Casilla actual, int movimiento) {
         if (!modo_avanzado) {
             avanzar(actual, movimiento);
             return;
@@ -175,23 +176,15 @@ public class Avatar {
     // String
     @Override
     public String toString() {
-        try {
-            Jugador j = get_jugador();
-            Tablero t = Monopoly.get().get_tablero();
-            Casilla c = t.buscar_jugador(j);
-            return String.format(
-                    "%s%s%s%s - tipo: %s%s%s - jugador: %s%s%s%s - casilla: %s%s%s%s",
-                    Color.AZUL_OSCURO, Color.BOLD, String.valueOf(id), Color.RESET,
-                    Color.BOLD, tipo, Color.RESET,
-                    Color.AMARILLO, Color.BOLD, j.get_nombre(), Color.RESET,
-                    Color.VERDE, Color.BOLD, c.get_nombre(), Color.RESET);
-
-        }catch (ConsolaException e) {
-
-            System.out.println(e.getMessage());
-        }
-
-        return "";
+        Jugador j = get_jugador();
+        Tablero t = Monopoly.get().get_tablero();
+        Casilla c = t.buscar_jugador(j);
+        return String.format(
+                "%s%s%s%s - tipo: %s%s%s - jugador: %s%s%s%s - casilla: %s%s%s%s",
+                Color.AZUL_OSCURO, Color.BOLD, String.valueOf(id), Color.RESET,
+                Color.BOLD, tipo, Color.RESET,
+                Color.AMARILLO, Color.BOLD, j.get_nombre(), Color.RESET,
+                Color.VERDE, Color.BOLD, c.get_nombre(), Color.RESET);
 
     }
 

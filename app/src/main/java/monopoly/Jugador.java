@@ -37,7 +37,7 @@ public class Jugador {
     static final int turnos_carcel = 3;
 
     // Constructor de un jugador normal
-    public Jugador(String nombre, Avatar avatar) throws ConsolaException{
+    public Jugador(String nombre, Avatar avatar) {
         this.nombre = nombre;
         this.avatar = avatar;
         this.propiedades = new ArrayList<>();
@@ -104,14 +104,16 @@ public class Jugador {
         tiradas += 1;
     }
 
-    public void add_propiedad(Casilla casilla, float precio) throws ComprarException {
+    public void add_propiedad(Casilla casilla, float precio) throws ComprarCasillaException {
         if (avatar != null && avatar.get_tipo() == Avatar.TipoAvatar.COCHE && avatar.es_modo_avanzado() && ha_comprado)
-            throw new ComprarException(
+            throw new ComprarCasillaException(
                     String.format("el jugador %s ya ha comprado una propiedad en este turno\n", nombre));
 
         ha_comprado = true;
 
-        propiedades.add(casilla);
+        if (!(casilla instanceof Propiedad))
+            throw new ComprarCasillaException(String.format("la casilla %s no es comprable\n", casilla.get_nombre()));
+        propiedades.add((Propiedad) casilla);
         add_fortuna(-precio);
     }
 
@@ -128,7 +130,7 @@ public class Jugador {
         hipotecas.remove(casilla);
     }
 
-    public void ir_a_carcel() throws ConsolaException{
+    public void ir_a_carcel() {
         Tablero t = Monopoly.get().get_tablero();
         Casilla c = t.buscar_casilla("Cárcel");
         Casilla actual = t.buscar_jugador(this);
@@ -142,7 +144,7 @@ public class Jugador {
         Monopoly.get().siguiente_turno();
     }
 
-    public void bancarrota() throws ConsolaException{
+    public void bancarrota() throws ComprarCasillaException {
         Monopoly m = Monopoly.get();
         Casilla caida = m.get_tablero().buscar_jugador(this);
         Propiedad p = null;
@@ -184,7 +186,7 @@ public class Jugador {
         return contador_carcel > 0;
     }
 
-    public void salir_carcel() throws ConsolaException{
+    public void salir_carcel() throws CarcelException {
         Tablero t = Monopoly.get().get_tablero();
         Casilla c = t.buscar_casilla("Cárcel");
 
@@ -241,12 +243,12 @@ public class Jugador {
         return hipotecas.contains(casilla);
     }
 
-    public void mover(Casilla actual, int movimiento) throws ConsolaException{
+    public void mover(Casilla actual, int movimiento) {
         avatar.siguiente_casilla(actual, movimiento);
         turnos_extra = turnos_extra > 0 ? turnos_extra - 1 : 0;
     }
 
-    public void dar_vueltas(int num) throws ConsolaException{
+    public void dar_vueltas(int num) {
         Monopoly m = Monopoly.get();
 
         vueltas += num;
@@ -259,7 +261,7 @@ public class Jugador {
         }
     }
 
-    public List<Edificio> get_edificios() throws ConsolaException{
+    public List<Edificio> get_edificios() {
         List<Edificio> edificios = new ArrayList<>();
         Monopoly m = Monopoly.get();
         List<Casilla> casillas = m.get_tablero().get_casillas();
@@ -275,7 +277,7 @@ public class Jugador {
         return edificios;
     }
 
-    public void paga_alquiler(Jugador propietario, Casilla casilla) throws ConsolaException {
+    public void paga_alquiler(Jugador propietario, Solar casilla) {
         Monopoly m = Monopoly.get();
         float alquiler;
 
@@ -334,7 +336,7 @@ public class Jugador {
         casilla.sumar_rentabilidad(alquiler);
     }
 
-    public void paga_servicio_transporte(Jugador propietario, Casilla casilla) throws ConsolaException {
+    public void paga_servicio_transporte(Jugador propietario, Propiedad casilla) {
         Monopoly m = Monopoly.get();
         Dados d = m.get_dados();
         float media = m.get_tablero().precio_medio();
@@ -373,7 +375,7 @@ public class Jugador {
     }
 
     // String
-    public String representar() throws ConsolaException {
+    public String representar() {
         Monopoly.Config c = Monopoly.get().get_config();
         if (c.get_iconos()) {
             Avatar.TipoAvatar t = avatar.get_tipo();
@@ -384,27 +386,18 @@ public class Jugador {
 
     @Override
     public String toString() {
-
-        try {
-            return String.format(
-                    "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
-                            "propiedades: %s\nhipotecas: %s",
-                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                    Color.BOLD, representar(), Color.RESET,
-                    avatar.get_tipo(),
-                    Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
-                    propiedades.stream().map(p -> p.toStringMini()).collect(Collectors.toList()),
-                    hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
-
-        }catch (ConsolaException e) {
-
-            System.out.println(e.getMessage());
-        }
-
-        return "";
+        return String.format(
+                "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
+                        "propiedades: %s\nhipotecas: %s",
+                Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                Color.BOLD, representar(), Color.RESET,
+                avatar.get_tipo(),
+                Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
+                propiedades.stream().map(p -> p.toStringMini()).collect(Collectors.toList()),
+                hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
     }
 
-    public String toStringMini() throws ConsolaException{
+    public String toStringMini() {
         return String.format("%s%s%s%s - avatar %s%s%s (%s)",
                 Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                 Color.BOLD, representar(), Color.RESET,
