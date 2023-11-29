@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-import consola.excepciones.PruebaException;
 import monopoly.Monopoly;
 
 public class Consola {
