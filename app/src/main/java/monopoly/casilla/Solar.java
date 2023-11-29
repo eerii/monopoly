@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import consola.Color;
+import consola.excepciones.ComprarEdificioException;
 import monopoly.Jugador;
 import monopoly.casilla.Edificio.TipoEdificio;
 
@@ -81,22 +82,22 @@ public class Solar extends Propiedad {
         return total;
     }
 
-    public void comprar_edificio(Jugador jugador, TipoEdificio tipo) {
+    public void comprar_edificio(Jugador jugador, TipoEdificio tipo) throws ComprarEdificioException {
         int num = this.get_grupo().get_casillas().size();
         switch (tipo) {
             case CASA:
                 if (numero_edificios_grupo(TipoEdificio.CASA) == num
                         && numero_edificios_grupo(TipoEdificio.HOTEL) == num)
-                    throw new RuntimeException("ya tienes el numero máximo de casas y hoteles permitidos en el grupo");
+                    throw new ComprarEdificioException("ya tienes el numero máximo de casas y hoteles permitidos en el grupo");
                 if (numero_edificios(TipoEdificio.CASA) == 4)
-                    throw new RuntimeException("no se pueden comprar más casas, ya tienes 4");
+                    throw new ComprarEdificioException("no se pueden comprar más casas, ya tienes 4");
                 break;
 
             case HOTEL:
                 if (numero_edificios_grupo(TipoEdificio.HOTEL) == num)
-                    throw new RuntimeException("ya tienes el maximo numero de hoteles permitidos en el grupo");
+                    throw new ComprarEdificioException("ya tienes el maximo numero de hoteles permitidos en el grupo");
                 if (numero_edificios(TipoEdificio.CASA) != 4)
-                    throw new RuntimeException("no se puede hacer un hotel, no tienes 4 casas");
+                    throw new ComprarEdificioException("no se puede hacer un hotel, no tienes 4 casas");
 
                 edificios = edificios.stream().filter(e -> e.get_tipo() != TipoEdificio.CASA)
                         .collect(Collectors.toList());
@@ -104,17 +105,17 @@ public class Solar extends Propiedad {
 
             case TERMAS:
                 if (numero_edificios_grupo(TipoEdificio.TERMAS) == num)
-                    throw new RuntimeException("ya tienes el maximo numero de termas permitidos en el grupo");
+                    throw new ComprarEdificioException("ya tienes el maximo numero de termas permitidos en el grupo");
                 if (numero_edificios(TipoEdificio.HOTEL) < 1 && numero_edificios(TipoEdificio.CASA) < 2)
-                    throw new RuntimeException(
+                    throw new ComprarEdificioException(
                             "no se puede comprar unas termas, necesitas al menos 2 casas y un hotel");
                 break;
 
             case PABELLON:
                 if (numero_edificios_grupo(TipoEdificio.PABELLON) == num)
-                    throw new RuntimeException("ya tienes el maximo numero de pabellones permitidos en el grupo");
+                    throw new ComprarEdificioException("ya tienes el maximo numero de pabellones permitidos en el grupo");
                 if (numero_edificios(TipoEdificio.HOTEL) < 2)
-                    throw new RuntimeException("no se puede comprar un pabellón, necesitas al menos 2 hoteles");
+                    throw new ComprarEdificioException("no se puede comprar un pabellón, necesitas al menos 2 hoteles");
                 break;
         }
 
@@ -122,7 +123,7 @@ public class Solar extends Propiedad {
         float coste = e.coste();
 
         if (jugador.get_fortuna() < coste)
-            throw new RuntimeException(String.format("no se puede comprar un%s %s por %.0f",
+            throw new ComprarEdificioException(String.format("no se puede comprar un%s %s por %.0f",
                     tipo == TipoEdificio.CASA ? "a" : "", tipo, coste));
 
         jugador.add_fortuna(coste * -1.f);
@@ -136,10 +137,10 @@ public class Solar extends Propiedad {
                 Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET);
     }
 
-    public void vender_edificio(Jugador jugador, TipoEdificio tipo) {
+    public void vender_edificio(Jugador jugador, TipoEdificio tipo) throws ComprarEdificioException {
         Edificio e = edificios.stream().filter(ed -> ed.get_tipo() == tipo).findFirst().orElse(null);
         if (e == null)
-            throw new RuntimeException(
+            throw new ComprarEdificioException(
                     String.format("no se puede vender un edificio de tipo %s, no tienes ninguno", tipo));
 
         float coste = (float) Math.floor(e.coste() * 0.8f);

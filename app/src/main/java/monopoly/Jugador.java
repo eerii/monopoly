@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import consola.Color;
 import monopoly.casilla.*;
 
+import consola.excepciones.*;
+
 public class Jugador {
     // TODO: Tratos con otros jugadores
     // Cambiar combinaciones de propiedades, dinero y turnos sin pagar
@@ -102,14 +104,16 @@ public class Jugador {
         tiradas += 1;
     }
 
-    public void add_propiedad(Propiedad casilla, float precio) {
+    public void add_propiedad(Casilla casilla, float precio) throws ComprarCasillaException {
         if (avatar != null && avatar.get_tipo() == Avatar.TipoAvatar.COCHE && avatar.es_modo_avanzado() && ha_comprado)
-            throw new RuntimeException(
+            throw new ComprarCasillaException(
                     String.format("el jugador %s ya ha comprado una propiedad en este turno\n", nombre));
 
         ha_comprado = true;
 
-        propiedades.add(casilla);
+        if (!(casilla instanceof Propiedad))
+            throw new ComprarCasillaException(String.format("la casilla %s no es comprable\n", casilla.get_nombre()));
+        propiedades.add((Propiedad) casilla);
         add_fortuna(-precio);
     }
 
@@ -140,7 +144,7 @@ public class Jugador {
         Monopoly.get().siguiente_turno();
     }
 
-    public void bancarrota() {
+    public void bancarrota() throws ComprarCasillaException {
         Monopoly m = Monopoly.get();
         Casilla caida = m.get_tablero().buscar_jugador(this);
         Propiedad p = null;
@@ -182,12 +186,12 @@ public class Jugador {
         return contador_carcel > 0;
     }
 
-    public void salir_carcel() {
+    public void salir_carcel() throws CarcelException {
         Tablero t = Monopoly.get().get_tablero();
         Casilla c = t.buscar_casilla("Cárcel");
 
         if (fortuna < c.get_precio())
-            throw new RuntimeException(String.format(
+            throw new CarcelException(String.format(
                     "el jugador %s no puede salir de la cárcel porque no tiene %.0f, quedan %d turnos para salir gratis\n",
                     nombre, c.get_precio(), contador_carcel));
 
@@ -382,9 +386,6 @@ public class Jugador {
 
     @Override
     public String toString() {
-        // NOTA: El formato es diferente al del ejemplo para hacerlo más compacto
-        // De esta manera podemos tener una terminal interactiva con el tablero y la
-        // salida de los comandos
         return String.format(
                 "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
                         "propiedades: %s\nhipotecas: %s",

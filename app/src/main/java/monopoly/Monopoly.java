@@ -7,6 +7,7 @@ import consola.Color;
 import consola.Consola;
 import estadisticas.Estadisticas;
 import monopoly.Carta.TipoCarta;
+import consola.excepciones.*;
 import monopoly.casilla.*;
 
 public class Monopoly {
@@ -48,7 +49,12 @@ public class Monopoly {
         banca = new Jugador();
         for (Casilla c : tablero.get_casillas())
             if (c instanceof Propiedad)
-                banca.add_propiedad((Propiedad) c, 0.f);
+                try {
+                    banca.add_propiedad((Propiedad) c, 0.f);
+                } catch (ComprarCasillaException e) {
+                    // No hacemos nada porque la banca no está comprando realmente las casillas
+                    System.out.println("Aviso: " + e.getMessage());
+                }
 
         config = new Config();
     }
@@ -143,6 +149,7 @@ public class Monopoly {
     public void add_trato(Trato trato) {
         tratos.add(trato);
     }
+
     public void remove_trato(Trato trato) {
         tratos.remove(trato);
     }
@@ -156,18 +163,17 @@ public class Monopoly {
         return null;
     }
 
-    public void listar_tratos(){
+    public void listar_tratos() {
         int cont = 0;
         System.out.println("Tratos:");
         for (Trato t : tratos) {
-            if(t.getJugadorRecibe().equals(get_turno().get_nombre()))
-            {
+            if (t.getJugadorRecibe().equals(get_turno().get_nombre())) {
                 System.out.format(t.representar());
                 cont = 1;
             }
 
         }
-        if(cont == 0)
+        if (cont == 0)
             System.out.println("No hay tratos disponibles\n");
     }
 

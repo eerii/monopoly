@@ -1,5 +1,8 @@
 package monopoly;
 
+import consola.Color;
+import consola.excepciones.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -114,4 +117,5 @@ public class Carta {
                     j.add_fortuna(20000);
                 })));
     }
+
 }

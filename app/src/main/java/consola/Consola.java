@@ -2,8 +2,10 @@ package consola;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
+import consola.excepciones.ConsolaException;
 import monopoly.Monopoly;
 
 public class Consola {
@@ -40,9 +42,15 @@ public class Consola {
         try {
             Comando cmd = new Comando(line);
             cmd.run();
+        } catch (ConsolaException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Comando no reconocido, " + e.getMessage());
+            // TODO: Arreglar esto para múltiples tipos de argumentos inválidos
+            System.out
+                    .println("Opciones: "
+                            + String.join(", ", Arrays.stream(Cmd.values()).map(Cmd::toString).toArray(String[]::new)));
         } catch (RuntimeException e) {
-            // TODO: Cambiar estas RuntimeException por excepciones propias
-            // Minimo 5 tipo y 3 niveles
             System.out.println(e.getMessage());
         }
 
