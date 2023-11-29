@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Random;
 
 import consola.Color;
+import monopoly.casilla.*;
 
-import consola.Comando;
 import  consola.excepciones.*;
 
 // TODO: Jerarquía de avatares
@@ -80,13 +80,12 @@ public class Avatar {
         return tipo;
     }
 
-    Jugador get_jugador() throws ConsolaException {
+    Jugador get_jugador() {
         List<Jugador> jugadores = Monopoly.get().get_jugadores();
         for (Jugador j : jugadores) {
             if (j.get_avatar() == this)
                 return j;
         }
-        throw new RuntimeException("unreachable");
     }
 
     public boolean es_modo_avanzado() {
@@ -144,7 +143,7 @@ public class Avatar {
         }
     }
 
-    Casilla avanzar(Casilla actual, int movimiento) throws ConsolaException{
+    Casilla avanzar(Casilla actual, int movimiento) {
         Monopoly m = Monopoly.get();
         List<Casilla> casillas = m.get_tablero().get_casillas();
         Jugador j = get_jugador();
@@ -168,7 +167,7 @@ public class Avatar {
 
         actual.remove_jugador(j);
         siguiente.add_jugador(j);
-        siguiente.sumar_vecesVisitada();
+        siguiente.sumar_veces_visitada();
 
         return siguiente;
     }

@@ -8,6 +8,7 @@ import consola.Consola;
 import estadisticas.Estadisticas;
 import monopoly.Carta.TipoCarta;
 import consola.excepciones.*;
+import monopoly.casilla.*;
 
 public class Monopoly {
     // TODO: Usar modificadores abstract y final en las jerarquías
@@ -28,6 +29,7 @@ public class Monopoly {
     Tablero tablero;
     Dados dados;
     List<Carta> baraja;
+    List<Trato> tratos;
     Estadisticas stats;
     Config config;
     int turno = -1;
@@ -42,10 +44,12 @@ public class Monopoly {
         dados = new Dados();
         baraja = Carta.baraja;
         stats = new Estadisticas();
+        tratos = new ArrayList<Trato>();
 
         banca = new Jugador();
         for (Casilla c : tablero.get_casillas())
-            banca.add_propiedad(c, 0.f);
+            if (c instanceof Propiedad)
+                banca.add_propiedad((Propiedad) c, 0.f);
 
         config = new Config();
     }
@@ -74,7 +78,7 @@ public class Monopoly {
         }
     }
 
-    public static void jugar(String[] args) throws ConsolaException{
+    public static void jugar(String[] args) throws ConsolaException {
         Monopoly m = Monopoly.get();
         m.consola.limpiar_pantalla();
         m.consola.limpiar_resultado();
@@ -84,15 +88,6 @@ public class Monopoly {
         // FIX: Jugadores temporales para pruebas, borrar
         m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.ESFINGE)));
         m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.PELOTA)));
-        List<Casilla> c = m.get_tablero().get_casillas();
-        Jugador banca = Monopoly.get().get_banca();
-        Jugador j = m.get_jugadores().get(0);
-        banca.remove_propiedad(c.get(6));
-        j.add_propiedad(c.get(6), 0);
-        banca.remove_propiedad(c.get(8));
-        j.add_propiedad(c.get(8), 0);
-        banca.remove_propiedad(c.get(9));
-        j.add_propiedad(c.get(9), 0);
 
         boolean pausa = false;
         while (true) {
@@ -144,6 +139,37 @@ public class Monopoly {
         }
 
         stats.add_jugador(jugador);
+    }
+
+    public void add_trato(Trato trato) {
+        tratos.add(trato);
+    }
+    public void remove_trato(Trato trato) {
+        tratos.remove(trato);
+    }
+
+    public Trato buscar_trato(int id) {
+        for (Trato t : tratos) {
+            if (t.id == id) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    public void listar_tratos(){
+        int cont = 0;
+        System.out.println("Tratos:");
+        for (Trato t : tratos) {
+            if(t.getJugadorRecibe().equals(get_turno().get_nombre()))
+            {
+                System.out.format(t.representar());
+                cont = 1;
+            }
+
+        }
+        if(cont == 0)
+            System.out.println("No hay tratos disponibles\n");
     }
 
     public void remove_jugador(Jugador jugador) {
@@ -201,8 +227,8 @@ public class Monopoly {
             System.out.format("todos los jugadores han completado %d vueltas!\n", vueltas_totales);
             if (vueltas_totales % 4 == 0) {
                 tablero.get_casillas().stream()
-                        .filter(c -> c.es_comprable() && c.en_venta())
-                        .forEach(c -> c.incrementar_precio());
+                        .filter(c -> c instanceof Propiedad && ((Propiedad) c).en_venta())
+                        .forEach(c -> ((Propiedad) c).incrementar_precio());
                 System.out.println("el precio de todas las casillas se incrementa en un 5%");
             }
         }

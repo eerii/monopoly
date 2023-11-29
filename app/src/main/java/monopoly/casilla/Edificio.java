@@ -1,10 +1,12 @@
-package monopoly;
+package monopoly.casilla;
 
 import java.util.HashMap;
 
+import monopoly.Monopoly;
+
 public class Edificio {
     TipoEdificio tipo;
-    Casilla casilla;
+    Solar casilla;
 
     // TODO: Cambiar a jerarquía de edificios
 
@@ -49,7 +51,7 @@ public class Edificio {
         }
     }
 
-    public Edificio(TipoEdificio tipo, Casilla casilla) {
+    public Edificio(TipoEdificio tipo, Solar casilla) {
         this.tipo = tipo;
         this.casilla = casilla;
     }

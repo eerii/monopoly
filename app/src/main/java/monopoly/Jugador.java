@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import consola.Color;
+import monopoly.casilla.*;
 
 import consola.excepciones.*;
 
@@ -23,8 +24,8 @@ public class Jugador {
     String nombre;
     Avatar avatar;
     float fortuna;
-    List<Casilla> propiedades;
-    List<Casilla> hipotecas;
+    List<Propiedad> propiedades;
+    List<Propiedad> hipotecas;
     int vueltas;
     int tiradas;
     float fortuna_total;
@@ -39,8 +40,8 @@ public class Jugador {
     public Jugador(String nombre, Avatar avatar) throws ConsolaException{
         this.nombre = nombre;
         this.avatar = avatar;
-        this.propiedades = new ArrayList<Casilla>();
-        this.hipotecas = new ArrayList<Casilla>();
+        this.propiedades = new ArrayList<>();
+        this.hipotecas = new ArrayList<>();
         this.vueltas = 0;
         this.tiradas = 0;
 
@@ -52,8 +53,8 @@ public class Jugador {
         // La fortuna inicial es la suma del precio de todas las casillas comprables
         // entre 3
         for (Casilla c : t.get_casillas())
-            if (c.es_solar())
-                fortuna += c.get_precio();
+            if (c instanceof Solar)
+                fortuna += ((Solar) c).get_precio();
         fortuna /= 3.f;
 
         // La redondeamos a las centenas para que quede más bonita
@@ -65,7 +66,7 @@ public class Jugador {
         this.nombre = "banca";
         this.avatar = null;
         this.fortuna = 0.f;
-        this.propiedades = new ArrayList<Casilla>();
+        this.propiedades = new ArrayList<>();
     }
 
     public String get_nombre() {
@@ -114,16 +115,16 @@ public class Jugador {
         add_fortuna(-precio);
     }
 
-    public void add_hipoteca(Casilla casilla, float hipoteca) {
+    public void add_hipoteca(Propiedad casilla, float hipoteca) {
         hipotecas.add(casilla);
         add_fortuna(hipoteca);
     }
 
-    public void remove_propiedad(Casilla casilla) {
+    public void remove_propiedad(Propiedad casilla) {
         propiedades.remove(casilla);
     }
 
-    public void remove_hipoteca(Casilla casilla) {
+    public void remove_hipoteca(Propiedad casilla) {
         hipotecas.remove(casilla);
     }
 
@@ -144,19 +145,23 @@ public class Jugador {
     public void bancarrota() throws ConsolaException{
         Monopoly m = Monopoly.get();
         Casilla caida = m.get_tablero().buscar_jugador(this);
+        Propiedad p = null;
+        if (caida instanceof Propiedad)
+            p = (Propiedad) caida;
 
-        Jugador otro = fortuna > 0 || caida.get_propietario() == null ? m.get_banca() : caida.get_propietario();
+        Jugador otro = fortuna > 0 || p == null || p.get_propietario() == null ? m.get_banca()
+                : p.get_propietario();
         if (otro != m.get_banca()) {
             otro.add_fortuna(fortuna);
         }
 
-        for (Casilla c : propiedades)
+        for (Propiedad c : propiedades)
             otro.add_propiedad(c, 0);
 
-        for (Casilla h : hipotecas)
+        for (Propiedad h : hipotecas)
             otro.add_propiedad(h, 0);
 
-        if (fortuna > 0 || caida.get_propietario() == null) {
+        if (fortuna > 0 || p == null || p.get_propietario() == null) {
             System.out.format("el jugador %s se ha declarado en bancarrota, todas sus propiedades pasan a la banca!\n",
                     nombre);
         } else {
@@ -164,7 +169,7 @@ public class Jugador {
                     "el jugador %s se ha declarado en bancarrota, todas sus propiedades pasan al jugador %s!\n", nombre,
                     otro.get_nombre());
             otro.add_fortuna(this.get_fortuna()); // Esto resta el dinero que no le pudo pagar el deudor al otro jugador
-            caida.sumar_rentabilidad(this.get_fortuna());
+            p.sumar_rentabilidad(this.get_fortuna());
         }
         m.remove_jugador(this);
     }
@@ -224,15 +229,15 @@ public class Jugador {
         return (int) propiedades.stream().filter(c -> c.get_tipo() == Casilla.TipoCasilla.TRANSPORTE).count();
     }
 
-    public boolean es_propietario(Casilla casilla) {
+    public boolean es_propietario(Propiedad casilla) {
         return propiedades.contains(casilla);
     }
 
-    public boolean es_hipotecario(Casilla casilla) {
+    public boolean es_hipotecario(Propiedad casilla) {
         return hipotecas.contains(casilla);
     }
 
-    public boolean esta_hipotecada(Casilla casilla) {
+    public boolean esta_hipotecada(Propiedad casilla) {
         return hipotecas.contains(casilla);
     }
 
@@ -260,16 +265,21 @@ public class Jugador {
         List<Casilla> casillas = m.get_tablero().get_casillas();
 
         for (Casilla c : casillas) {
-            if (c.get_propietario() == this) {
-                edificios.addAll(c.get_edificios());
+            if (c instanceof Solar) {
+                Solar s = (Solar) c;
+                if (s.get_propietario() == this) {
+                    edificios.addAll(s.get_edificios());
+                }
             }
         }
         return edificios;
     }
 
-    public void paga_alquiler(Jugador propietario, Casilla casilla) throws ConsolaException{
+    public void paga_alquiler(Jugador propietario, Casilla casilla) throws ConsolaException {
         Monopoly m = Monopoly.get();
-        float alquiler = casilla.get_alquiler();
+        float alquiler;
+
+        alquiler = casilla.get_alquiler();
         float alquiler_casas = 0;
         float alquiler_hoteles = 0;
         float alquiler_termas = 0;
@@ -322,10 +332,9 @@ public class Jugador {
         m.get_stats().of(this).sumar_pago_alquileres(alquiler);
         m.get_stats().of(propietario).sumar_cobro_alquileres(alquiler);
         casilla.sumar_rentabilidad(alquiler);
-
     }
 
-    public void paga_servicio_transporte(Jugador propietario, Casilla casilla) throws ConsolaException{
+    public void paga_servicio_transporte(Jugador propietario, Casilla casilla) throws ConsolaException {
         Monopoly m = Monopoly.get();
         Dados d = m.get_dados();
         float media = m.get_tablero().precio_medio();
@@ -364,7 +373,7 @@ public class Jugador {
     }
 
     // String
-    public String representar() throws ConsolaException{
+    public String representar() throws ConsolaException {
         Monopoly.Config c = Monopoly.get().get_config();
         if (c.get_iconos()) {
             Avatar.TipoAvatar t = avatar.get_tipo();

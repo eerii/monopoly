@@ -8,11 +8,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import monopoly.casilla.*;
 
 public class Carta {
     // TODO: Cambiar a jerarquía de cartas (Comunidad, Suerte)
 
-    enum TipoCarta {
+    public enum TipoCarta {
         COMUNIDAD,
         SUERTE;
 
@@ -46,20 +47,19 @@ public class Carta {
         return String.format("%s: '%s'", tipo, texto);
     }
 
-    static void viaje(Jugador j, String destino, String msg) throws ConsolaException {
+    static void viaje(Jugador j, String destino, String msg) {
         Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
         Casilla siguiente = Monopoly.get().get_tablero().buscar_casilla(destino);
 
         System.out.format(msg, destino);
         actual.remove_jugador(j);
         siguiente.add_jugador(j);
-        siguiente.sumar_vecesVisitada();
+        siguiente.sumar_veces_visitada();
     }
 
     static{
         try {
             baraja = new ArrayList<Carta>(Arrays.asList(
-
                     new Carta("Viaje", Carta.TipoCarta.SUERTE,
                             j -> viaje(j, "Vigo", "decides hacer un viaje por placer hasta %s!\n")),
 
@@ -118,12 +118,8 @@ public class Carta {
                         j.add_fortuna(20000);
                     })));
         }catch (ConsolaException e) {
-
             System.out.println(e.getMessage());
         }
-
-        return "";
-
     }
 
 }

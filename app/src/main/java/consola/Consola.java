@@ -41,13 +41,9 @@ public class Consola {
         try {
             Comando cmd = new Comando(line);
             cmd.run();
-
         } catch (ConsolaException e) {
-
             System.out.println(e.getMessage());
         } catch (RuntimeException e) {
-            // TODO: Cambiar estas RuntimeException por excepciones propias
-            // Minimo 5 tipo y 3 niveles
             System.out.println(e.getMessage());
         }
 

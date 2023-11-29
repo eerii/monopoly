@@ -9,7 +9,8 @@ import consola.excepciones.*;
 
 import monopoly.*;
 import monopoly.Avatar.TipoAvatar;
-import monopoly.Edificio.TipoEdificio;
+import monopoly.casilla.*;
+import monopoly.casilla.Edificio.TipoEdificio;
 
 public class Comando {
     // TODO: Cambiar un poco esto por una interfaz comando
@@ -74,19 +75,23 @@ public class Comando {
                         break;
                     case "enventa":
                         for (Casilla c : casillas) {
-                            if (c.es_comprable() && c.en_venta()) {
+                            if (c instanceof Propiedad && ((Propiedad) c).en_venta()) {
                                 System.out.println(c);
                             }
                         }
+                        break;
+                    case "tratos":
+                        Monopoly.get().listar_tratos();
                         break;
                     case "edificios":
                         int vacios = 0;
                         if (args.size() == 1) {
                             for (Casilla c : casillas) {
-                                if (c.es_solar()) {
-                                    for (Edificio e : c.get_edificios())
+                                if (c instanceof Solar) {
+                                    Solar s = (Solar) c;
+                                    for (Edificio e : s.get_edificios())
                                         System.out.println(e);
-                                    if (c.get_edificios().isEmpty())
+                                    if (s.get_edificios().isEmpty())
                                         vacios += 1;
                                 }
                             }
@@ -97,13 +102,13 @@ public class Comando {
 
                         Grupo g = Monopoly.get().get_tablero().get_grupo(args.get(1));
                         if (g == null)
-                            throw new NoSuchElementException(String.format("el grupo '%s' no existe\n", args.get(1)));
-                        List<Casilla> casillas_grupo = g.get_casillas();
+                            throw new RuntimeException(String.format("el grupo '%s' no existe\n", args.get(1)));
+                        List<Solar> casillas_grupo = g.get_casillas();
 
-                        for (Casilla c : casillas_grupo) {
-                            for (Edificio e : c.get_edificios())
+                        for (Solar s : casillas_grupo) {
+                            for (Edificio e : s.get_edificios())
                                 System.out.println(e);
-                            if (c.get_edificios().isEmpty())
+                            if (s.get_edificios().isEmpty())
                                 vacios += 1;
                         }
                         if (vacios == casillas_grupo.size())
@@ -134,10 +139,10 @@ public class Comando {
                 if (c == null)
                     throw new NoSuchElementException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
-                if (!c.es_comprable())
-                    throw new ComprarException(String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
+                if (!(c instanceof Propiedad))
+                    throw new RuntimeException(String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
 
-                c.comprar(j);
+                ((Propiedad) c).comprar(j);
                 System.out.format(
                         "el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
@@ -153,17 +158,20 @@ public class Comando {
                 Jugador j = m.get_turno();
                 Casilla c = t.buscar_jugador(j);
 
-                if (!j.es_propietario(c))
-                    throw new PropiedadException(
-                            String.format("no eres el propietario de la casilla '%s'\n", c.get_nombre()));
+                if (!(c instanceof Solar))
+                    throw new PropiedadException(String.format("la casilla '%s' no es un solar\n", args.get(0)));
+                Solar s = (Solar) c;
 
-                Grupo g = c.get_grupo();
+                if (!j.es_propietario(s))
+                    throw new PropiedadException(String.format("no eres el propietario de la casilla '%s'\n", c.get_nombre()));
+
+                Grupo g = s.get_grupo();
                 if (!j.tiene_grupo(g))
                     throw new PropiedadException(String
                             .format("no tienes en propiedad todas las casillas del grupo '%s'\n", g.get_nombre()));
 
                 TipoEdificio tipo = TipoEdificio.from_str(args.get(0));
-                c.comprar_edificio(j, tipo);
+                s.comprar_edificio(j, tipo);
 
             }
                 break;
@@ -174,12 +182,16 @@ public class Comando {
                 Jugador j = m.get_turno();
                 Casilla c = t.buscar_jugador(j);
 
-                if (!j.es_propietario(c))
+                if (!(c instanceof Solar))
+                    throw new PropiedadException(String.format("la casilla '%s' no es un solar\n", args.get(0)));
+                Solar s = (Solar) c;
+
+                if (!j.es_propietario(s))
                     throw new PropiedadException(
                             String.format("no eres el propietario de la casilla '%s'\n", c.get_nombre()));
 
                 TipoEdificio tipo = TipoEdificio.from_str(args.get(0));
-                c.vender_edificio(j, tipo);
+                s.vender_edificio(j, tipo);
 
             }
                 break;
@@ -193,13 +205,22 @@ public class Comando {
                 if (c == null)
                     throw new NoSuchElementException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
-                c.hipotecar(j);
+                if (!(c instanceof Propiedad))
+                    throw new RuntimeException(String.format("la casilla '%s' no se puede hipotecar\n", args.get(0)));
+
+                Propiedad p = ((Propiedad) c);
+                p.hipotecar(j);
                 System.out.format(
-                        "el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s. No puede recibir alquileres ni hipotecar en el grupo %s%s%s%s\n",
+                        "el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                        Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
-                        Color.AMARILLO, Color.BOLD, c.get_hipoteca(), Color.RESET,
-                        Color.ROSA, Color.BOLD, c.get_grupo().get_nombre(), Color.RESET);
+                        Color.AZUL_OSCURO, Color.BOLD, p.get_nombre(), Color.RESET,
+                        Color.AMARILLO, Color.BOLD, p.get_hipoteca(), Color.RESET);
+
+                if (p instanceof Solar) {
+                    System.out.format(
+                            "no puede recibir alquileres ni hipotecar en el grupo %s%s%s%s\n",
+                            Color.ROSA, Color.BOLD, ((Solar) p).get_grupo().get_nombre(), Color.RESET);
+                }
             }
                 break;
 
@@ -212,13 +233,17 @@ public class Comando {
                 if (c == null)
                     throw new NoSuchElementException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
-                c.deshipotecar(j);
+                if (!(c instanceof Propiedad))
+                    throw new RuntimeException(
+                            String.format("la casilla '%s' no se puede deshipotecar\n", args.get(0)));
+
+                Propiedad p = ((Propiedad) c);
+                p.deshipotecar(j);
                 System.out.format(
-                        "el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s. Ahora puede recibir alquileres y edificar en el grupo %s%s%s%s\n",
+                        "el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                        Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
-                        Color.AMARILLO, Color.BOLD, c.get_hipoteca() * 1.1f, Color.RESET,
-                        Color.ROSA, Color.BOLD, c.get_grupo().get_nombre(), Color.RESET);
+                        Color.AZUL_OSCURO, Color.BOLD, p.get_nombre(), Color.RESET,
+                        Color.AMARILLO, Color.BOLD, p.get_hipoteca() * 1.1f, Color.RESET);
             }
                 break;
 
@@ -414,7 +439,39 @@ public class Comando {
                     default:
                 }
                 break;
+            case TRATO:
+                Trato t = new Trato(String.join(" ",args),Monopoly.get().get_turno().get_nombre());
+                System.out.println(t);
+                Monopoly.get().add_trato(t);
+                break;
+            case ACEPTAR: {
+                if (args.size() != 1)
+                    throw new IllegalArgumentException("argumentos inválidos, uso: aceptar [id]");
+                String aux = args.get(0).replace("trato","");
+                int id = Integer.parseInt(aux);
+                Trato trato = Monopoly.get().buscar_trato(id);
+                if (trato == null)
+                    throw new RuntimeException(String.format("el trato '%d' no existe!", id));
+                if(!trato.getJugadorRecibe().equals(Monopoly.get().get_turno().get_nombre()))
+                    throw new RuntimeException(String.format("el trato '%d' no es para ti!", id));
+                trato.aceptar_trato();
+                Monopoly.get().remove_trato(trato);}
+                break;
+            case ELIMINAR: {
+                if (args.size() != 1)
+                    throw new IllegalArgumentException("argumentos inválidos, uso: eliminar trato[id]");
+                String aux = args.get(0).replace("trato","");
+                if(aux.isEmpty())
+                    throw new RuntimeException("no has introducido un id");
+                int id = Integer.parseInt(aux);
+                Trato trato = Monopoly.get().buscar_trato(id);
+                if (trato == null)
+                    throw new RuntimeException(String.format("el trato '%d' no existe!", id));
+                Monopoly.get().remove_trato(trato);
+                System.out.printf("el trato %s%d%s ha sido eliminado\n",Color.ROJO, id, Color.RESET);
+            }
 
+                break;
             case SALIR:
                 switch (args.get(0)) {
                     case "carcel":
