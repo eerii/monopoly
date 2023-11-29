@@ -3,10 +3,10 @@ package consola;
 import java.util.ArrayList;
 import java.util.List;
 
-import consola.excepciones.PruebaException;
 import monopoly.*;
 import monopoly.Avatar.TipoAvatar;
-import monopoly.Edificio.TipoEdificio;
+import monopoly.casilla.*;
+import monopoly.casilla.Edificio.TipoEdificio;
 
 public class Comando {
     // TODO: Cambiar un poco esto por una interfaz comando
@@ -71,7 +71,7 @@ public class Comando {
                         break;
                     case "enventa":
                         for (Casilla c : casillas) {
-                            if (c.es_comprable() && c.en_venta()) {
+                            if (c instanceof Propiedad && ((Propiedad) c).en_venta()) {
                                 System.out.println(c);
                             }
                         }
@@ -83,10 +83,11 @@ public class Comando {
                         int vacios = 0;
                         if (args.size() == 1) {
                             for (Casilla c : casillas) {
-                                if (c.es_solar()) {
-                                    for (Edificio e : c.get_edificios())
+                                if (c instanceof Solar) {
+                                    Solar s = (Solar) c;
+                                    for (Edificio e : s.get_edificios())
                                         System.out.println(e);
-                                    if (c.get_edificios().isEmpty())
+                                    if (s.get_edificios().isEmpty())
                                         vacios += 1;
                                 }
                             }
@@ -98,12 +99,12 @@ public class Comando {
                         Grupo g = Monopoly.get().get_tablero().get_grupo(args.get(1));
                         if (g == null)
                             throw new RuntimeException(String.format("el grupo '%s' no existe\n", args.get(1)));
-                        List<Casilla> casillas_grupo = g.get_casillas();
+                        List<Solar> casillas_grupo = g.get_casillas();
 
-                        for (Casilla c : casillas_grupo) {
-                            for (Edificio e : c.get_edificios())
+                        for (Solar s : casillas_grupo) {
+                            for (Edificio e : s.get_edificios())
                                 System.out.println(e);
-                            if (c.get_edificios().isEmpty())
+                            if (s.get_edificios().isEmpty())
                                 vacios += 1;
                         }
                         if (vacios == casillas_grupo.size())
@@ -135,10 +136,10 @@ public class Comando {
                 if (c == null)
                     throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
-                if (!c.es_comprable())
+                if (!(c instanceof Propiedad))
                     throw new RuntimeException(String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
 
-                c.comprar(j);
+                ((Propiedad) c).comprar(j);
                 System.out.format(
                         "el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
@@ -154,17 +155,21 @@ public class Comando {
                 Jugador j = m.get_turno();
                 Casilla c = t.buscar_jugador(j);
 
-                if (!j.es_propietario(c))
+                if (!(c instanceof Solar))
+                    throw new RuntimeException(String.format("la casilla '%s' no es un solar\n", args.get(0)));
+                Solar s = (Solar) c;
+
+                if (!j.es_propietario(s))
                     throw new RuntimeException(
                             String.format("no eres el propietario de la casilla '%s'\n", c.get_nombre()));
 
-                Grupo g = c.get_grupo();
+                Grupo g = s.get_grupo();
                 if (!j.tiene_grupo(g))
                     throw new RuntimeException(String
                             .format("no tienes en propiedad todas las casillas del grupo '%s'\n", g.get_nombre()));
 
                 TipoEdificio tipo = TipoEdificio.from_str(args.get(0));
-                c.comprar_edificio(j, tipo);
+                s.comprar_edificio(j, tipo);
 
             }
                 break;
@@ -175,12 +180,16 @@ public class Comando {
                 Jugador j = m.get_turno();
                 Casilla c = t.buscar_jugador(j);
 
-                if (!j.es_propietario(c))
+                if (!(c instanceof Solar))
+                    throw new RuntimeException(String.format("la casilla '%s' no es un solar\n", args.get(0)));
+                Solar s = (Solar) c;
+
+                if (!j.es_propietario(s))
                     throw new RuntimeException(
                             String.format("no eres el propietario de la casilla '%s'\n", c.get_nombre()));
 
                 TipoEdificio tipo = TipoEdificio.from_str(args.get(0));
-                c.vender_edificio(j, tipo);
+                s.vender_edificio(j, tipo);
 
             }
                 break;
@@ -194,13 +203,22 @@ public class Comando {
                 if (c == null)
                     throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
-                c.hipotecar(j);
+                if (!(c instanceof Propiedad))
+                    throw new RuntimeException(String.format("la casilla '%s' no se puede hipotecar\n", args.get(0)));
+
+                Propiedad p = ((Propiedad) c);
+                p.hipotecar(j);
                 System.out.format(
-                        "el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s. No puede recibir alquileres ni hipotecar en el grupo %s%s%s%s\n",
+                        "el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                        Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
-                        Color.AMARILLO, Color.BOLD, c.get_hipoteca(), Color.RESET,
-                        Color.ROSA, Color.BOLD, c.get_grupo().get_nombre(), Color.RESET);
+                        Color.AZUL_OSCURO, Color.BOLD, p.get_nombre(), Color.RESET,
+                        Color.AMARILLO, Color.BOLD, p.get_hipoteca(), Color.RESET);
+
+                if (p instanceof Solar) {
+                    System.out.format(
+                            "no puede recibir alquileres ni hipotecar en el grupo %s%s%s%s\n",
+                            Color.ROSA, Color.BOLD, ((Solar) p).get_grupo().get_nombre(), Color.RESET);
+                }
             }
                 break;
 
@@ -213,13 +231,17 @@ public class Comando {
                 if (c == null)
                     throw new RuntimeException(String.format("la casilla '%s' no existe\n", args.get(0)));
 
-                c.deshipotecar(j);
+                if (!(c instanceof Propiedad))
+                    throw new RuntimeException(
+                            String.format("la casilla '%s' no se puede deshipotecar\n", args.get(0)));
+
+                Propiedad p = ((Propiedad) c);
+                p.deshipotecar(j);
                 System.out.format(
-                        "el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s. Ahora puede recibir alquileres y edificar en el grupo %s%s%s%s\n",
+                        "el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
-                        Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
-                        Color.AMARILLO, Color.BOLD, c.get_hipoteca() * 1.1f, Color.RESET,
-                        Color.ROSA, Color.BOLD, c.get_grupo().get_nombre(), Color.RESET);
+                        Color.AZUL_OSCURO, Color.BOLD, p.get_nombre(), Color.RESET,
+                        Color.AMARILLO, Color.BOLD, p.get_hipoteca() * 1.1f, Color.RESET);
             }
                 break;
 

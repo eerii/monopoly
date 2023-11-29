@@ -1,8 +1,8 @@
 package monopoly;
 
 import consola.Color;
-
-import java.util.stream.Collectors;
+import monopoly.casilla.Casilla;
+import monopoly.casilla.Propiedad;
 
 public class Trato {
     static int num_tratos = 1;
@@ -39,10 +39,14 @@ public class Trato {
             jugador2.add_fortuna(dinero);
         } catch (NumberFormatException nfe) {
             Casilla casilla1 = Monopoly.get().get_tablero().buscar_casilla(da1);
-            if(!jugador1.es_propietario(casilla1))
+            if (!(casilla1 instanceof Propiedad))
+                throw new RuntimeException(String.format("%s no es una propiedad, no se puede aceptar el trato", da1));
+            Propiedad propiedad = (Propiedad) casilla1;
+            
+            if(!jugador1.es_propietario(propiedad))
                 throw new RuntimeException(String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorPropone,da1));
-            jugador1.remove_propiedad(casilla1);
-            jugador2.add_propiedad(casilla1,0f);
+            jugador1.remove_propiedad(propiedad);
+            jugador2.add_propiedad(propiedad,0f);
         }
         try {
             float dinero = Float.parseFloat(recibe1);
@@ -52,10 +56,14 @@ public class Trato {
             jugador2.add_fortuna(dinero * -1f);
         } catch (NumberFormatException nfe) {
             Casilla casilla2 = Monopoly.get().get_tablero().buscar_casilla(recibe1);
-            if(!jugador2.es_propietario(casilla2))
+            if (!(casilla2 instanceof Propiedad))
+                throw new RuntimeException(String.format("%s no es una propiedad, no se puede aceptar el trato", da1));
+            Propiedad propiedad = (Propiedad) casilla2;
+            
+            if(!jugador2.es_propietario(propiedad))
                 throw new RuntimeException(String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorRecibe,recibe1));
-            jugador1.add_propiedad(casilla2,0);
-            jugador2.remove_propiedad(casilla2);
+            jugador1.add_propiedad(propiedad,0);
+            jugador2.remove_propiedad(propiedad);
         }
         System.out.printf("has aceptado el siguiente trato con %s, le das %s y te da %s", jugadorPropone,recibe1,da1);
 

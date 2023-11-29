@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import consola.Color;
+import monopoly.casilla.*;
 
 // TODO: Jerarquía de avatares
 
@@ -165,7 +166,7 @@ public class Avatar {
 
         actual.remove_jugador(j);
         siguiente.add_jugador(j);
-        siguiente.sumar_vecesVisitada();
+        siguiente.sumar_veces_visitada();
 
         return siguiente;
     }

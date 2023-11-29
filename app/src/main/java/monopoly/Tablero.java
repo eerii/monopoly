@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import consola.Color;
+import monopoly.casilla.*;
 
 public class Tablero {
     List<Casilla> casillas;
@@ -29,45 +30,45 @@ public class Tablero {
 
         casillas = new ArrayList<Casilla>(Arrays.asList(
                 new Casilla(Casilla.TipoCasilla.SALIDA, "Salida"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Ferrol", 1200.f, grupos.get(0)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Ferrol", 1200.f, grupos.get(0)),
                 new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Monforte", 1200.f, grupos.get(0)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Monforte", 1200.f, grupos.get(0)),
                 new Casilla(Casilla.TipoCasilla.IMPUESTOS, "Matrícula"),
-                new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Puerto ext."),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Viveiro", 1500.f, grupos.get(1)),
+                new Propiedad(Casilla.TipoCasilla.TRANSPORTE, "Puerto ext."),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Viveiro", 1500.f, grupos.get(1)),
                 new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Tui", 1500.f, grupos.get(1)),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Porriño", 1500.f, grupos.get(1)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Tui", 1500.f, grupos.get(1)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Porriño", 1500.f, grupos.get(1)),
                 new Casilla(Casilla.TipoCasilla.CARCEL, "Cárcel"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Marin", 2100.f, grupos.get(2)),
-                new Casilla(Casilla.TipoCasilla.SERVICIOS, "Iberdrola"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "O Grove", 2100.f, grupos.get(2)),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Cambre", 2100.f, grupos.get(2)),
-                new Casilla(Casilla.TipoCasilla.TRANSPORTE, "AP-9"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Cangas", 2700.f, grupos.get(3)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Marin", 2100.f, grupos.get(2)),
+                new Propiedad(Casilla.TipoCasilla.SERVICIOS, "Iberdrola"),
+                new Solar(Casilla.TipoCasilla.SOLAR, "O Grove", 2100.f, grupos.get(2)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Cambre", 2100.f, grupos.get(2)),
+                new Propiedad(Casilla.TipoCasilla.TRANSPORTE, "AP-9"),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Cangas", 2700.f, grupos.get(3)),
                 new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Ribeira", 2700.f, grupos.get(3)),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Redondela", 2700.f, grupos.get(3)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Ribeira", 2700.f, grupos.get(3)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Redondela", 2700.f, grupos.get(3)),
                 new Casilla(Casilla.TipoCasilla.PARKING, "Parking"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Culleredo", 3500.f, grupos.get(4)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Culleredo", 3500.f, grupos.get(4)),
                 new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Carballo", 3500.f, grupos.get(4)),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Ames", 3500.f, grupos.get(4)),
-                new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Urzaiz"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Arteixo", 4500.f, grupos.get(5)),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Oleiros", 4500.f, grupos.get(5)),
-                new Casilla(Casilla.TipoCasilla.SERVICIOS, "Fenosa"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Narón", 4500.f, grupos.get(5)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Carballo", 3500.f, grupos.get(4)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Ames", 3500.f, grupos.get(4)),
+                new Propiedad(Casilla.TipoCasilla.TRANSPORTE, "Urzaiz"),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Arteixo", 4500.f, grupos.get(5)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Oleiros", 4500.f, grupos.get(5)),
+                new Propiedad(Casilla.TipoCasilla.SERVICIOS, "Fenosa"),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Narón", 4500.f, grupos.get(5)),
                 new Casilla(Casilla.TipoCasilla.A_LA_CARCEL, "IrCarcel"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Pontevedra", 5800.f, grupos.get(6)),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Ourense", 5800.f, grupos.get(6)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Pontevedra", 5800.f, grupos.get(6)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Ourense", 5800.f, grupos.get(6)),
                 new Casilla(Casilla.TipoCasilla.COMUNIDAD, "Caja"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Santiago", 5800.f, grupos.get(6)),
-                new Casilla(Casilla.TipoCasilla.TRANSPORTE, "Lavacolla"),
+                new Solar(Casilla.TipoCasilla.SOLAR, "Santiago", 5800.f, grupos.get(6)),
+                new Propiedad(Casilla.TipoCasilla.TRANSPORTE, "Lavacolla"),
                 new Casilla(Casilla.TipoCasilla.SUERTE, "Suerte"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "A Coruña", 7500.f, grupos.get(7)),
+                new Solar(Casilla.TipoCasilla.SOLAR, "A Coruña", 7500.f, grupos.get(7)),
                 new Casilla(Casilla.TipoCasilla.IMPUESTOS, "Diezmo"),
-                new Casilla(Casilla.TipoCasilla.SOLAR, "Vigo", 7500.f, grupos.get(7))));
+                new Solar(Casilla.TipoCasilla.SOLAR, "Vigo", 7500.f, grupos.get(7))));
 
         float media = this.precio_medio();
         for (Casilla c : casillas) {
@@ -116,7 +117,7 @@ public class Tablero {
 
     public Casilla buscar_jugador(Jugador jugador) {
         for (Casilla c : casillas) {
-            if (c.jugadores.contains(jugador))
+            if (c.get_jugadores().contains(jugador))
                 return c;
         }
         return null;
@@ -124,7 +125,7 @@ public class Tablero {
 
     public float precio_medio() {
         List<Casilla> solares = casillas.stream()
-                .filter(c -> c.es_solar())
+                .filter(c -> c instanceof Solar)
                 .collect(Collectors.toList());
 
         float media = 0.f;
@@ -156,13 +157,17 @@ public class Tablero {
         Casilla c = casillas.get(i);
         float precio = c.get_precio();
 
-        if (c.es_solar() && c.get_propietario() != null) {
-            String l = c.lista_edificios();
-            int len = l.codePointCount(0, l.length());
-            return String.format("%-12s%s", l, " ".repeat(l.length() - len));
+        if (c instanceof Solar) {
+            Solar s = (Solar) c;
+
+            if (s.get_propietario() != null) {
+                String l = s.lista_edificios();
+                int len = l.codePointCount(0, l.length());
+                return String.format("%-12s%s", l, " ".repeat(l.length() - len));
+            }
         }
 
-        if (!c.es_comprable() || !c.en_venta())
+        if (!(c instanceof Propiedad) || !((Propiedad) c).en_venta())
             return String.format("%12s", "");
 
         return String.format("%sM%-11.0f%s", c.get_color(), precio, Color.RESET);
