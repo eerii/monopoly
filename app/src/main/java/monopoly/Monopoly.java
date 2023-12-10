@@ -17,10 +17,6 @@ public class Monopoly {
 
     // TODO: Implementar métodos abstractos
 
-    // TODO: Utilizar el método super del padre en algun hijo
-
-    // TODO: Usar instanceof para definir comportamientos
-
     // TODO: Declarar constantes (en config por ejemplo)
 
     Consola consola;
