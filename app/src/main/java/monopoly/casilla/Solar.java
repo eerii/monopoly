@@ -10,14 +10,13 @@ import monopoly.Jugador;
 import monopoly.casilla.Edificio.TipoEdificio;
 
 public class Solar extends Propiedad {
-    float alquiler;
-    Grupo grupo;
-    List<Edificio> edificios;
+    private float alquiler;
+    private Grupo grupo;
+    private List<Edificio> edificios;
 
     public Solar(TipoCasilla tipo, String nombre, float precio, Grupo grupo) {
         super(tipo, nombre);
-
-        this.precio = precio;
+        super.set_precio(precio);
         this.alquiler = (float) Math.floor(0.1f * precio);
         this.grupo = grupo;
         this.edificios = new ArrayList<>();
@@ -163,10 +162,10 @@ public class Solar extends Propiedad {
 
     @Override
     public String toString() {
-        String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET);
-        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, String.valueOf(tipo), Color.RESET);
+        String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_nombre(), Color.RESET);
+        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, String.valueOf(this.get_tipo()), Color.RESET);
         String sj = String.format("%s%s%s", Color.BOLD, lista_jugadores(), Color.RESET);
-        String sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
+        String sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, this.get_precio(), Color.RESET);
         String sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(),
                 Color.RESET);
         String sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, get_alquiler(), Color.RESET);
@@ -182,6 +181,6 @@ public class Solar extends Propiedad {
 
     @Override
     public String toStringMini() {
-        return String.format("%s %s", nombre, lista_edificios());
+        return String.format("%s %s", this.get_nombre(), lista_edificios());
     }
 }

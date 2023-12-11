@@ -5,8 +5,8 @@ import java.util.HashMap;
 import monopoly.Monopoly;
 
 public class Edificio {
-    TipoEdificio tipo;
-    Solar casilla;
+    private final TipoEdificio tipo;
+    private Solar casilla;
 
     // TODO: Cambiar a jerarquía de edificios
 

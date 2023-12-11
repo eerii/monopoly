@@ -13,9 +13,9 @@ public class Consola {
     // Aquí podemos implementar automáticamente colores para x cosas
     // Hay que cambiar todos los System.out.print por c.print o lo que sea
 
-    Scanner sc;
-    ByteArrayOutputStream os;
-    PrintStream ps, out;
+    private Scanner sc;
+    private ByteArrayOutputStream os;
+    private PrintStream ps, out;
 
     public Consola() {
         sc = new Scanner(System.in);

@@ -28,8 +28,8 @@ public class Comando {
         args.remove(0);
     }
 
-    Cmd cmd;
-    List<String> args;
+    private Cmd cmd;
+    private List<String> args;
 
     // Gestionar todas las acciones
     public void run() throws ConsolaException {

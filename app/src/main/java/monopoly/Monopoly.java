@@ -13,24 +13,22 @@ import monopoly.carta.*;
 public class Monopoly {
     // TODO: Usar modificadores abstract y final en las jerarquías
 
-    // TODO: Cambiar visibilidades a private
-
     // TODO: Implementar métodos abstractos
 
     // TODO: Declarar constantes (en config por ejemplo)
 
-    Consola consola;
-    List<Jugador> jugadores;
-    Jugador banca;
-    Tablero tablero;
-    Dados dados;
-    List<Suerte> barajaSuerte;
-    List <Comunidad> barajaComunidad;
-    List<Trato> tratos;
-    Estadisticas stats;
-    Config config;
-    int turno = -1;
-    int vueltas_totales = 0;
+    private Consola consola;
+    private List<Jugador> jugadores;
+    private Jugador banca;
+    private Tablero tablero;
+    private Dados dados;
+    private final List<Suerte> barajaSuerte;
+    private final List <Comunidad> barajaComunidad;
+    private List<Trato> tratos;
+    private Estadisticas stats;
+    private Config config;
+    private int turno = -1;
+    private int vueltas_totales = 0;
 
     static Monopoly instance = null;
 
@@ -154,7 +152,7 @@ public class Monopoly {
 
     public Trato buscar_trato(int id) {
         for (Trato t : tratos) {
-            if (t.id == id) {
+            if (t.getId() == id) {
                 return t;
             }
         }

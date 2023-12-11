@@ -9,8 +9,8 @@ import consola.Color;
 import monopoly.casilla.*;
 
 public class Tablero {
-    List<Casilla> casillas;
-    List<Grupo> grupos;
+    private List<Casilla> casillas;
+    private List<Grupo> grupos;
 
     public Tablero(List<Grupo> grupos, List<Casilla> casillas) {
         this.grupos = grupos;

@@ -11,8 +11,8 @@ import monopoly.casilla.*;
 
 public class Carta {
 
-    String texto;
-    Consumer<Jugador> accion;
+    private final String texto;
+    private Consumer<Jugador> accion;
 
     public Carta(String texto, Consumer<Jugador> accion) {
         this.texto = texto;
@@ -33,4 +33,7 @@ public class Carta {
         siguiente.sumar_veces_visitada();
     }
 
+    public String getTexto() {
+        return texto;
+    }
 }

@@ -6,7 +6,7 @@ import monopoly.Jugador;
 import monopoly.Monopoly;
 
 public class Propiedad extends Casilla {
-    float rentabilidad = 0;
+    private float rentabilidad = 0;
 
     public Propiedad(TipoCasilla tipo, String nombre) {
         super(tipo, nombre);
@@ -21,7 +21,7 @@ public class Propiedad extends Casilla {
     }
 
     public float get_hipoteca() {
-        return (float) Math.floor(0.5f * precio);
+        return (float) Math.floor(0.5f * this.get_precio());
     }
 
     public Jugador get_propietario() {
@@ -50,36 +50,36 @@ public class Propiedad extends Casilla {
         Monopoly m = Monopoly.get();
 
         if (!en_venta())
-            throw new ComprarCasillaException(String.format("la casilla %s no está en venta", nombre));
+            throw new ComprarCasillaException(String.format("la casilla %s no está en venta", this.get_nombre()));
 
-        if (!jugadores.contains(jugador))
+        if (!this.get_jugadores().contains(jugador))
             throw new ComprarCasillaException(
                     String.format("el jugador %s no está en la casilla %s por lo que no puede comprarla",
-                            jugador.get_nombre(), nombre));
+                            jugador.get_nombre(), this.get_nombre()));
 
-        if (jugador.get_fortuna() < precio)
+        if (jugador.get_fortuna() < this.get_precio())
             throw new ComprarCasillaException(
                     String.format("el jugador %s no puede permitirse comprar la casilla %s por %.0f",
-                            jugador.get_nombre(), nombre, precio));
+                            jugador.get_nombre(), this.get_nombre(), this.get_precio()));
 
         if (!jugador.puede_comprar())
             throw new ComprarCasillaException(
                     String.format("el jugador %s no puede comprar la casilla %s, ya lo ha hecho este turno",
-                            jugador.get_nombre(), nombre));
+                            jugador.get_nombre(), this.get_nombre()));
 
         m.get_banca().remove_propiedad(this);
-        jugador.add_propiedad(this, precio);
-        m.get_stats().of(jugador).sumar_dinero_invertido(precio);
+        jugador.add_propiedad(this, this.get_precio());
+        m.get_stats().of(jugador).sumar_dinero_invertido(this.get_precio());
     }
 
     public void hipotecar(Jugador jugador) throws HipotecaException {
         if (jugador.esta_hipotecada(this))
             throw new HipotecaException(
-                    String.format("%s no puede hipotecar %s, ya la tiene hipotecada", jugador.get_nombre(), nombre));
+                    String.format("%s no puede hipotecar %s, ya la tiene hipotecada", jugador.get_nombre(), this.get_nombre()));
 
         if (!jugador.es_propietario(this))
             throw new HipotecaException(
-                    String.format("%s no puede hipotecar %s, no le pertenece", jugador.get_nombre(), nombre));
+                    String.format("%s no puede hipotecar %s, no le pertenece", jugador.get_nombre(), this.get_nombre()));
 
         jugador.remove_propiedad(this);
         jugador.add_hipoteca(this, this.get_hipoteca());
@@ -89,9 +89,9 @@ public class Propiedad extends Casilla {
         if (!jugador.esta_hipotecada(this)) {
             if (!jugador.es_propietario(this))
                 throw new HipotecaException(
-                        String.format("%s no puede deshipotecar %s, no le pertenece", jugador.get_nombre(), nombre));
+                        String.format("%s no puede deshipotecar %s, no le pertenece", jugador.get_nombre(), this.get_nombre()));
             throw new HipotecaException(
-                    String.format("%s no puede deshipotecar %s, no la tiene hipotecada", jugador.get_nombre(), nombre));
+                    String.format("%s no puede deshipotecar %s, no la tiene hipotecada", jugador.get_nombre(), this.get_nombre()));
         }
 
         jugador.remove_hipoteca(this);
@@ -103,17 +103,17 @@ public class Propiedad extends Casilla {
     }
 
     public void incrementar_precio() {
-        precio = (float) Math.floor(precio * 1.05f);
+        this.set_precio(get_precio() * 1.05f);
     }
 
     // String
 
     @Override
     public String toString() {
-        String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET);
-        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, String.valueOf(tipo), Color.RESET);
+        String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_nombre(), Color.RESET);
+        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, String.valueOf(this.get_tipo()), Color.RESET);
         String sj = String.format("%s%s%s", Color.BOLD, lista_jugadores(), Color.RESET);
-        String sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio, Color.RESET);
+        String sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, this.get_precio(), Color.RESET);
 
         return String.format("%s - tipo: %s - valor: %s - jugadores: %s", sn, st, sp, sj);
     }

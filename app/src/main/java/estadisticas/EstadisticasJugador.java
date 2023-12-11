@@ -3,13 +3,13 @@ package estadisticas;
 import consola.Color;
 
 public class EstadisticasJugador {
-    float dinero_invertido = 0;
-    float pago_tasa_impuestos = 0;
-    float pago_alquileres = 0;
-    float cobro_alquileres = 0;
-    float pasar_salida = 0;
-    float premios = 0;
-    int veces_carcel = 0;
+    private float dinero_invertido = 0;
+    private float pago_tasa_impuestos = 0;
+    private float pago_alquileres = 0;
+    private float cobro_alquileres = 0;
+    private float pasar_salida = 0;
+    private float premios = 0;
+    private int veces_carcel = 0;
 
     public void sumar_dinero_invertido(float valor) {
         dinero_invertido += valor;

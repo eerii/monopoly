@@ -3,11 +3,11 @@ package monopoly;
 import java.util.Random;
 
 public class Dados {
-    int a;
-    int b;
-    int dobles = -1;
-    boolean tirados = false;
-    Jugador jugador;
+    private int a;
+    private int b;
+    private int dobles = -1;
+    private boolean tirados = false;
+    private Jugador jugador;
 
     public boolean cambio_jugador(Jugador jugador) {
         if (this.jugador == jugador)

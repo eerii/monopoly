@@ -10,14 +10,14 @@ import monopoly.Monopoly;
 import monopoly.casilla.*;
 
 public class Estadisticas {
-    Map<Jugador, EstadisticasJugador> jugador;
+    private Map<Jugador, EstadisticasJugador> jugador;
 
-    String casillaMasRentable;
-    String grupoMasRentable;
-    String casillaMasFrecuentada;
-    String jugadorMasVueltas;
-    String jugadorMasVecesDados;
-    String jugadorEnCabeza;
+    private String casillaMasRentable;
+    private String grupoMasRentable;
+    private String casillaMasFrecuentada;
+    private String jugadorMasVueltas;
+    private String jugadorMasVecesDados;
+    private String jugadorEnCabeza;
 
     public Estadisticas() {
         jugador = new HashMap<Jugador, EstadisticasJugador>();

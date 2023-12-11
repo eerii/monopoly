@@ -13,10 +13,10 @@ import consola.excepciones.*;
 // TODO: Jerarquía de avatares
 
 public class Avatar {
-    char id;
-    boolean modo_avanzado = false;
-    static List<Character> ocupados;
-    TipoAvatar tipo;
+    private char id;
+    private boolean modo_avanzado = false;
+    private static List<Character> ocupados;
+    private TipoAvatar tipo;
 
     public enum TipoAvatar {
         ESFINGE("esfinge"),

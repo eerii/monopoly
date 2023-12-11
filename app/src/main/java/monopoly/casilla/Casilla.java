@@ -13,11 +13,11 @@ import monopoly.*;
 import monopoly.carta.*;
 
 public class Casilla {
-    String nombre;
-    TipoCasilla tipo;
-    Set<Jugador> jugadores;
-    float precio;
-    int veces_visitada = 0;
+    private final String nombre;
+    private final TipoCasilla tipo;
+    private Set<Jugador> jugadores;
+    private float precio;
+    private int veces_visitada = 0;
 
     // TODO: Jerarquía de casillas
     // Propiedad, Accion, Impuesto, Grupo, Especial

@@ -5,9 +5,9 @@ import java.util.List;
 import consola.Color;
 
 public class Grupo {
-    Color color;
-    String nombre;
-    List<Solar> casillas;
+    private final Color color;
+    private final String nombre;
+    private final List<Solar> casillas;
 
     public Grupo(Color color, String nombre) {
         this.color = color;

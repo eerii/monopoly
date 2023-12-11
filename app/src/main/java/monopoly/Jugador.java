@@ -11,22 +11,19 @@ import consola.excepciones.*;
 
 public class Jugador {
 
-    // TODO: Limpiar mucho los getters y setters de esta clase (son un desastre)
+    private final String nombre;
+    private final Avatar avatar;
+    private float fortuna;
+    private List<Propiedad> propiedades;
+    private List<Propiedad> hipotecas;
+    private int vueltas;
+    private int tiradas;
+    private int contador_carcel = 0;
+    private int turnos_extra = 0;
+    private int turnos_penalizacion = 0;
+    private boolean ha_comprado = false;
 
-    String nombre;
-    Avatar avatar;
-    float fortuna;
-    List<Propiedad> propiedades;
-    List<Propiedad> hipotecas;
-    int vueltas;
-    int tiradas;
-    float fortuna_total;
-    int contador_carcel = 0;
-    int turnos_extra = 0;
-    int turnos_penalizacion = 0;
-    boolean ha_comprado = false;
-
-    static final int turnos_carcel = 3;
+    private static final int turnos_carcel = 3;
 
     // Constructor de un jugador normal
     public Jugador(String nombre, Avatar avatar) {

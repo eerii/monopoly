@@ -7,14 +7,14 @@ import monopoly.casilla.Casilla;
 import monopoly.casilla.Propiedad;
 
 public class Trato {
-    static int num_tratos = 1;
-    int id;
-    String jugadorPropone;
-    String jugadorRecibe;
-    String da1;
-    String da2;
-    String recibe1;
-    String recibe2;
+    private static int num_tratos = 1;
+    private int id;
+    private String jugadorPropone;
+    private String jugadorRecibe;
+    private String da1;
+    private String da2;
+    private String recibe1;
+    private String recibe2;
 
 
     public Trato(String trato, String jugadorPropone) {
@@ -49,6 +49,10 @@ public class Trato {
 
     public String getJugadorRecibe() {
         return jugadorRecibe;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void aceptar_trato() throws TratoException {
