@@ -144,7 +144,7 @@ public class Avatar {
         }
     }
 
-    Casilla avanzar(Casilla actual, int movimiento) {
+    public Casilla avanzar(Casilla actual, int movimiento) {
         Monopoly m = Monopoly.get();
         List<Casilla> casillas = m.get_tablero().get_casillas();
         Jugador j = get_jugador();

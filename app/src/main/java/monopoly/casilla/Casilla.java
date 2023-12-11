@@ -10,6 +10,7 @@ import consola.excepciones.ComprarCasillaException;
 import estadisticas.EstadisticasJugador;
 
 import monopoly.*;
+import monopoly.carta.*;
 
 public class Casilla {
     String nombre;
@@ -85,13 +86,18 @@ public class Casilla {
                     s.sumar_premios(bote);
                     break;
                 case SUERTE:
-                case COMUNIDAD:
-                    List<Carta> baraja = m
-                            .barajar(tipo == TipoCasilla.SUERTE ? Carta.TipoCarta.SUERTE : Carta.TipoCarta.COMUNIDAD);
-                    Carta c = m.sacar_carta(baraja);
-                    System.out.format("el jugador %s ha caído en la casilla de %s, saca la carta: %s\n",
-                            jugador.get_nombre(), tipo, c);
+                    List<Carta> barajaSuerte = m.get_barajaSuerte();
+                    Carta c = m.sacar_carta(barajaSuerte);
+                    System.out.format("el jugador %s saca la carta de %s\n",
+                            jugador.get_nombre(), c);
                     c.ejecutar(jugador);
+                    break;
+                case COMUNIDAD:
+                    List<Carta> barajaComunidad = m.get_barajaComunidad();
+                    Carta carta = m.sacar_carta(barajaComunidad);
+                    System.out.format("el jugador %s saca la carta de %s\n",
+                            jugador.get_nombre(), carta);
+                    carta.ejecutar(jugador);
                     break;
                 default:
             }
@@ -217,10 +223,9 @@ public class Casilla {
         if (o == this)
             return true;
 
-        if (!(o instanceof Casilla))
+        if (!(o instanceof Casilla c))
             return false;
 
-        Casilla c = (Casilla) o;
         return c.nombre.equals(nombre);
     }
 }

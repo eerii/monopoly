@@ -485,6 +485,7 @@ public class Comando {
 
                         break;
                     case "":
+                        System.out.print("hasta la próxima\n");
                         System.exit(0);
                         break;
                     default:

@@ -6,9 +6,9 @@ import java.util.List;
 import consola.Color;
 import consola.Consola;
 import estadisticas.Estadisticas;
-import monopoly.Carta.TipoCarta;
 import consola.excepciones.*;
 import monopoly.casilla.*;
+import monopoly.carta.*;
 
 public class Monopoly {
     // TODO: Usar modificadores abstract y final en las jerarquías
@@ -24,7 +24,8 @@ public class Monopoly {
     Jugador banca;
     Tablero tablero;
     Dados dados;
-    List<Carta> baraja;
+    List<Suerte> barajaSuerte;
+    List <Comunidad> barajaComunidad;
     List<Trato> tratos;
     Estadisticas stats;
     Config config;
@@ -38,7 +39,8 @@ public class Monopoly {
         jugadores = new ArrayList<Jugador>();
         tablero = new Tablero();
         dados = new Dados();
-        baraja = Carta.baraja;
+        barajaSuerte = Suerte.get_baraja();
+        barajaComunidad = Comunidad.get_baraja();
         stats = new Estadisticas();
         tratos = new ArrayList<Trato>();
 
@@ -219,6 +221,7 @@ public class Monopoly {
     }
 
     public void comprobar_vueltas() {
+
         int min = 10000;
         for (Jugador j : jugadores) {
             min = j.get_vueltas() < min ? j.get_vueltas() : min;
@@ -239,15 +242,26 @@ public class Monopoly {
         return consola;
     }
 
-    public List<Carta> barajar(TipoCarta tipo) {
-        List<Carta> baraja = new ArrayList<Carta>(this.baraja);
-        baraja.removeIf(c -> c.get_tipo() != tipo);
-        java.util.Collections.shuffle(baraja);
+
+    public List<Carta> get_barajaSuerte() {
+        List<Carta> baraja = new ArrayList<Carta>();
+        for (Suerte s : barajaSuerte) {
+            baraja.add(s);
+        }
         return baraja;
     }
 
+    public List<Carta> get_barajaComunidad() {
+        List<Carta> baraja = new ArrayList<Carta>();
+        for (Comunidad c : barajaComunidad) {
+            baraja.add(c);
+        }
+        return baraja;
+    }
     public Carta sacar_carta(List<Carta> baraja) {
+
         int n = -1;
+        java.util.Collections.shuffle(baraja); // Ya barajamos aquí
         while (n < 1 || n > 6) {
             System.out.print("elige una carta del 1 al 6: ");
             String respuesta = consola.get_raw().trim();
@@ -263,4 +277,5 @@ public class Monopoly {
 
         return baraja.get(n - 1);
     }
+
 }
