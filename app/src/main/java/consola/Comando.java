@@ -9,7 +9,7 @@ import consola.excepciones.*;
 import monopoly.*;
 import monopoly.Avatar.TipoAvatar;
 import monopoly.casilla.*;
-import monopoly.casilla.Edificio.TipoEdificio;
+import monopoly.casilla.edificio.*;
 
 public class Comando {
     // TODO: Cambiar un poco esto por una interfaz comando
@@ -171,8 +171,23 @@ public class Comando {
                     throw new PropiedadException(String
                             .format("no tienes en propiedad todas las casillas del grupo '%s'\n", g.get_nombre()));
 
-                TipoEdificio tipo = TipoEdificio.from_str(args.get(0).toLowerCase());
-                s.comprar_edificio(j, tipo);
+                String tipo = (args.get(0).toLowerCase());
+                switch (tipo){
+                    case "casa":
+                        s.comprar_casa(j);
+                        break;
+                    case "hotel":
+                        s.comprar_hotel(j);
+                        break;
+                    case "termas":
+                        s.comprar_termas(j);
+                        break;
+                    case "pabellon":
+                        s.comprar_pabellon(j);
+                        break;
+                    default:
+                        throw new PropiedadException(String.format("el tipo de edificio '%s' no existe\n", args.get(0)));
+                }
 
             }
                 break;
@@ -191,8 +206,23 @@ public class Comando {
                     throw new PropiedadException(
                             String.format("no eres el propietario de la casilla '%s'\n", c.get_nombre()));
 
-                TipoEdificio tipo = TipoEdificio.from_str(args.get(0));
-                s.vender_edificio(j, tipo);
+                String tipo = (args.get(0).toLowerCase());
+                switch (tipo){
+                    case "casa":
+                        s.vender_casa(j);
+                        break;
+                    case "hotel":
+                        s.vender_hotel(j);
+                        break;
+                    case "termas":
+                        s.vender_termas(j);
+                        break;
+                    case "pabellon":
+                        s.vender_pabellon(j);
+                        break;
+                    default:
+                        throw new PropiedadException(String.format("el tipo de edificio '%s' no existe\n", args.get(0)));
+                }
 
             }
                 break;
