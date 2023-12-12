@@ -247,18 +247,18 @@ public class Trato {
 
 
         if (recibe2.isEmpty() && da2.isEmpty())
-            System.out.printf("has aceptado el siguiente trato con %s, le das %s y te da %s", jugadorPropone, recibe1,
+            System.out.format("has aceptado el siguiente trato con %s, le das %s y te da %s", jugadorPropone, recibe1,
                     da1);
         else if (recibe2.isEmpty())
-            System.out.printf("has aceptado el siguiente trato con %s, le das %s y te da %s y %s", jugadorPropone,
+            System.out.format("has aceptado el siguiente trato con %s, le das %s y te da %s y %s", jugadorPropone,
                     recibe1, da1, da2);
         else if (da2.isEmpty())
-            System.out.printf("has aceptado el siguiente trato con %s, le das %s y %s te da %s", jugadorPropone,
+            System.out.format("has aceptado el siguiente trato con %s, le das %s y %s te da %s", jugadorPropone,
                     recibe1, recibe2, da1);
         else
-            System.out.printf("has aceptado el siguiente trato con %s, le das %s y %s y te da %s y %s", jugadorPropone,recibe1,recibe2,da1,da2);
+            System.out.format("has aceptado el siguiente trato con %s, le das %s y %s y te da %s y %s", jugadorPropone,recibe1,recibe2,da1,da2);
         if(turnosAlquiler!=0)
-            System.out.printf(" y no paga alquiler en %s durante %d turnos", casillaAlquiler, turnosAlquiler);
+            System.out.format(" y no paga alquiler en %s durante %d turnos", casillaAlquiler, turnosAlquiler);
     }
 
     @Override

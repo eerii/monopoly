@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import consola.Color;
 import consola.excepciones.*;
 
+import monopoly.avatar.*;
 import monopoly.casilla.Casilla;
 import monopoly.casilla.edificio.*;
 import monopoly.casilla.propiedad.*;
@@ -71,15 +72,43 @@ public class Jugador {
 
     @Override
     public String toString() {
+        if(avatar instanceof Coche coche)
+            return String.format(
+                    "%s%s%s%s - avatar: %s%s%s (coche) - fortuna: %s%s%.0f%s\n" +
+                            "propiedades: %s\nhipotecas: %s",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    Color.BOLD, representar(), Color.RESET,
+                    Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
+                    propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
+                    hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
+        else if(avatar instanceof Sombrero sombrero)
+            return String.format(
+                    "%s%s%s%s - avatar: %s%s%s (sombrero) - fortuna: %s%s%.0f%s\n" +
+                            "propiedades: %s\nhipotecas: %s",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    Color.BOLD, representar(), Color.RESET,
+                    Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
+                    propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
+                    hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
+        else if(avatar instanceof Esfinge esfinge)
+            return String.format(
+                    "%s%s%s%s - avatar: %s%s%s (esfinge) - fortuna: %s%s%.0f%s\n" +
+                            "propiedades: %s\nhipotecas: %s",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    Color.BOLD, representar(), Color.RESET,
+                    Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
+                    propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
+                    hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
+        Pelota pelota = (Pelota) avatar;
         return String.format(
-                "%s%s%s%s - avatar: %s%s%s (%s) - fortuna: %s%s%.0f%s\n" +
-                        "propiedades: %s\nhipotecas: %s",
-                Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                Color.BOLD, representar(), Color.RESET,
-                avatar.get_tipo(),
-                Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
-                propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
-                hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
+                    "%s%s%s%s - avatar: %s%s%s (pelota) - fortuna: %s%s%.0f%s\n" +
+                            "propiedades: %s\nhipotecas: %s",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    Color.BOLD, representar(), Color.RESET,
+                    Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
+                    propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
+                    hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
+
     }
 
     // ·······
@@ -140,7 +169,7 @@ public class Jugador {
     }
 
     public void add_propiedad(Casilla casilla, float precio) throws ComprarCasillaException {
-        if (avatar != null && avatar.get_tipo() == Avatar.TipoAvatar.COCHE && avatar.es_modo_avanzado() && ha_comprado)
+        if (avatar != null && avatar instanceof Coche && avatar.es_modo_avanzado() && ha_comprado)
             throw new ComprarCasillaException(
                     String.format("el jugador %s ya ha comprado una propiedad en este turno\n", nombre));
 
@@ -300,7 +329,12 @@ public class Jugador {
     // Mover
 
     public void mover(Casilla actual, int movimiento) {
-        avatar.siguiente_casilla(actual, movimiento);
+        if (avatar instanceof Coche coche)
+            coche.siguiente_casilla(actual, movimiento);
+        else if (avatar instanceof Pelota pelota)
+            pelota.siguiente_casilla(actual, movimiento);
+        else
+            avatar.siguiente_casilla(actual, movimiento);
         turnos_extra = turnos_extra > 0 ? turnos_extra - 1 : 0;
     }
 
@@ -392,19 +426,37 @@ public class Jugador {
 
     // String
 
-    public String representar() {
-        Monopoly.Config c = Monopoly.get().get_config();
-        if (c.get_iconos()) {
-            Avatar.TipoAvatar t = avatar.get_tipo();
-            return t.get_icono();
-        }
-        return String.valueOf(avatar.get_id());
-    }
+
 
     public String toStringMini() {
-        return String.format("%s%s%s%s - avatar %s%s%s (%s)",
-                Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                Color.BOLD, representar(), Color.RESET,
-                avatar.get_tipo());
+        if(avatar instanceof Coche coche)
+            return String.format("%s%s%s%s - avatar %s%s%s (coche)",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    Color.BOLD, representar(), Color.RESET);
+        else if(avatar instanceof Sombrero sombrero)
+            return String.format("%s%s%s%s - avatar %s%s%s (sombrero)",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    Color.BOLD, representar(), Color.RESET);
+        else if(avatar instanceof Esfinge esfinge)
+            return String.format("%s%s%s%s - avatar %s%s%s (esfinge)",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    Color.BOLD, representar(), Color.RESET);
+
+        Pelota pelota = (Pelota) avatar;
+        return String.format("%s%s%s%s - avatar %s%s%s (pelota)",
+                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                    Color.BOLD, representar(), Color.RESET);
+    }
+
+    public String representar() {
+        Avatar avatar = get_avatar();
+        if(avatar instanceof Coche coche)
+            return coche.representar();
+        else if(avatar instanceof Sombrero sombrero)
+            return sombrero.representar();
+        else if(avatar instanceof Esfinge esfinge)
+            return esfinge.representar();
+        Pelota pelota = (Pelota) avatar;
+        return pelota.representar();
     }
 }

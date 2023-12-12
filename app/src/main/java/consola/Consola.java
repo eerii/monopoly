@@ -56,9 +56,9 @@ public class Consola implements IConsola {
         limpiar_pantalla();
         System.out.println(Monopoly.get().get_tablero().representar());
 
-        System.out.print("\u001b[1B");
+        System.out.println("\u001b[1B");
         System.out.println(salida);
-        System.out.print("\u001b[36;0H> \u001b[K");
+        System.out.println("\u001b[36;0H> \u001b[K");
 
         String line = sc.nextLine();
         limpiar_resultado();
@@ -69,7 +69,7 @@ public class Consola implements IConsola {
     }
 
     public void limpiar_pantalla() {
-        System.out.print("\u001b[33;0H\u001b[1J\u001b[H");
+        System.out.println("\u001b[33;0H\u001b[1J\u001b[H");
     }
 
     public void limpiar_resultado() {
@@ -77,7 +77,7 @@ public class Consola implements IConsola {
     }
 
     public boolean entrada() {
-        System.out.print("> \u001b[K");
+        System.out.println("> \u001b[K");
         String line = sc.nextLine();
         limpiar_resultado();
 

@@ -8,6 +8,7 @@ import consola.Consola;
 import consola.IConsola;
 import estadisticas.Estadisticas;
 import consola.excepciones.*;
+import monopoly.avatar.*;
 import monopoly.casilla.*;
 import monopoly.casilla.propiedad.*;
 import monopoly.carta.*;
@@ -159,8 +160,8 @@ public class Monopoly {
         m.config.procesar(args);
 
         // FIX: Jugadores temporales para pruebas, borrar
-        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.ESFINGE)));
-        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.PELOTA)));
+        m.add_jugador(new Jugador("Jugador1", new Esfinge()));
+        m.add_jugador(new Jugador("Jugador2", new Pelota()));
 
         boolean pausa = false;
         while (true) {

@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import consola.excepciones.*;
 
 import monopoly.*;
-import monopoly.Avatar.TipoAvatar;
+import monopoly.avatar.*;
 import monopoly.casilla.*;
 import monopoly.casilla.edificio.*;
 import monopoly.casilla.propiedad.*;
@@ -43,13 +43,27 @@ public class Comando {
                                     "argumentos inválidos, uso: crear jugador [nombre] [avatar]");
 
                         String nombre = args.get(1).toLowerCase();
-                        TipoAvatar tipo = TipoAvatar.from_str(args.get(2));
-
+                        String tipo = args.get(2).toLowerCase();
                         for (Jugador j : Monopoly.get().get_jugadores())
                             if (j.get_nombre().equals(nombre))
                                 throw new IllegalArgumentException("el nombre del jugador ya está cogido");
-
-                        Jugador j = new Jugador(nombre, new Avatar(tipo));
+                        Jugador j;
+                        switch (tipo){
+                            case "coche":
+                                j = new Jugador(nombre, new Coche());
+                                break;
+                            case "sombrero":
+                                j = new Jugador(nombre, new Sombrero());
+                                break;
+                            case "pelota":
+                                j = new Jugador(nombre, new Pelota());
+                                break;
+                            case "esfinge":
+                                j = new Jugador(nombre, new Esfinge());
+                                break;
+                            default:
+                                    throw new IllegalArgumentException("el tipo de avatar no es correcto\n");
+                        }
                         Monopoly.get().add_jugador(j);
                         System.out.println(j.toStringMini());
 
@@ -508,7 +522,7 @@ public class Comando {
                 if (trato == null)
                     throw new NoSuchElementException(String.format("el trato '%d' no existe!", id));
                 Monopoly.get().remove_trato(trato);
-                System.out.printf("el trato %s%d%s ha sido eliminado\n", Color.ROJO, id, Color.RESET);
+                System.out.format("el trato %s%d%s ha sido eliminado\n", Color.ROJO, id, Color.RESET);
             }
 
                 break;
@@ -523,7 +537,7 @@ public class Comando {
 
                         break;
                     case "":
-                        System.out.print("hasta la próxima\n");
+                        System.out.println("hasta la próxima\n");
                         System.exit(0);
                         break;
                     default:
