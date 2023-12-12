@@ -18,6 +18,7 @@ public class Avatar {
     private static List<Character> ocupados;
     private TipoAvatar tipo;
 
+    // TODO: Jerarquía avatar
     public enum TipoAvatar {
         ESFINGE("esfinge"),
         SOMBRERO("sombrero"),

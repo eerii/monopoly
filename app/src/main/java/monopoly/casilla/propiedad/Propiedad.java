@@ -37,7 +37,7 @@ public abstract class Propiedad extends Casilla {
                     return;
 
                 System.out.format("¿Quieres comprar %s por %.0f? (s/N)\n", this.get_nombre(), this.get_precio());
-                String respuesta = m.get_consola().get_raw().trim();
+                String respuesta = m.get_consola().leer().trim();
                 if (respuesta.equalsIgnoreCase("s")) {
                     try {
                         p.comprar(jugador);

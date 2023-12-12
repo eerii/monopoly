@@ -8,14 +8,22 @@ import java.util.Scanner;
 import consola.excepciones.ConsolaException;
 import monopoly.Monopoly;
 
-public class Consola {
-    // TODO: Cambiar a interfaz consola con métodos para leer y escribir
-    // Aquí podemos implementar automáticamente colores para x cosas
-    // Hay que cambiar todos los System.out.print por c.print o lo que sea
+public class Consola implements IConsola {
+    // TODO: Cambiar todos los System.out.println y System.out.format por Monopoly.get().get_consola().imprimir()
+    // Las dos funcionan igual con nuestro imprimir
+    // Para los System.out.print a secas, mirar si se puede cambiar por un println, si no hay que buscar alternativa
+
+    // ···········
+    // Propiedades
+    // ···········
 
     private Scanner sc;
     private ByteArrayOutputStream os;
     private PrintStream ps, out;
+
+    // ·············
+    // Constructores
+    // ·············
 
     public Consola() {
         sc = new Scanner(System.in);
@@ -23,6 +31,42 @@ public class Consola {
         ps = new PrintStream(os);
         out = System.out;
     };
+
+    // ················
+    // Interfaz pública
+    // ················
+
+    public void imprimir(String s, Object... args) {
+        if (args.length == 0) {
+            System.out.println(s);
+        } else if (args.length == 1 && args[0] == null) {
+            System.out.print(s);
+        } else {
+            System.out.format(s, args);
+        }
+    }
+
+    public String leer() {
+        System.out.flush();
+        System.setOut(out);
+
+        String salida = os.toString();
+        os.reset();
+
+        limpiar_pantalla();
+        System.out.println(Monopoly.get().get_tablero().representar());
+
+        System.out.print("\u001b[1B");
+        System.out.println(salida);
+        System.out.print("\u001b[36;0H> \u001b[K");
+
+        String line = sc.nextLine();
+        limpiar_resultado();
+
+        System.setOut(ps);
+
+        return line;
+    }
 
     public void limpiar_pantalla() {
         System.out.print("\u001b[33;0H\u001b[1J\u001b[H");
@@ -69,27 +113,5 @@ public class Consola {
             sc.nextLine();
         }
         return pausa;
-    }
-
-    public String get_raw() {
-        System.out.flush();
-        System.setOut(out);
-
-        String salida = os.toString();
-        os.reset();
-
-        limpiar_pantalla();
-        System.out.println(Monopoly.get().get_tablero().representar());
-
-        System.out.print("\u001b[1B");
-        System.out.println(salida);
-        System.out.print("\u001b[36;0H> \u001b[K");
-
-        String line = sc.nextLine();
-        limpiar_resultado();
-
-        System.setOut(ps);
-
-        return line;
     }
 }

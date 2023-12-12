@@ -5,6 +5,7 @@ import java.util.List;
 
 import consola.Color;
 import consola.Consola;
+import consola.IConsola;
 import estadisticas.Estadisticas;
 import consola.excepciones.*;
 import monopoly.casilla.*;
@@ -40,7 +41,7 @@ public class Monopoly {
     // Propiedades
     // ···········
 
-    private Consola consola;
+    private IConsola consola;
     private List<Jugador> jugadores;
     private Jugador banca;
     private Tablero tablero;
@@ -76,7 +77,7 @@ public class Monopoly {
                     banca.add_propiedad((Propiedad) c, 0.f);
                 } catch (ComprarCasillaException e) {
                     // No hacemos nada porque la banca no está comprando realmente las casillas
-                    System.out.println("Aviso: " + e.getMessage());
+                    consola.imprimir("Aviso: " + e.getMessage());
                 }
 
         config = new Config();
@@ -126,7 +127,7 @@ public class Monopoly {
         return jugadores.get(turno % jugadores.size());
     }
 
-    public Consola get_consola() {
+    public IConsola get_consola() {
         return consola;
     }
 
@@ -164,13 +165,13 @@ public class Monopoly {
         boolean pausa = false;
         while (true) {
             m.consola.limpiar_pantalla();
-            System.out.println(m.tablero.representar());
+            m.consola.imprimir(m.tablero.representar());
             if (pausa)
                 m.consola.limpiar_resultado();
             pausa = m.consola.entrada();
 
             if (m.jugadores.size() == 1) {
-                System.out.format("el jugador %s ha ganado!\n", m.jugadores.get(0).get_nombre());
+                m.consola.imprimir("el jugador %s ha ganado!\n", m.jugadores.get(0).get_nombre());
                 break;
             }
         }
@@ -241,16 +242,16 @@ public class Monopoly {
 
     public void listar_tratos() {
         int cont = 0;
-        System.out.println("Tratos:");
+        consola.imprimir("Tratos:");
         for (Trato t : tratos) {
             if (t.getJugadorRecibe().equals(get_turno().get_nombre())) {
-                System.out.format(t.representar());
+                consola.imprimir(t.representar());
                 cont = 1;
             }
 
         }
         if (cont == 0)
-            System.out.println("No hay tratos disponibles\n");
+            consola.imprimir("No hay tratos disponibles\n");
     }
 
     public void siguiente_turno() {
@@ -258,7 +259,7 @@ public class Monopoly {
         j.turno();
         turno = (turno + 1) % jugadores.size();
         j = get_turno();
-        System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, j.get_nombre(),
+        consola.imprimir("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, j.get_nombre(),
                 Color.RESET);
     }
 
@@ -274,27 +275,26 @@ public class Monopoly {
         }
         if (min > vueltas_totales) {
             vueltas_totales = min;
-            System.out.format("todos los jugadores han completado %d vueltas!\n", vueltas_totales);
+            consola.imprimir("todos los jugadores han completado %d vueltas!\n", vueltas_totales);
             if (vueltas_totales % 4 == 0) {
                 tablero.get_casillas().stream()
                         .filter(c -> c instanceof Propiedad && ((Propiedad) c).en_venta())
                         .forEach(c -> ((Propiedad) c).incrementar_precio());
-                System.out.println("el precio de todas las casillas se incrementa en un 5%");
+                consola.imprimir("el precio de todas las casillas se incrementa en un 5%");
             }
         }
     }
 
     public Carta sacar_carta(List<Carta> baraja) {
-
         int n = -1;
         java.util.Collections.shuffle(baraja); // Ya barajamos aquí
         while (n < 1 || n > 6) {
-            System.out.print("elige una carta del 1 al 6: ");
-            String respuesta = consola.get_raw().trim();
+            consola.imprimir("elige una carta del 1 al 6: ");
+            String respuesta = consola.leer().trim();
             try {
                 n = Integer.parseInt(respuesta);
             } catch (NumberFormatException e) {
-                System.out.println("debes introducir un número");
+                consola.imprimir("debes introducir un número");
             }
         }
 
