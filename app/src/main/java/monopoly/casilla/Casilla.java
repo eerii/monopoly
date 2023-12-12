@@ -105,40 +105,4 @@ public abstract class Casilla {
         return "[ " + s + " ]";
     }
 
-    // TODO: To String en cada subclase de casilla
-    /*
-     * @Override
-     * public String toString() {
-     * 
-     * String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, nombre,
-     * Color.RESET);
-     * String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD,
-     * String.valueOf(tipo), Color.RESET);
-     * String sj = String.format("%s%s%s", Color.BOLD, lista_jugadores(),
-     * Color.RESET);
-     * String sp;
-     * 
-     * switch (tipo) {
-     * case IMPUESTOS:
-     * sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio,
-     * Color.RESET);
-     * return String.format("%s - tipo: %s - a pagar: %s - jugadores: %s", sn, st,
-     * sp, sj);
-     * case PARKING:
-     * sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD,
-     * Monopoly.get().get_banca().get_fortuna(),
-     * Color.RESET);
-     * return String.format("%s - tipo: %s - bote: %s - jugadores: %s", sn, st, sp,
-     * sj);
-     * case CARCEL:
-     * sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, precio,
-     * Color.RESET);
-     * return String.format("%s - tipo: %s - salir: %s - jugadores: %s", sn, st, sp,
-     * sj);
-     * default:
-     * return String.format("%s - tipo: %s - jugadores: %s", sn, st, sj);
-     * }
-     * 
-     * }
-     */
 }

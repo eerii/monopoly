@@ -77,4 +77,25 @@ public class Especial extends Casilla {
     public Tipo get_tipo() {
         return tipo;
     }
+
+    @Override
+    public String toString() {
+        String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_nombre(), Color.RESET);
+        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, this.get_tipo(), Color.RESET);
+        String sj = String.format("%s%s%s", Color.BOLD, this.lista_jugadores(), Color.RESET);
+        String sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, this.get_precio(),Color.RESET);
+        switch (tipo) {
+            case SALIDA:
+                sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, Monopoly.get().get_tablero().precio_medio(), Color.RESET);
+                return String.format("%s - tipo: %s - dinero al pasar: %s - jugadores: %s", sn, st, sp, sj);
+            case CARCEL:
+                sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, this.get_precio(), Color.RESET);
+                return String.format("%s - tipo: %s - salir: %s - jugadores: %s", sn, st, sp, sj);
+            case PARKING:
+                sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, Monopoly.get().get_banca().get_fortuna(), Color.RESET);
+                return String.format("%s - tipo: %s - bote: %s - jugadores: %s", sn, st, sp, sj);
+            default:
+                return String.format("%s - tipo: %s - jugadores: %s", sn, st, sj);
+        }
+    }
 }
