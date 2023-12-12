@@ -1,7 +1,9 @@
 package monopoly.casilla.propiedad;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import consola.Color;
@@ -12,6 +14,8 @@ import monopoly.casilla.*;
 
 public class Solar extends Propiedad {
     private float alquiler;
+
+    private Map<Jugador, Integer> noAlquiler;
     private Grupo grupo;
     private List<Edificio> edificios;
 
@@ -21,6 +25,7 @@ public class Solar extends Propiedad {
         this.alquiler = (float) Math.floor(0.1f * precio);
         this.grupo = grupo;
         this.edificios = new ArrayList<>();
+        this.noAlquiler = new HashMap<>();
         grupo.add(this);
     }
 
@@ -333,5 +338,35 @@ public class Solar extends Propiedad {
     @Override
     public String toStringMini() {
         return String.format("%s %s", this.get_nombre(), lista_edificios());
+    }
+
+    public void restarTurnoNoAlquiler(Jugador j) {
+        if (noAlquiler.containsKey(j)) {
+            int turnos = noAlquiler.get(j);
+            if(turnos - 1 == 0)
+                noAlquiler.remove(j);
+            else
+                noAlquiler.put(j, turnos - 1);
+        }
+    }
+
+    public boolean noPagaAlquiler(Jugador jugador) {
+        return noAlquiler.containsKey(jugador);
+    }
+
+    public int getTurnosNoAlquiler(Jugador jugador) {
+        return noAlquiler.get(jugador);
+    }
+
+    public void clean_noAlquiler() {
+        noAlquiler.clear();
+    }
+
+    public void add_noAlquiler(Jugador jugador, int turnosAlquiler) {
+        if(noAlquiler.containsKey(jugador))
+            noAlquiler.put(jugador, noAlquiler.get(jugador) + turnosAlquiler);
+        else
+            noAlquiler.put(jugador, turnosAlquiler);
+
     }
 }

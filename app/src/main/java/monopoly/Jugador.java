@@ -114,7 +114,12 @@ public class Jugador {
     }
 
     public void remove_propiedad(Propiedad casilla) {
+
         propiedades.remove(casilla);
+        if(casilla instanceof Solar solar)
+        {
+            solar.clean_noAlquiler();
+        };
     }
 
     public void remove_hipoteca(Propiedad casilla) {
@@ -276,26 +281,35 @@ public class Jugador {
         if (propietario.tiene_grupo(casilla.get_grupo()))
             alquiler *= 2;
 
-        add_fortuna(alquiler * -1.f);
-        propietario.add_fortuna(alquiler);
-
-        if (fortuna >= 0) {
-            System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
+        if(casilla.noPagaAlquiler(this)) {
+            System.out.format("%s%s%s%s no paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s, %s%s%d%s turnos restantes de exencion \n",
                     Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                     casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
                     casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
-                    Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
-        } else {
-            System.out.format("%s%s%s%s no puede permitirse pagar %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
-                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                    casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
-                    casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
-                    Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
+                    Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET,
+                    Color.AZUL_CLARITO, Color.BOLD, casilla.getTurnosNoAlquiler(this), Color.RESET);
         }
+        else {
+            add_fortuna(alquiler * -1.f);
+            propietario.add_fortuna(alquiler);
+            if (fortuna >= 0) {
+                System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
+                        Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                        casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
+                        casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
+                        Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
+            } else {
+                System.out.format("%s%s%s%s no puede permitirse pagar %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
+                        Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                        casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
+                        casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
+                        Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
+            }
 
-        m.get_stats().of(this).sumar_pago_alquileres(alquiler);
-        m.get_stats().of(propietario).sumar_cobro_alquileres(alquiler);
-        casilla.sumar_rentabilidad(alquiler);
+            m.get_stats().of(this).sumar_pago_alquileres(alquiler);
+            m.get_stats().of(propietario).sumar_cobro_alquileres(alquiler);
+            casilla.sumar_rentabilidad(alquiler);
+        }
     }
 
     public void paga_servicio_transporte(Jugador propietario, Propiedad casilla) {

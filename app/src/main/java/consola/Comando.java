@@ -369,7 +369,12 @@ public class Comando {
 
                         if (j.get_fortuna() < 0)
                             throw new LanzarDadosException("salda tus deudas antes de acabar tu turno!");
-
+                        List<Casilla> cs = m.get_tablero().get_casillas();
+                        for (Casilla c : cs) {
+                            if (c instanceof Solar) {
+                                ((Solar) c).restarTurnoNoAlquiler(j);
+                            }
+                        }
                         m.siguiente_turno();
                         break;
                     default:
