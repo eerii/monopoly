@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import consola.Color;
-import monopoly.casilla.*;
-
 import consola.excepciones.*;
-import monopoly.casilla.edificio.Edificio;
+
+import monopoly.casilla.Casilla;
+import monopoly.casilla.edificio.*;
+import monopoly.casilla.propiedad.*;
 
 public class Jugador {
 
@@ -128,7 +129,7 @@ public class Jugador {
         contador_carcel = turnos_carcel;
 
         actual.remove_jugador(this);
-        c.add_jugador(this);
+        c.add_jugador(this, false);
 
         System.out.format("el jugador %s ha ido a la cárcel!\n", nombre);
         Monopoly.get().siguiente_turno();
@@ -214,11 +215,11 @@ public class Jugador {
     }
 
     public int num_servicios() {
-        return (int) propiedades.stream().filter(c -> c.get_tipo() == Casilla.TipoCasilla.SERVICIOS).count();
+        return (int) propiedades.stream().filter(c -> c instanceof Servicio).count();
     }
 
     public int num_transportes() {
-        return (int) propiedades.stream().filter(c -> c.get_tipo() == Casilla.TipoCasilla.TRANSPORTE).count();
+        return (int) propiedades.stream().filter(c -> c instanceof Transporte).count();
     }
 
     public boolean es_propietario(Propiedad casilla) {
@@ -247,7 +248,7 @@ public class Jugador {
             add_fortuna(media);
             m.comprobar_vueltas();
             System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
-            m.get_stats().of(this).summar_pasar_salida(media);
+            m.get_stats().of(this).sumar_pasar_salida(media);
         }
     }
 
@@ -303,15 +304,11 @@ public class Jugador {
         float media = m.get_tablero().precio_medio();
         float coste = 0;
 
-        switch (casilla.get_tipo()) {
-            case SERVICIOS:
-                coste = (float) Math
-                        .floor(media / 200 * (propietario.num_servicios() == 1 ? 4 : 10) * (d.get_a() + d.get_b()));
-                break;
-            case TRANSPORTE:
-                coste = (float) Math.floor(media * propietario.num_transportes() * 0.25);
-                break;
-            default:
+        if (casilla instanceof Servicio) {
+            coste = (float) Math
+                    .floor(media / 200 * (propietario.num_servicios() == 1 ? 4 : 10) * (d.get_a() + d.get_b()));
+        } else if (casilla instanceof Transporte) {
+            coste = (float) Math.floor(media * propietario.num_transportes() * 0.25);
         }
         this.add_fortuna(coste * -1.f);
         propietario.add_fortuna(coste);

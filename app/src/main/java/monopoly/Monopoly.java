@@ -8,6 +8,7 @@ import consola.Consola;
 import estadisticas.Estadisticas;
 import consola.excepciones.*;
 import monopoly.casilla.*;
+import monopoly.casilla.propiedad.*;
 import monopoly.carta.*;
 
 public class Monopoly {
@@ -23,7 +24,7 @@ public class Monopoly {
     private Tablero tablero;
     private Dados dados;
     private final List<Suerte> barajaSuerte;
-    private final List <Comunidad> barajaComunidad;
+    private final List<Comunidad> barajaComunidad;
     private List<Trato> tratos;
     private Estadisticas stats;
     private Config config;
@@ -240,7 +241,6 @@ public class Monopoly {
         return consola;
     }
 
-
     public List<Carta> get_barajaSuerte() {
         List<Carta> baraja = new ArrayList<Carta>();
         for (Suerte s : barajaSuerte) {
@@ -256,6 +256,7 @@ public class Monopoly {
         }
         return baraja;
     }
+
     public Carta sacar_carta(List<Carta> baraja) {
 
         int n = -1;

@@ -1,9 +1,8 @@
 package monopoly.casilla.edificio;
 
-import monopoly.casilla.*;
+import monopoly.casilla.propiedad.Solar;
 
 public class Pabellon extends Edificio {
-
 
     public Pabellon(Solar casilla) {
         super(casilla, "Pabellon", "󰶠");
@@ -11,7 +10,9 @@ public class Pabellon extends Edificio {
 
     @Override
     public String toString() {
-        return String.format("pabellon - propietario: %s - casilla: %s - grupo: %s - coste: %.2f\n", super.getCasilla().get_propietario().get_nombre(), super.getCasilla().get_nombre(), super.getCasilla().get_grupo().get_nombre(),
+        return String.format("pabellon - propietario: %s - casilla: %s - grupo: %s - coste: %.2f\n",
+                super.getCasilla().get_propietario().get_nombre(), super.getCasilla().get_nombre(),
+                super.getCasilla().get_grupo().get_nombre(),
                 coste());
     }
 
@@ -20,4 +21,3 @@ public class Pabellon extends Edificio {
         return super.coste() * 4;
     }
 }
-

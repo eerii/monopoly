@@ -1,4 +1,4 @@
-package monopoly.casilla;
+package monopoly.casilla.propiedad;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -44,7 +44,7 @@ public class Comunidad extends Carta {
             Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
             actual.remove_jugador(j);
             Casilla c = Monopoly.get().get_tablero().buscar_casilla("Salida");
-            c.add_jugador(j);
+            c.add_jugador(j, false);
             }),
 
             new Comunidad("Hacienda", j -> {

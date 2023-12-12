@@ -167,7 +167,7 @@ public class Avatar {
                 siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
 
         actual.remove_jugador(j);
-        siguiente.add_jugador(j);
+        siguiente.add_jugador(j, false);
         siguiente.sumar_veces_visitada();
 
         return siguiente;

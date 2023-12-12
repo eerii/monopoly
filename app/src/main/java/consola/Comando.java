@@ -10,6 +10,7 @@ import monopoly.*;
 import monopoly.Avatar.TipoAvatar;
 import monopoly.casilla.*;
 import monopoly.casilla.edificio.*;
+import monopoly.casilla.propiedad.*;
 
 public class Comando {
     // TODO: Cambiar un poco esto por una interfaz comando
@@ -172,7 +173,7 @@ public class Comando {
                             .format("no tienes en propiedad todas las casillas del grupo '%s'\n", g.get_nombre()));
 
                 String tipo = (args.get(0).toLowerCase());
-                switch (tipo){
+                switch (tipo) {
                     case "casa":
                         s.comprar_casa(j);
                         break;
@@ -186,7 +187,8 @@ public class Comando {
                         s.comprar_pabellon(j);
                         break;
                     default:
-                        throw new PropiedadException(String.format("el tipo de edificio '%s' no existe\n", args.get(0)));
+                        throw new PropiedadException(
+                                String.format("el tipo de edificio '%s' no existe\n", args.get(0)));
                 }
 
             }
@@ -207,7 +209,7 @@ public class Comando {
                             String.format("no eres el propietario de la casilla '%s'\n", c.get_nombre()));
 
                 String tipo = (args.get(0).toLowerCase());
-                switch (tipo){
+                switch (tipo) {
                     case "casa":
                         s.vender_casa(j);
                         break;
@@ -221,7 +223,8 @@ public class Comando {
                         s.vender_pabellon(j);
                         break;
                     default:
-                        throw new PropiedadException(String.format("el tipo de edificio '%s' no existe\n", args.get(0)));
+                        throw new PropiedadException(
+                                String.format("el tipo de edificio '%s' no existe\n", args.get(0)));
                 }
 
             }

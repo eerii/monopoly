@@ -31,7 +31,7 @@ public class EstadisticasJugador {
         premios += valor;
     }
 
-    public void summar_pasar_salida(float valor) {
+    public void sumar_pasar_salida(float valor) {
         pasar_salida += valor;
     }
 

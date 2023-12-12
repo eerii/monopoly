@@ -4,7 +4,7 @@ import consola.Color;
 import consola.excepciones.ComprarCasillaException;
 import consola.excepciones.TratoException;
 import monopoly.casilla.Casilla;
-import monopoly.casilla.Propiedad;
+import monopoly.casilla.propiedad.Propiedad;
 
 public class Trato {
     private static int num_tratos = 1;

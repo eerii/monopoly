@@ -8,6 +8,7 @@ import consola.Color;
 import monopoly.Jugador;
 import monopoly.Monopoly;
 import monopoly.casilla.*;
+import monopoly.casilla.propiedad.*;
 
 public class Estadisticas {
     private Map<Jugador, EstadisticasJugador> jugador;

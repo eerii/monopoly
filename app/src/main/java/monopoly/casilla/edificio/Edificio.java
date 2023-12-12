@@ -1,18 +1,16 @@
 package monopoly.casilla.edificio;
 
-import java.util.HashMap;
-
 import monopoly.Monopoly;
-import monopoly.casilla.Solar;
+import monopoly.casilla.propiedad.Solar;
 
 public class Edificio {
     private Solar casilla;
     private String nombre;
     private String icono;
+
     public String get_icono() {
-            return icono;
-        }
-                
+        return icono;
+    }
 
     public Edificio(Solar casilla, String nombre, String icono) {
         this.casilla = casilla;
@@ -21,7 +19,8 @@ public class Edificio {
     }
 
     public float coste() {
-        return (float) Math.floor(casilla.get_precio() * 0.2f);}
+        return (float) Math.floor(casilla.get_precio() * 0.2f);
+    }
 
     public Solar getCasilla() {
         return casilla;

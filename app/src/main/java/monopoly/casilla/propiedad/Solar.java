@@ -1,4 +1,4 @@
-package monopoly.casilla;
+package monopoly.casilla.propiedad;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,14 +8,15 @@ import consola.Color;
 import consola.excepciones.ComprarEdificioException;
 import monopoly.Jugador;
 import monopoly.casilla.edificio.*;
+import monopoly.casilla.*;
 
 public class Solar extends Propiedad {
     private float alquiler;
     private Grupo grupo;
     private List<Edificio> edificios;
 
-    public Solar(TipoCasilla tipo, String nombre, float precio, Grupo grupo) {
-        super(tipo, nombre);
+    public Solar(String nombre, float precio, Grupo grupo) {
+        super(nombre);
         super.set_precio(precio);
         this.alquiler = (float) Math.floor(0.1f * precio);
         this.grupo = grupo;
@@ -44,12 +45,12 @@ public class Solar extends Propiedad {
         float alquiler = this.alquiler;
 
         for (Edificio e : edificios) {
-            if(e instanceof Casa)
-                    alquiler += this.alquiler * alquileres[casas-1];
+            if (e instanceof Casa)
+                alquiler += this.alquiler * alquileres[casas - 1];
             else if (e instanceof Hotel)
-                    alquiler += this.alquiler * 70;
+                alquiler += this.alquiler * 70;
             else if (e instanceof Termas || e instanceof Pabellon)
-                    alquiler += this.alquiler * 25;
+                alquiler += this.alquiler * 25;
         }
 
         return alquiler;
@@ -61,37 +62,37 @@ public class Solar extends Propiedad {
 
     public int numero_casas() {
         int contador = 0;
-        for (Edificio e: edificios) {
+        for (Edificio e : edificios) {
             if (e instanceof Casa)
-                contador ++;
+                contador++;
         }
-        System.out.format("numero de casas: %d\n",contador);
+        System.out.format("numero de casas: %d\n", contador);
         return contador;
     }
 
     public int numero_hoteles() {
         int contador = 0;
-        for (Edificio e: edificios) {
+        for (Edificio e : edificios) {
             if (e instanceof Hotel)
-                contador ++;
+                contador++;
         }
         return contador;
     }
 
     public int numero_pabellones() {
         int contador = 0;
-        for (Edificio e: edificios) {
+        for (Edificio e : edificios) {
             if (e instanceof Pabellon)
-                contador ++;
+                contador++;
         }
         return contador;
     }
 
     public int numero_termas() {
         int contador = 0;
-        for (Edificio e: edificios) {
+        for (Edificio e : edificios) {
             if (e instanceof Termas)
-                contador ++;
+                contador++;
         }
         return contador;
     }
@@ -146,12 +147,12 @@ public class Solar extends Propiedad {
 
     public void comprar_casa(Jugador jugador) throws ComprarEdificioException {
         int num = this.get_grupo().get_casillas().size();
-            if (numero_casas_grupo() == num && numero_hoteles_grupo() == num)
-                throw new ComprarEdificioException("ya tienes el numero máximo de casas y hoteles permitidos en el grupo");
-            if (numero_casas() == 4)
-                throw new ComprarEdificioException("no se pueden comprar más casas, ya tienes 4");
-            Casa c = new Casa(this);
-            float coste = c.coste();
+        if (numero_casas_grupo() == num && numero_hoteles_grupo() == num)
+            throw new ComprarEdificioException("ya tienes el numero máximo de casas y hoteles permitidos en el grupo");
+        if (numero_casas() == 4)
+            throw new ComprarEdificioException("no se pueden comprar más casas, ya tienes 4");
+        Casa c = new Casa(this);
+        float coste = c.coste();
 
         if (jugador.get_fortuna() < coste)
             throw new ComprarEdificioException(String.format("no se puede comprar una casa por %.0f", coste));
@@ -255,6 +256,7 @@ public class Solar extends Propiedad {
                 coste,
                 Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET);
     }
+
     public void vender_hotel(Jugador jugador) throws ComprarEdificioException {
         Edificio e = edificios.stream().filter(ed -> ed instanceof Hotel).findFirst().orElse(null);
         if (e == null)
@@ -312,8 +314,8 @@ public class Solar extends Propiedad {
     @Override
     public String toString() {
         String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_nombre(), Color.RESET);
-        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, String.valueOf(this.get_tipo()), Color.RESET);
-        String sj = String.format("%s%s%s", Color.BOLD, lista_jugadores(), Color.RESET);
+        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, "solar", Color.RESET);
+        String sj = String.format("%s%s%s", Color.BOLD, this.lista_jugadores(), Color.RESET);
         String sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, this.get_precio(), Color.RESET);
         String sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(),
                 Color.RESET);
