@@ -1,16 +1,25 @@
 package monopoly.casilla;
 
+import consola.Color;
 import monopoly.Jugador;
 import monopoly.Monopoly;
 
 public class Impuesto extends Casilla {
+    // ·············
+    // Constructores
+    // ·············
+
     public Impuesto(String nombre) {
         super(nombre);
     }
 
+    // ·········
+    // Overrides
+    // ·········
+
     @Override
-    public void add_jugador(Jugador jugador, boolean ignorar) {
-        super.add_jugador(jugador, ignorar);
+    public void add(Jugador jugador, boolean ignorar) {
+        super.add(jugador, ignorar);
 
         if (!ignorar) {
             Monopoly m = Monopoly.get();
@@ -21,5 +30,10 @@ public class Impuesto extends Casilla {
             m.get_stats().of(jugador)
                     .sumar_pago_tasa_impuestos(this.get_precio());
         }
+    }
+
+    @Override
+    public Color get_color() {
+        return Color.DIM;
     }
 }

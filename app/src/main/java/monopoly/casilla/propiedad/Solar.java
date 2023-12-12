@@ -10,24 +10,33 @@ import consola.Color;
 import consola.excepciones.ComprarEdificioException;
 import monopoly.Jugador;
 import monopoly.casilla.edificio.*;
-import monopoly.casilla.*;
 
 public class Solar extends Propiedad {
+    // ···········
+    // Propiedades
+    // ···········
+
     private float alquiler;
 
-    private Map<Jugador, Integer> noAlquiler;
+    private Map<Jugador, Integer> noAlquiler = new HashMap<>();
     private Grupo grupo;
-    private List<Edificio> edificios;
+    private List<Edificio> edificios = new ArrayList<>();
+
+    // ·············
+    // Constructores
+    // ·············
 
     public Solar(String nombre, float precio, Grupo grupo) {
         super(nombre);
         super.set_precio(precio);
         this.alquiler = (float) Math.floor(0.1f * precio);
         this.grupo = grupo;
-        this.edificios = new ArrayList<>();
-        this.noAlquiler = new HashMap<>();
         grupo.add(this);
     }
+
+    // ·········
+    // Overrides
+    // ·········
 
     @Override
     public void set_precio(float precio) {
@@ -35,13 +44,36 @@ public class Solar extends Propiedad {
         this.alquiler = (float) Math.floor(0.1f * precio);
     }
 
-    public List<Edificio> get_edificios() {
-        return edificios;
-    }
-
     @Override
     public Color get_color() {
         return grupo.get_color();
+    }
+
+    @Override
+    public String toString() {
+        String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_nombre(), Color.RESET);
+        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, "solar", Color.RESET);
+        String sj = String.format("%s%s%s", Color.BOLD, this.lista_jugadores(), Color.RESET);
+        String sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, this.get_precio(), Color.RESET);
+        String sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(),
+                Color.RESET);
+        String sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, get_alquiler(), Color.RESET);
+        String sjp = get_propietario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD,
+                this.get_propietario().get_nombre(), Color.RESET) : "";
+        String shp = get_hipotecario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD,
+                this.get_hipotecario().get_nombre(), Color.RESET) : "";
+
+        return String.format(
+                "%s - tipo: %s - propietario: %s - edificios: %s - hipotecado: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s",
+                sn, st, sjp, lista_edificios(), shp, sg, sp, sa, sj);
+    }
+
+    // ·······
+    // Getters
+    // ·······
+
+    public List<Edificio> get_edificios() {
+        return edificios;
     }
 
     public float get_alquiler() {
@@ -64,6 +96,10 @@ public class Solar extends Propiedad {
     public Grupo get_grupo() {
         return grupo;
     }
+
+    // ················
+    // Interfaz pública
+    // ················
 
     public int numero_casas() {
         int contador = 0;
@@ -310,40 +346,15 @@ public class Solar extends Propiedad {
                 Color.ROSA, Color.BOLD, jugador.get_fortuna(), Color.RESET);
     }
 
-    // String
     public String lista_edificios() {
         List<String> l = edificios.stream().map(e -> e.representar()).collect(Collectors.toList());
         return String.join("", l);
     }
 
-    @Override
-    public String toString() {
-        String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_nombre(), Color.RESET);
-        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, "solar", Color.RESET);
-        String sj = String.format("%s%s%s", Color.BOLD, this.lista_jugadores(), Color.RESET);
-        String sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, this.get_precio(), Color.RESET);
-        String sg = String.format("%s%s%s%s", String.valueOf(grupo.get_color()), Color.BOLD, grupo.get_nombre(),
-                Color.RESET);
-        String sa = String.format("%s%s%.0f%s", Color.ROJO, Color.BOLD, get_alquiler(), Color.RESET);
-        String sjp = get_propietario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD,
-                this.get_propietario().get_nombre(), Color.RESET) : "";
-        String shp = get_hipotecario() != null ? String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD,
-                this.get_hipotecario().get_nombre(), Color.RESET) : "";
-
-        return String.format(
-                "%s - tipo: %s - propietario: %s - edificios: %s - hipotecado: %s - grupo: %s - valor: %s - alquiler: %s - jugadores: %s",
-                sn, st, sjp, lista_edificios(), shp, sg, sp, sa, sj);
-    }
-
-    @Override
-    public String toStringMini() {
-        return String.format("%s %s", this.get_nombre(), lista_edificios());
-    }
-
     public void restarTurnoNoAlquiler(Jugador j) {
         if (noAlquiler.containsKey(j)) {
             int turnos = noAlquiler.get(j);
-            if(turnos - 1 == 0)
+            if (turnos - 1 == 0)
                 noAlquiler.remove(j);
             else
                 noAlquiler.put(j, turnos - 1);
@@ -363,7 +374,7 @@ public class Solar extends Propiedad {
     }
 
     public void add_noAlquiler(Jugador jugador, int turnosAlquiler) {
-        if(noAlquiler.containsKey(jugador))
+        if (noAlquiler.containsKey(jugador))
             noAlquiler.put(jugador, noAlquiler.get(jugador) + turnosAlquiler);
         else
             noAlquiler.put(jugador, turnosAlquiler);

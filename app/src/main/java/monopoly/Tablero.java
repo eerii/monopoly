@@ -13,8 +13,16 @@ import monopoly.casilla.propiedad.*;
 import monopoly.casilla.accion.*;
 
 public class Tablero {
+    // ···········
+    // Propiedades
+    // ···········
+
     private List<Casilla> casillas;
     private List<Grupo> grupos;
+
+    // ·············
+    // Constructores
+    // ·············
 
     public Tablero(List<Grupo> grupos, List<Casilla> casillas) {
         this.grupos = grupos;
@@ -85,8 +93,11 @@ public class Tablero {
             else if (c instanceof Impuesto)
                 c.set_precio(c.get_nombre().equals("Matrícula") ? media * 0.5f : media);
         }
-
     }
+
+    // ·······
+    // Getters
+    // ·······
 
     public List<Casilla> get_casillas() {
         return casillas;
@@ -103,6 +114,12 @@ public class Tablero {
         }
         return null;
     }
+
+    // ················
+    // Interfaz pública
+    // ················
+
+    // Buscadores
 
     public Casilla buscar_casilla(String nombre) {
         for (Casilla c : casillas) {
@@ -137,6 +154,7 @@ public class Tablero {
     }
 
     // String
+
     String format_casilla(int i) {
         String fmt = new String();
         Casilla c = casillas.get(i);
@@ -187,8 +205,7 @@ public class Tablero {
         return fmt;
     }
 
-    @Override
-    public String toString() {
+    public String representar() {
         String s = new String();
         String mid = new String();
         String inf = new String();

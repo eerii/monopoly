@@ -8,11 +8,11 @@ import java.util.Random;
 import consola.Color;
 import monopoly.casilla.*;
 
-import consola.excepciones.*;
-
-// TODO: Jerarquía de avatares
-
 public class Avatar {
+    // ···········
+    // Propiedades
+    // ···········
+
     private char id;
     private boolean modo_avanzado = false;
     private static List<Character> ocupados;
@@ -59,6 +59,10 @@ public class Avatar {
         }
     }
 
+    // ·············
+    // Constructores
+    // ·············
+
     public Avatar() {
         this(TipoAvatar.SOMBRERO);
     }
@@ -71,6 +75,28 @@ public class Avatar {
         ocupados.add(id);
         this.tipo = tipo;
     }
+
+    // ·········
+    // Overrides
+    // ·········
+
+    @Override
+    public String toString() {
+        Jugador j = get_jugador();
+        Tablero t = Monopoly.get().get_tablero();
+        Casilla c = t.buscar_jugador(j);
+        return String.format(
+                "%s%s%s%s - tipo: %s%s%s - jugador: %s%s%s%s - casilla: %s%s%s%s",
+                Color.AZUL_OSCURO, Color.BOLD, String.valueOf(id), Color.RESET,
+                Color.BOLD, tipo, Color.RESET,
+                Color.AMARILLO, Color.BOLD, j.get_nombre(), Color.RESET,
+                Color.VERDE, Color.BOLD, c.get_nombre(), Color.RESET);
+
+    }
+
+    // ·······
+    // Getters
+    // ·······
 
     public char get_id() {
         return id;
@@ -89,6 +115,10 @@ public class Avatar {
         return null;
     }
 
+    // ················
+    // Interfaz pública
+    // ················
+
     public boolean es_modo_avanzado() {
         return modo_avanzado;
     }
@@ -97,7 +127,6 @@ public class Avatar {
         modo_avanzado = !modo_avanzado;
     }
 
-    // Movimiento
     void siguiente_casilla(Casilla actual, int movimiento) {
         if (!modo_avanzado) {
             avanzar(actual, movimiento);
@@ -166,26 +195,10 @@ public class Avatar {
                 actual.get_color(), Color.BOLD, actual.get_nombre(), Color.RESET,
                 siguiente.get_color(), Color.BOLD, siguiente.get_nombre(), Color.RESET);
 
-        actual.remove_jugador(j);
-        siguiente.add_jugador(j, false);
-        siguiente.sumar_veces_visitada();
+        actual.remove(j);
+        siguiente.add(j, false);
 
         return siguiente;
-    }
-
-    // String
-    @Override
-    public String toString() {
-        Jugador j = get_jugador();
-        Tablero t = Monopoly.get().get_tablero();
-        Casilla c = t.buscar_jugador(j);
-        return String.format(
-                "%s%s%s%s - tipo: %s%s%s - jugador: %s%s%s%s - casilla: %s%s%s%s",
-                Color.AZUL_OSCURO, Color.BOLD, String.valueOf(id), Color.RESET,
-                Color.BOLD, tipo, Color.RESET,
-                Color.AMARILLO, Color.BOLD, j.get_nombre(), Color.RESET,
-                Color.VERDE, Color.BOLD, c.get_nombre(), Color.RESET);
-
     }
 
     static {

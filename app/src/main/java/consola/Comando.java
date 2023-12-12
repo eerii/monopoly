@@ -124,7 +124,7 @@ public class Comando {
                 switch (args.get(0).toLowerCase()) {
                     case "tablero":
                         Tablero t = Monopoly.get().get_tablero();
-                        System.out.println(t);
+                        System.out.println(t.representar());
                         break;
                     default:
                 }
@@ -329,7 +329,7 @@ public class Comando {
                             System.out.format("has sacado %s%sdobles%s! tienes que volver a tirar\n", Color.ROJO,
                                     Color.BOLD, Color.RESET);
                         }
-                        j.sumar_tirada();
+                        j.add_tirada();
                         j.mover(actual, movimiento);
 
                         break;

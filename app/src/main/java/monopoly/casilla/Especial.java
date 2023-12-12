@@ -1,5 +1,6 @@
 package monopoly.casilla;
 
+import consola.Color;
 import estadisticas.EstadisticasJugador;
 import monopoly.Jugador;
 import monopoly.Monopoly;
@@ -9,20 +10,28 @@ public class Especial extends Casilla {
         SALIDA, A_LA_CARCEL, CARCEL, PARKING
     }
 
-    Tipo tipo;
+    // ···········
+    // Propiedades
+    // ···········
+
+    private Tipo tipo;
+
+    // ·············
+    // Constructores
+    // ·············
 
     public Especial(String nombre, Tipo tipo) {
         super(nombre);
         this.tipo = tipo;
     }
 
-    public Tipo get_tipo() {
-        return tipo;
-    }
+    // ·········
+    // Overrides
+    // ·········
 
     @Override
-    public void add_jugador(Jugador jugador, boolean ignorar) {
-        super.add_jugador(jugador, ignorar);
+    public void add(Jugador jugador, boolean ignorar) {
+        super.add(jugador, ignorar);
         if (!ignorar) {
             Monopoly m = Monopoly.get();
             EstadisticasJugador s = m.get_stats().of(jugador);
@@ -56,4 +65,16 @@ public class Especial extends Casilla {
         }
     }
 
+    @Override
+    public Color get_color() {
+        return Color.NONE;
+    }
+
+    // ·······
+    // Getters
+    // ·······
+
+    public Tipo get_tipo() {
+        return tipo;
+    }
 }

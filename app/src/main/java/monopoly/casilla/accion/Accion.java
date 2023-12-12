@@ -2,21 +2,28 @@ package monopoly.casilla.accion;
 
 import java.util.List;
 
+import consola.Color;
 import monopoly.Jugador;
 import monopoly.Monopoly;
 import monopoly.carta.Carta;
 import monopoly.casilla.*;
 
 public abstract class Accion extends Casilla {
+    // ·············
+    // Constructores
+    // ·············
+
     public Accion(String nombre) {
         super(nombre);
     }
 
-    abstract List<Carta> get_baraja();
+    // ·········
+    // Overrides
+    // ·········
 
     @Override
-    public void add_jugador(Jugador jugador, boolean ignorar) {
-        super.add_jugador(jugador, ignorar);
+    public void add(Jugador jugador, boolean ignorar) {
+        super.add(jugador, ignorar);
 
         if (!ignorar) {
             List<Carta> baraja = get_baraja();
@@ -26,4 +33,15 @@ public abstract class Accion extends Casilla {
             c.ejecutar(jugador);
         }
     }
+
+    @Override
+    public Color get_color() {
+        return Color.ITALIC;
+    }
+
+    // ·················
+    // Funciones propias
+    // ·················
+
+    abstract List<Carta> get_baraja();
 }

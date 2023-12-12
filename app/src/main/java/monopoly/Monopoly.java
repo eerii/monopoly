@@ -18,6 +18,28 @@ public class Monopoly {
 
     // TODO: Declarar constantes (en config por ejemplo)
 
+    public class Config {
+        boolean iconos = false;
+
+        public void procesar(String[] args) {
+            for (String arg : args) {
+                switch (arg) {
+                    case "iconos":
+                        iconos = true;
+                        break;
+                }
+            }
+        }
+
+        public boolean get_iconos() {
+            return iconos;
+        }
+    }
+
+    // ···········
+    // Propiedades
+    // ···········
+
     private Consola consola;
     private List<Jugador> jugadores;
     private Jugador banca;
@@ -32,6 +54,10 @@ public class Monopoly {
     private int vueltas_totales = 0;
 
     static Monopoly instance = null;
+
+    // ·············
+    // Constructores
+    // ·············
 
     Monopoly() {
         consola = new Consola();
@@ -56,55 +82,19 @@ public class Monopoly {
         config = new Config();
     }
 
+    // ·········
+    // Singleton
+    // ·········
+
     public static Monopoly get() {
         if (instance == null)
             instance = new Monopoly();
         return instance;
     }
 
-    public class Config {
-        boolean iconos = false;
-
-        public void procesar(String[] args) {
-            for (String arg : args) {
-                switch (arg) {
-                    case "iconos":
-                        iconos = true;
-                        break;
-                }
-            }
-        }
-
-        public boolean get_iconos() {
-            return iconos;
-        }
-    }
-
-    public static void jugar(String[] args) {
-        Monopoly m = Monopoly.get();
-        m.consola.limpiar_pantalla();
-        m.consola.limpiar_resultado();
-
-        m.config.procesar(args);
-
-        // FIX: Jugadores temporales para pruebas, borrar
-        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.ESFINGE)));
-        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.PELOTA)));
-
-        boolean pausa = false;
-        while (true) {
-            m.consola.limpiar_pantalla();
-            System.out.println(m.tablero);
-            if (pausa)
-                m.consola.limpiar_resultado();
-            pausa = m.consola.entrada();
-
-            if (m.jugadores.size() == 1) {
-                System.out.format("el jugador %s ha ganado!\n", m.jugadores.get(0).get_nombre());
-                break;
-            }
-        }
-    }
+    // ·······
+    // Getters
+    // ·······
 
     public Tablero get_tablero() {
         return tablero;
@@ -130,6 +120,64 @@ public class Monopoly {
         return config;
     }
 
+    public Jugador get_turno() {
+        if (turno < 0)
+            return null;
+        return jugadores.get(turno % jugadores.size());
+    }
+
+    public Consola get_consola() {
+        return consola;
+    }
+
+    public List<Carta> get_suerte() {
+        List<Carta> baraja = new ArrayList<Carta>();
+        for (Suerte s : barajaSuerte) {
+            baraja.add(s);
+        }
+        return baraja;
+    }
+
+    public List<Carta> get_comunidad() {
+        List<Carta> baraja = new ArrayList<Carta>();
+        for (Comunidad c : barajaComunidad) {
+            baraja.add(c);
+        }
+        return baraja;
+    }
+
+    // ················
+    // Interfaz pública
+    // ················
+
+    public static void jugar(String[] args) {
+        Monopoly m = Monopoly.get();
+        m.consola.limpiar_pantalla();
+        m.consola.limpiar_resultado();
+
+        m.config.procesar(args);
+
+        // FIX: Jugadores temporales para pruebas, borrar
+        m.add_jugador(new Jugador("Jugador1", new Avatar(Avatar.TipoAvatar.ESFINGE)));
+        m.add_jugador(new Jugador("Jugador2", new Avatar(Avatar.TipoAvatar.PELOTA)));
+
+        boolean pausa = false;
+        while (true) {
+            m.consola.limpiar_pantalla();
+            System.out.println(m.tablero.representar());
+            if (pausa)
+                m.consola.limpiar_resultado();
+            pausa = m.consola.entrada();
+
+            if (m.jugadores.size() == 1) {
+                System.out.format("el jugador %s ha ganado!\n", m.jugadores.get(0).get_nombre());
+                break;
+            }
+        }
+    }
+
+    // Adders
+
     public void add_jugador(Jugador jugador) {
         if (jugadores.size() >= 6) {
             throw new IllegalStateException("hay demasiados jugadores");
@@ -147,39 +195,20 @@ public class Monopoly {
         tratos.add(trato);
     }
 
-    public void remove_trato(Trato trato) {
-        tratos.remove(trato);
-    }
-
-    public Trato buscar_trato(int id) {
-        for (Trato t : tratos) {
-            if (t.getId() == id) {
-                return t;
-            }
-        }
-        return null;
-    }
-
-    public void listar_tratos() {
-        int cont = 0;
-        System.out.println("Tratos:");
-        for (Trato t : tratos) {
-            if (t.getJugadorRecibe().equals(get_turno().get_nombre())) {
-                System.out.format(t.representar());
-                cont = 1;
-            }
-
-        }
-        if (cont == 0)
-            System.out.println("No hay tratos disponibles\n");
-    }
+    // Removers
 
     public void remove_jugador(Jugador jugador) {
         jugadores.remove(jugador);
 
         for (Casilla c : tablero.get_casillas())
-            c.remove_jugador(jugador);
+            c.remove(jugador);
     }
+
+    public void remove_trato(Trato trato) {
+        tratos.remove(trato);
+    }
+
+    // Buscadores
 
     public Jugador buscar_jugador(String nombre) {
         for (Jugador j : jugadores) {
@@ -199,10 +228,29 @@ public class Monopoly {
         return null;
     }
 
-    public Jugador get_turno() {
-        if (turno < 0)
-            return null;
-        return jugadores.get(turno % jugadores.size());
+    public Trato buscar_trato(int id) {
+        for (Trato t : tratos) {
+            if (t.getId() == id) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    // Otros
+
+    public void listar_tratos() {
+        int cont = 0;
+        System.out.println("Tratos:");
+        for (Trato t : tratos) {
+            if (t.getJugadorRecibe().equals(get_turno().get_nombre())) {
+                System.out.format(t.representar());
+                cont = 1;
+            }
+
+        }
+        if (cont == 0)
+            System.out.println("No hay tratos disponibles\n");
     }
 
     public void siguiente_turno() {
@@ -220,7 +268,6 @@ public class Monopoly {
     }
 
     public void comprobar_vueltas() {
-
         int min = 10000;
         for (Jugador j : jugadores) {
             min = j.get_vueltas() < min ? j.get_vueltas() : min;
@@ -235,26 +282,6 @@ public class Monopoly {
                 System.out.println("el precio de todas las casillas se incrementa en un 5%");
             }
         }
-    }
-
-    public Consola get_consola() {
-        return consola;
-    }
-
-    public List<Carta> get_barajaSuerte() {
-        List<Carta> baraja = new ArrayList<Carta>();
-        for (Suerte s : barajaSuerte) {
-            baraja.add(s);
-        }
-        return baraja;
-    }
-
-    public List<Carta> get_barajaComunidad() {
-        List<Carta> baraja = new ArrayList<Carta>();
-        for (Comunidad c : barajaComunidad) {
-            baraja.add(c);
-        }
-        return baraja;
     }
 
     public Carta sacar_carta(List<Carta> baraja) {

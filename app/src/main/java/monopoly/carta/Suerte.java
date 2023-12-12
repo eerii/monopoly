@@ -1,4 +1,5 @@
 package monopoly.carta;
+
 import monopoly.Jugador;
 import monopoly.Monopoly;
 import monopoly.casilla.Casilla;
@@ -9,15 +10,32 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class Suerte extends Carta {
+    // ···········
+    // Propiedades
+    // ···········
+
     private static final List<Suerte> baraja;
+
+    // ·············
+    // Constructores
+    // ·············
+
     public Suerte(String texto, Consumer<Jugador> accion) {
         super(texto, accion);
     }
 
+    // ·········
+    // Overrides
+    // ·········
+
     @Override
     public String toString() {
-        return String.format("suerte: '%s'",this.getTexto());
+        return String.format("suerte: '%s'", this.get_texto());
     }
+
+    // ·······
+    // Getters
+    // ·······
 
     public static List<Suerte> get_baraja() {
         return baraja;

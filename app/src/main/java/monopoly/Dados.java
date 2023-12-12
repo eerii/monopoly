@@ -3,11 +3,34 @@ package monopoly;
 import java.util.Random;
 
 public class Dados {
+    // ···········
+    // Propiedades
+    // ···········
+
     private int a;
     private int b;
     private int dobles = -1;
-    private boolean tirados = false;
     private Jugador jugador;
+
+    // ·······
+    // Getters
+    // ·······
+
+    public int get_a() {
+        return a;
+    }
+
+    public int get_b() {
+        return b;
+    }
+
+    public int get_dobles() {
+        return dobles;
+    }
+
+    // ················
+    // Interfaz pública
+    // ················
 
     public boolean cambio_jugador(Jugador jugador) {
         if (this.jugador == jugador)
@@ -22,18 +45,6 @@ public class Dados {
         a = (r.nextInt(6) + 1);
         b = (r.nextInt(6) + 1);
         dobles = a == b ? Math.max(dobles, 0) + 1 : 0;
-    }
-
-    public int get_a() {
-        return a;
-    }
-
-    public int get_b() {
-        return b;
-    }
-
-    public int get_dobles() {
-        return dobles;
     }
 
     public void debug_set(int a, int b) {

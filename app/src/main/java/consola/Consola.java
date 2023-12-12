@@ -79,7 +79,7 @@ public class Consola {
         os.reset();
 
         limpiar_pantalla();
-        System.out.println(Monopoly.get().get_tablero());
+        System.out.println(Monopoly.get().get_tablero().representar());
 
         System.out.print("\u001b[1B");
         System.out.println(salida);

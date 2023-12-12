@@ -4,13 +4,17 @@ import monopoly.Monopoly;
 import monopoly.casilla.propiedad.Solar;
 
 public class Edificio {
+    // ···········
+    // Propiedades
+    // ···········
+
     private Solar casilla;
     private String nombre;
     private String icono;
 
-    public String get_icono() {
-        return icono;
-    }
+    // ·············
+    // Constructores
+    // ·············
 
     public Edificio(Solar casilla, String nombre, String icono) {
         this.casilla = casilla;
@@ -18,12 +22,24 @@ public class Edificio {
         this.icono = icono;
     }
 
-    public float coste() {
-        return (float) Math.floor(casilla.get_precio() * 0.2f);
+    // ·······
+    // Getters
+    // ·······
+
+    public Solar get_casilla() {
+        return casilla;
     }
 
-    public Solar getCasilla() {
-        return casilla;
+    public String get_icono() {
+        return icono;
+    }
+
+    // ················
+    // Interfaz pública
+    // ················
+
+    public float coste() {
+        return (float) Math.floor(casilla.get_precio() * 0.2f);
     }
 
     public String representar() {

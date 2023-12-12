@@ -9,6 +9,10 @@ import monopoly.casilla.propiedad.Propiedad;
 import monopoly.casilla.propiedad.Solar;
 
 public class Trato {
+    // ···········
+    // Propiedades
+    // ···········
+
     private static int num_tratos = 1;
     private int id;
     private String jugadorPropone;
@@ -19,6 +23,10 @@ public class Trato {
     private String recibe2;
     private String casillaAlquiler;
     private int turnosAlquiler = 0;
+
+    // ·············
+    // Constructores
+    // ·············
 
     public Trato(String trato, String jugadorPropone) {
 
@@ -41,7 +49,6 @@ public class Trato {
             turnosAlquiler = Integer.parseInt(trade[2].replace(" ", "").replace(")", ""));
         }
 
-
         if (dar.length == 1) {
             da1 = dar[0].replace(" ", "");
             da2 = "";
@@ -59,6 +66,10 @@ public class Trato {
         id = num_tratos++;
     }
 
+    // ·······
+    // Getters
+    // ·······
+
     public String getJugadorRecibe() {
         return jugadorRecibe;
     }
@@ -66,6 +77,10 @@ public class Trato {
     public int getId() {
         return id;
     }
+
+    // ················
+    // Interfaz pública
+    // ················
 
     public void aceptar_trato() throws TratoException {
         Jugador jugador1 = Monopoly.get().buscar_jugador(jugadorPropone);
@@ -157,7 +172,6 @@ public class Trato {
 
                 }
             }
-
         }
         jugador1.add_fortuna(dineroDa * -1f);
         jugador2.add_fortuna(dineroDa);
@@ -218,17 +232,35 @@ public class Trato {
 
 
 
-        if(recibe2.isEmpty() && da2.isEmpty())
-            System.out.printf("has aceptado el siguiente trato con %s, le das %s y te da %s", jugadorPropone,recibe1,da1);
-        else if(recibe2.isEmpty())
-            System.out.printf("has aceptado el siguiente trato con %s, le das %s y te da %s y %s", jugadorPropone,recibe1,da1,da2);
-        else if(da2.isEmpty())
-            System.out.printf("has aceptado el siguiente trato con %s, le das %s y %s te da %s", jugadorPropone,recibe1,recibe2,da1);
+
+
+        //Ahora trataremos la parte de no pagar alquiler
+        if (turnosAlquiler != 0) {
+            Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(casillaAlquiler);
+            if (!(casilla instanceof Solar alquiler))
+                throw new TratoException(String.format("%s no es una propiedad, no se puede aceptar el trato", casillaAlquiler));
+            if (!jugador2.es_propietario(alquiler))
+                throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorRecibe, casillaAlquiler));
+            alquiler.add_noAlquiler(jugador1, turnosAlquiler);
+        }
+
+
+
+        if (recibe2.isEmpty() && da2.isEmpty())
+            System.out.printf("has aceptado el siguiente trato con %s, le das %s y te da %s", jugadorPropone, recibe1,
+                    da1);
+        else if (recibe2.isEmpty())
+            System.out.printf("has aceptado el siguiente trato con %s, le das %s y te da %s y %s", jugadorPropone,
+                    recibe1, da1, da2);
+        else if (da2.isEmpty())
+            System.out.printf("has aceptado el siguiente trato con %s, le das %s y %s te da %s", jugadorPropone,
+                    recibe1, recibe2, da1);
         else
             System.out.printf("has aceptado el siguiente trato con %s, le das %s y %s y te da %s y %s", jugadorPropone,recibe1,recibe2,da1,da2);
         if(turnosAlquiler!=0)
             System.out.printf(" y no paga alquiler en %s durante %d turnos", casillaAlquiler, turnosAlquiler);
     }
+
     @Override
     public String toString(){
         String alquiler = "";
@@ -244,19 +276,19 @@ public class Trato {
         else if(recibe2.isEmpty())
             return String.format("%s%s%s%s, te doy %s%s%s%s y %s%s%s%s y me das %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, jugadorRecibe, Color.RESET,
-                    Color.AMARILLO,Color.BOLD, da1 , Color.RESET,
+                    Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da2, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET) + alquiler + "\n";
         else if(da2.isEmpty())
             return String.format("%s%s%s%s, te doy %s%s%s%s y me das %s%s%s%s y %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, jugadorRecibe, Color.RESET,
-                    Color.AMARILLO,Color.BOLD,da1 , Color.RESET,
+                    Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe2, Color.RESET) + alquiler + "\n";
         else
             return String.format("%s%s%s%s, te doy %s%s%s%s y %s%s%s%s y me das %s%s%s%s y %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, jugadorRecibe, Color.RESET,
-                    Color.AMARILLO,Color.BOLD,da1 , Color.RESET,
+                    Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da2, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe2, Color.RESET) + alquiler + "\n";
@@ -276,21 +308,21 @@ public class Trato {
             return String.format("id: %s%s%s%s\ntrato propuesto por: %s%s%s%s\ncambiar: obtienes %s%s%s%s y %s%s%s%s por %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, id, Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, jugadorPropone, Color.RESET,
-                    Color.AMARILLO,Color.BOLD,da1 , Color.RESET,
+                    Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da2, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET) + alquiler + "\n";
         else if(da2.isEmpty())
             return String.format("id: %s%s%s%s\ntrato propuesto por: %s%s%s%s\ncambiar: obtienes %s%s%s%s por %s%s%s%s y %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, id, Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, jugadorPropone, Color.RESET,
-                    Color.AMARILLO,Color.BOLD,da1 , Color.RESET,
+                    Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe2, Color.RESET)  + alquiler + "\n";
         else
             return String.format("id %s%s%s%s\ntrato propuesto por: %s%s%s%s\ncambiar: obtienes %s%s%s%s y %s%s%s%s por %s%s%s%s y %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, id, Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, jugadorPropone, Color.RESET,
-                    Color.AMARILLO,Color.BOLD,da1 , Color.RESET,
+                    Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da2, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe2, Color.RESET) + alquiler + "\n";

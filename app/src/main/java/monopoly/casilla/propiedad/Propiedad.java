@@ -7,15 +7,27 @@ import monopoly.Monopoly;
 import monopoly.casilla.*;
 
 public abstract class Propiedad extends Casilla {
+    // ···········
+    // Propiedades
+    // ···········
+
     private float rentabilidad = 0;
+
+    // ·············
+    // Constructores
+    // ·············
 
     public Propiedad(String nombre) {
         super(nombre);
     }
 
+    // ·········
+    // Overrides
+    // ·········
+
     @Override
-    public void add_jugador(Jugador jugador, boolean ignorar) {
-        super.add_jugador(jugador, ignorar);
+    public void add(Jugador jugador, boolean ignorar) {
+        super.add(jugador, ignorar);
         if (!ignorar) {
             Monopoly m = Monopoly.get();
 
@@ -54,16 +66,31 @@ public abstract class Propiedad extends Casilla {
         }
     }
 
-    public void sumar_rentabilidad(float valor) {
-        rentabilidad += valor;
+    @Override
+    public Color get_color() {
+        return Color.BOLD;
     }
 
-    public boolean en_venta() {
-        return Monopoly.get().get_banca().es_propietario(this);
+    @Override
+    public String toString() {
+        String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_nombre(), Color.RESET);
+        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, "TODO", Color.RESET);
+        String sj = String.format("%s%s%s", Color.BOLD, this.lista_jugadores(), Color.RESET);
+        String sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, this.get_precio(), Color.RESET);
+
+        return String.format("%s - tipo: %s - valor: %s - jugadores: %s", sn, st, sp, sj);
     }
+
+    // ·······
+    // Getters
+    // ·······
 
     public float get_hipoteca() {
         return (float) Math.floor(0.5f * this.get_precio());
+    }
+
+    public float get_rentabilidad() {
+        return rentabilidad;
     }
 
     public Jugador get_propietario() {
@@ -75,10 +102,6 @@ public abstract class Propiedad extends Casilla {
         return null;
     }
 
-    public float get_rentabilidad() {
-        return rentabilidad;
-    }
-
     public Jugador get_hipotecario() {
         Monopoly m = Monopoly.get();
         for (Jugador j : m.get_jugadores()) {
@@ -86,6 +109,14 @@ public abstract class Propiedad extends Casilla {
                 return j;
         }
         return null;
+    }
+
+    // ················
+    // Interfaz pública
+    // ················
+
+    public boolean en_venta() {
+        return Monopoly.get().get_banca().es_propietario(this);
     }
 
     public void comprar(Jugador jugador) throws ComprarCasillaException {
@@ -148,19 +179,11 @@ public abstract class Propiedad extends Casilla {
         }
     }
 
-    public void incrementar_precio() {
-        this.set_precio(get_precio() * 1.05f);
+    public void sumar_rentabilidad(float valor) {
+        rentabilidad += valor;
     }
 
-    // String
-
-    @Override
-    public String toString() {
-        String sn = String.format("%s%s%s%s", Color.AZUL_CLARITO, Color.BOLD, this.get_nombre(), Color.RESET);
-        String st = String.format("%s%s%s%s", Color.VERDE, Color.BOLD, "TODO", Color.RESET);
-        String sj = String.format("%s%s%s", Color.BOLD, this.lista_jugadores(), Color.RESET);
-        String sp = String.format("%s%s%.0f%s", Color.AMARILLO, Color.BOLD, this.get_precio(), Color.RESET);
-
-        return String.format("%s - tipo: %s - valor: %s - jugadores: %s", sn, st, sp, sj);
+    public void incrementar_precio() {
+        this.set_precio(get_precio() * 1.05f);
     }
 }

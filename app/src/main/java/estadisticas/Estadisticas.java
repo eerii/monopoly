@@ -11,8 +11,11 @@ import monopoly.casilla.*;
 import monopoly.casilla.propiedad.*;
 
 public class Estadisticas {
-    private Map<Jugador, EstadisticasJugador> jugador;
+    // ···········
+    // Propiedades
+    // ···········
 
+    private Map<Jugador, EstadisticasJugador> jugador;
     private String casillaMasRentable;
     private String grupoMasRentable;
     private String casillaMasFrecuentada;
@@ -20,10 +23,68 @@ public class Estadisticas {
     private String jugadorMasVecesDados;
     private String jugadorEnCabeza;
 
+    // ·············
+    // Constructores
+    // ·············
+
     public Estadisticas() {
         jugador = new HashMap<Jugador, EstadisticasJugador>();
-
     }
+
+    // ·········
+    // Overrides
+    // ·········
+
+    @Override
+    public String toString() {
+        jugador_mas_vueltas();
+        jugador_en_cabeza();
+        grupo_mas_rentable();
+        casilla_mas_visitada();
+        casilla_mas_rentable();
+        jugador_mas_tiradas();
+        String n = casillaMasRentable;
+        if (n == null)
+            n = " - ";
+        String s1 = String.format("%s%scasilla mas rentable%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
+                Color.BOLD, n, Color.RESET);
+        n = grupoMasRentable;
+        if (n == null)
+            n = " - ";
+        String s2 = String.format("%s%sgrupo mas rentable%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
+                Color.BOLD, n, Color.RESET);
+
+        n = casillaMasFrecuentada;
+        if (n == null)
+            n = " - ";
+        String s3 = String.format("%s%scasilla mas visitada%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
+                Color.BOLD, n, Color.RESET);
+
+        n = jugadorMasVueltas;
+        if (n == null)
+            n = " - ";
+        String s4 = String.format("%s%sjugador con mas vueltas dadas%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD,
+                Color.RESET,
+                Color.BOLD, n, Color.RESET);
+
+        n = jugadorMasVecesDados;
+        if (n == null)
+            n = " - ";
+        String s5 = String.format("%s%sjugador con mas tiradas%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
+                Color.BOLD, n, Color.RESET);
+
+        n = jugadorEnCabeza;
+        if (n == null)
+            n = " - ";
+        String s6 = String.format("%s%sjugador en cabeza%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
+                Color.BOLD, n, Color.RESET);
+
+        return String.format("%s,\n%s,\n%s,\n%s,\n%s,\n%s\n", s1, s2, s3, s4, s5, s6);
+    }
+
+    // ················
+    // Interfaz pública
+    // ················
 
     public void add_jugador(Jugador j) {
         jugador.put(j, new EstadisticasJugador());
@@ -101,57 +162,10 @@ public class Estadisticas {
         List<Jugador> jugadores = Monopoly.get().get_jugadores();
         float max = 0;
         for (Jugador j : jugadores) {
-            if (j.get_fortunaTotal() > max) {
-                max = j.get_fortunaTotal();
+            if (j.get_fortuna_total() > max) {
+                max = j.get_fortuna_total();
                 jugadorEnCabeza = j.get_nombre();
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        jugador_mas_vueltas();
-        jugador_en_cabeza();
-        grupo_mas_rentable();
-        casilla_mas_visitada();
-        casilla_mas_rentable();
-        jugador_mas_tiradas();
-        String n = casillaMasRentable;
-        if (n == null)
-            n = " - ";
-        String s1 = String.format("%s%scasilla mas rentable%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
-                Color.BOLD, n, Color.RESET);
-        n = grupoMasRentable;
-        if (n == null)
-            n = " - ";
-        String s2 = String.format("%s%sgrupo mas rentable%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
-                Color.BOLD, n, Color.RESET);
-
-        n = casillaMasFrecuentada;
-        if (n == null)
-            n = " - ";
-        String s3 = String.format("%s%scasilla mas visitada%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
-                Color.BOLD, n, Color.RESET);
-
-        n = jugadorMasVueltas;
-        if (n == null)
-            n = " - ";
-        String s4 = String.format("%s%sjugador con mas vueltas dadas%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD,
-                Color.RESET,
-                Color.BOLD, n, Color.RESET);
-
-        n = jugadorMasVecesDados;
-        if (n == null)
-            n = " - ";
-        String s5 = String.format("%s%sjugador con mas tiradas%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
-                Color.BOLD, n, Color.RESET);
-
-        n = jugadorEnCabeza;
-        if (n == null)
-            n = " - ";
-        String s6 = String.format("%s%sjugador en cabeza%s: %s%s%s", Color.AZUL_CLARITO, Color.BOLD, Color.RESET,
-                Color.BOLD, n, Color.RESET);
-
-        return String.format("%s,\n%s,\n%s,\n%s,\n%s,\n%s\n", s1, s2, s3, s4, s5, s6);
     }
 }
