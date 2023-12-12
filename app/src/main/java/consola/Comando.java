@@ -13,7 +13,11 @@ import monopoly.casilla.edificio.*;
 import monopoly.casilla.propiedad.*;
 
 public class Comando {
-    // TODO: Cambiar un poco esto por una interfaz comando
+    // Esto no está implementado como una interfaz que llama la clase Monopoly,
+    // lo que hacemos es crear un comando directamente en la consola (con validación
+    // de argumentos y que este se encargue de hacer su propio trabajo).
+    // Creemos que tiene más sentido que el comando se gestione a si mismo que no lo
+    // haga una clase externa.
 
     public Comando(String cmd) {
         args = new ArrayList<String>(List.of(cmd.split(" ")));
@@ -34,6 +38,8 @@ public class Comando {
 
     // Gestionar todas las acciones
     public void run() throws ConsolaException {
+        IConsola cons = Monopoly.get().get_consola();
+
         switch (cmd) {
             case CREAR:
                 switch (args.get(0)) {
@@ -48,7 +54,7 @@ public class Comando {
                             if (j.get_nombre().equals(nombre))
                                 throw new IllegalArgumentException("el nombre del jugador ya está cogido");
                         Jugador j;
-                        switch (tipo){
+                        switch (tipo) {
                             case "coche":
                                 j = new Jugador(nombre, new Coche());
                                 break;
@@ -62,10 +68,10 @@ public class Comando {
                                 j = new Jugador(nombre, new Esfinge());
                                 break;
                             default:
-                                    throw new IllegalArgumentException("el tipo de avatar no es correcto\n");
+                                throw new IllegalArgumentException("el tipo de avatar no es correcto\n");
                         }
                         Monopoly.get().add_jugador(j);
-                        System.out.println(j.toStringMini());
+                        cons.imprimir(j.toStringMini());
 
                         break;
                     default:
@@ -79,18 +85,18 @@ public class Comando {
                 switch (args.get(0).toLowerCase()) {
                     case "jugadores":
                         for (Jugador j : jugadores) {
-                            System.out.println(j);
+                            cons.imprimir(j);
                         }
                         break;
                     case "avatares":
                         for (Jugador j : jugadores) {
-                            System.out.println(j.get_avatar());
+                            cons.imprimir(j.get_avatar());
                         }
                         break;
                     case "enventa":
                         for (Casilla c : casillas) {
                             if (c instanceof Propiedad && ((Propiedad) c).en_venta()) {
-                                System.out.println(c);
+                                cons.imprimir(c);
                             }
                         }
                         break;
@@ -104,7 +110,7 @@ public class Comando {
                                 if (c instanceof Solar) {
                                     Solar s = (Solar) c;
                                     for (Edificio e : s.get_edificios())
-                                        System.out.println(e);
+                                        cons.imprimir(e);
                                     if (s.get_edificios().isEmpty())
                                         vacios += 1;
                                 }
@@ -121,7 +127,7 @@ public class Comando {
 
                         for (Solar s : casillas_grupo) {
                             for (Edificio e : s.get_edificios())
-                                System.out.println(e);
+                                cons.imprimir(e);
                             if (s.get_edificios().isEmpty())
                                 vacios += 1;
                         }
@@ -138,7 +144,7 @@ public class Comando {
                 switch (args.get(0).toLowerCase()) {
                     case "tablero":
                         Tablero t = Monopoly.get().get_tablero();
-                        System.out.println(t.representar());
+                        cons.imprimir(t.representar());
                         break;
                     default:
                 }
@@ -158,7 +164,7 @@ public class Comando {
                             String.format("la casilla '%s' no se puede comprar\n", args.get(0)));
 
                 ((Propiedad) c).comprar(j);
-                System.out.format(
+                cons.imprimir(
                         "el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
                         Color.AZUL_OSCURO, Color.BOLD, c.get_nombre(), Color.RESET,
@@ -258,14 +264,14 @@ public class Comando {
 
                 Propiedad p = ((Propiedad) c);
                 p.hipotecar(j);
-                System.out.format(
+                cons.imprimir(
                         "el jugador %s%s%s%s hipoteca la casilla %s%s%s%s y recibe %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
                         Color.AZUL_OSCURO, Color.BOLD, p.get_nombre(), Color.RESET,
                         Color.AMARILLO, Color.BOLD, p.get_hipoteca(), Color.RESET);
 
                 if (p instanceof Solar) {
-                    System.out.format(
+                    cons.imprimir(
                             "no puede recibir alquileres ni hipotecar en el grupo %s%s%s%s\n",
                             Color.ROSA, Color.BOLD, ((Solar) p).get_grupo().get_nombre(), Color.RESET);
                 }
@@ -287,7 +293,7 @@ public class Comando {
 
                 Propiedad p = ((Propiedad) c);
                 p.deshipotecar(j);
-                System.out.format(
+                cons.imprimir(
                         "el jugador %s%s%s%s deshipoteca la casilla %s%s%s%s y paga %s%s%.0f%s\n",
                         Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
                         Color.AZUL_OSCURO, Color.BOLD, p.get_nombre(), Color.RESET,
@@ -301,7 +307,7 @@ public class Comando {
                 Jugador actual;
                 j.bancarrota();
                 actual = m.get_turno();
-                System.out.format("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, actual.get_nombre(),
+                cons.imprimir("el jugador actual es %s%s%s%s\n", Color.AZUL_OSCURO, Color.BOLD, actual.get_nombre(),
                         Color.RESET);
             }
                 break;
@@ -329,18 +335,18 @@ public class Comando {
                             d.tirar();
 
                         int movimiento = d.get_a() + d.get_b();
-                        System.out.format("los dados han sacado %s%s%d%s y %s%s%d%s\n",
+                        cons.imprimir("los dados han sacado %s%s%d%s y %s%s%d%s\n",
                                 Color.ROJO, Color.BOLD, d.get_a(), Color.RESET,
                                 Color.ROJO, Color.BOLD, d.get_b(), Color.RESET);
 
                         if (d.get_dobles() == 3) {
-                            System.out.println("te has pasado de velocidad, vas a la cárcel");
+                            cons.imprimir("te has pasado de velocidad, vas a la cárcel");
                             j.ir_a_carcel();
                             break;
                         }
 
                         if (d.get_dobles() > 0) {
-                            System.out.format("has sacado %s%sdobles%s! tienes que volver a tirar\n", Color.ROJO,
+                            cons.imprimir("has sacado %s%sdobles%s! tienes que volver a tirar\n", Color.ROJO,
                                     Color.BOLD, Color.RESET);
                         }
                         j.add_tirada();
@@ -360,7 +366,7 @@ public class Comando {
                     m.debug_set_turno(j);
                 }
 
-                System.out.println(j.toStringMini());
+                cons.imprimir(j.toStringMini());
             }
                 break;
 
@@ -406,7 +412,7 @@ public class Comando {
 
                         if (j == null)
                             throw new NoSuchElementException(String.format("el jugador '%s' no existe", nombre));
-                        System.out.println(j);
+                        cons.imprimir(j);
 
                         break;
                     case "avatar":
@@ -421,7 +427,7 @@ public class Comando {
                             throw new NoSuchElementException(String.format("el jugador '%c' no existe", caracter));
 
                         Avatar a = jugador.get_avatar();
-                        System.out.println(a);
+                        cons.imprimir(a);
 
                         break;
                     default:
@@ -434,7 +440,7 @@ public class Comando {
                         if (casilla == null)
                             throw new NoSuchElementException(String.format("la casilla '%s' no existe", n));
 
-                        System.out.println(casilla);
+                        cons.imprimir(casilla);
                 }
                 break;
 
@@ -442,7 +448,7 @@ public class Comando {
                 if (args.size() > 1)
                     throw new IllegalArgumentException("argumentos inválidos, uso: estadisticas [jugador]");
                 if (args.get(0).equals("")) {
-                    System.out.println(Monopoly.get().get_stats());
+                    cons.imprimir(Monopoly.get().get_stats());
                 } else {
                     String n = args.get(0);
                     Monopoly m = Monopoly.get();
@@ -451,7 +457,7 @@ public class Comando {
                     if (j == null)
                         throw new NoSuchElementException(String.format("el jugador '%s' no existe", n));
 
-                    System.out.println(m.get_stats().of(j));
+                    cons.imprimir(m.get_stats().of(j));
                 }
 
             }
@@ -483,7 +489,7 @@ public class Comando {
                         Jugador j = Monopoly.get().get_turno();
                         Avatar a = j.get_avatar();
                         a.cambiar_modo();
-                        System.out.format("el jugador %s%s%s%s cambia al modo %s%s%s%s\n",
+                        cons.imprimir("el jugador %s%s%s%s cambia al modo %s%s%s%s\n",
                                 Color.ROJO, Color.BOLD, j.get_nombre(), Color.RESET,
                                 Color.AZUL_OSCURO, Color.BOLD, a.es_modo_avanzado() ? "avanzado" : "normal",
                                 Color.RESET);
@@ -494,7 +500,7 @@ public class Comando {
                 break;
             case TRATO:
                 Trato t = new Trato(String.join(" ", args), Monopoly.get().get_turno().get_nombre());
-                System.out.println(t);
+                cons.imprimir(t);
                 Monopoly.get().add_trato(t);
                 break;
             case ACEPTAR: {
@@ -522,7 +528,7 @@ public class Comando {
                 if (trato == null)
                     throw new NoSuchElementException(String.format("el trato '%d' no existe!", id));
                 Monopoly.get().remove_trato(trato);
-                System.out.format("el trato %s%d%s ha sido eliminado\n", Color.ROJO, id, Color.RESET);
+                cons.imprimir("el trato %s%d%s ha sido eliminado\n", Color.ROJO, id, Color.RESET);
             }
 
                 break;
@@ -537,7 +543,7 @@ public class Comando {
 
                         break;
                     case "":
-                        System.out.println("hasta la próxima\n");
+                        cons.imprimir("hasta la próxima");
                         System.exit(0);
                         break;
                     default:

@@ -1,6 +1,7 @@
 package monopoly;
 
 import consola.Color;
+import consola.IConsola;
 import consola.excepciones.ComprarCasillaException;
 import consola.excepciones.TratoException;
 import monopoly.casilla.Casilla;
@@ -83,14 +84,19 @@ public class Trato {
     // ················
 
     public void aceptar_trato() throws TratoException {
+        IConsola cons = Monopoly.get().get_consola();
+
         Jugador jugador1 = Monopoly.get().buscar_jugador(jugadorPropone);
         if (jugador1 == null)
             throw new TratoException(String.format("%s no existe, no se puede aceptar el trato", jugadorPropone));
+
         Jugador jugador2 = Monopoly.get().buscar_jugador(jugadorRecibe);
         if (jugador2 == null)
             throw new TratoException(String.format("%s no existe, no se puede aceptar el trato", jugadorRecibe));
+
         float dineroDa = 0f, dineroRecibe = 0f;
         Propiedad propiedadDa1 = null, propiedadDa2 = null, propiedadRecibe1 = null, propiedadRecibe2 = null;
+
         try {
             dineroDa = Float.parseFloat(da1);
             if (dineroDa > jugador1.get_fortuna())
@@ -99,10 +105,12 @@ public class Trato {
             if (!da2.isEmpty()) {
                 Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(da2);
                 if (!(casilla instanceof Propiedad))
-                    throw new RuntimeException(String.format("%s no es una propiedad, no se puede aceptar el trato", da2));
+                    throw new RuntimeException(
+                            String.format("%s no es una propiedad, no se puede aceptar el trato", da2));
                 propiedadDa1 = (Propiedad) casilla;
                 if (!jugador1.es_propietario(propiedadDa1))
-                    throw new RuntimeException(String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorPropone, da2));
+                    throw new RuntimeException(
+                            String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorPropone, da2));
             }
 
         } catch (NumberFormatException nfe) {
@@ -111,22 +119,25 @@ public class Trato {
                 throw new TratoException(String.format("%s no es una propiedad, no se puede aceptar el trato", da1));
             propiedadDa1 = (Propiedad) casilla;
             if (!jugador1.es_propietario(propiedadDa1))
-                throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorPropone, da1));
-
+                throw new TratoException(
+                        String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorPropone, da1));
 
             if (!da2.isEmpty()) {
                 try {
                     dineroDa = Float.parseFloat(da2);
                     if (dineroDa > jugador1.get_fortuna())
-                        throw new RuntimeException(String.format("%s no dispone de suficiente dinero para aceptar el trato", jugadorPropone));
+                        throw new RuntimeException(String
+                                .format("%s no dispone de suficiente dinero para aceptar el trato", jugadorPropone));
 
                 } catch (NumberFormatException nfe2) {
                     casilla = Monopoly.get().get_tablero().buscar_casilla(da2);
                     if (!(casilla instanceof Propiedad))
-                        throw new RuntimeException(String.format("%s no es una propiedad, no se puede aceptar el trato", da2));
+                        throw new RuntimeException(
+                                String.format("%s no es una propiedad, no se puede aceptar el trato", da2));
                     propiedadDa2 = (Propiedad) casilla;
                     if (!jugador1.es_propietario(propiedadDa2))
-                        throw new RuntimeException(String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorPropone, da2));
+                        throw new RuntimeException(String.format("%s no es dueño de %s, no se puede aceptar el trato",
+                                jugadorPropone, da2));
 
                 }
             }
@@ -141,16 +152,19 @@ public class Trato {
             if (!recibe2.isEmpty()) {
                 Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(recibe2);
                 if (!(casilla instanceof Propiedad))
-                    throw new TratoException(String.format("%s no es una propiedad, no se puede aceptar el trato", recibe2));
-                propiedadRecibe1= (Propiedad) casilla;
+                    throw new TratoException(
+                            String.format("%s no es una propiedad, no se puede aceptar el trato", recibe2));
+                propiedadRecibe1 = (Propiedad) casilla;
                 if (!jugador2.es_propietario(propiedadRecibe1))
-                    throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorRecibe, recibe2));
+                    throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato",
+                            jugadorRecibe, recibe2));
 
             }
         } catch (NumberFormatException nfe) {
             Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(recibe1);
             if (!(casilla instanceof Propiedad))
-                throw new TratoException(String.format("%s no es una propiedad, no se puede aceptar el trato", recibe1));
+                throw new TratoException(
+                        String.format("%s no es una propiedad, no se puede aceptar el trato", recibe1));
             propiedadRecibe1 = (Propiedad) casilla;
             if (!jugador2.es_propietario(propiedadRecibe1))
                 throw new TratoException(
@@ -160,15 +174,18 @@ public class Trato {
                 try {
                     dineroRecibe = Float.parseFloat(recibe2);
                     if (dineroRecibe > jugador2.get_fortuna())
-                        throw new TratoException(String.format("%s no dispone de suficiente dinero para aceptar el trato", jugadorRecibe));
+                        throw new TratoException(String
+                                .format("%s no dispone de suficiente dinero para aceptar el trato", jugadorRecibe));
 
                 } catch (NumberFormatException nfe2) {
                     casilla = Monopoly.get().get_tablero().buscar_casilla(recibe2);
                     if (!(casilla instanceof Propiedad))
-                        throw new TratoException(String.format("%s no es una propiedad, no se puede aceptar el trato", recibe2));
+                        throw new TratoException(
+                                String.format("%s no es una propiedad, no se puede aceptar el trato", recibe2));
                     propiedadRecibe2 = (Propiedad) casilla;
                     if (!jugador2.es_propietario(propiedadRecibe2))
-                        throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorRecibe, recibe2));
+                        throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato",
+                                jugadorRecibe, recibe2));
 
                 }
             }
@@ -176,110 +193,103 @@ public class Trato {
         jugador1.add_fortuna(dineroDa * -1f);
         jugador2.add_fortuna(dineroDa);
 
-        if(propiedadDa1!=null){
+        if (propiedadDa1 != null) {
             jugador1.remove_propiedad(propiedadDa1);
             try {
                 jugador2.add_propiedad(propiedadDa1, 0f);
             } catch (ComprarCasillaException e) {
-                System.out.println("Aviso: " + e.getMessage());
+                cons.imprimir("Aviso: " + e.getMessage());
             }
         }
 
-        if(propiedadDa2!=null)
-        {
+        if (propiedadDa2 != null) {
             jugador1.remove_propiedad(propiedadDa2);
             try {
                 jugador2.add_propiedad(propiedadDa2, 0f);
             } catch (ComprarCasillaException e) {
-                System.out.println("Aviso: " + e.getMessage());
+                cons.imprimir("Aviso: " + e.getMessage());
             }
         }
 
         jugador1.add_fortuna(dineroRecibe);
         jugador2.add_fortuna(dineroRecibe * -1f);
 
-        if(propiedadRecibe1!=null)
-        {
+        if (propiedadRecibe1 != null) {
             try {
                 jugador1.add_propiedad(propiedadRecibe1, 0f);
             } catch (ComprarCasillaException e) {
-                System.out.println("Aviso: " + e.getMessage());
+                cons.imprimir("Aviso: " + e.getMessage());
             }
             jugador2.remove_propiedad(propiedadRecibe1);
         }
 
-        if(propiedadRecibe2!=null)
-        {
+        if (propiedadRecibe2 != null) {
             jugador2.remove_propiedad(propiedadRecibe2);
             try {
                 jugador1.add_propiedad(propiedadRecibe2, 0f);
             } catch (ComprarCasillaException e) {
-                System.out.println("Aviso: " + e.getMessage());
+                cons.imprimir("Aviso: " + e.getMessage());
             }
         }
 
-
-
-        //Ahora trataremos la parte de no pagar alquiler
+        // Ahora trataremos la parte de no pagar alquiler
         if (turnosAlquiler != 0) {
             Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(casillaAlquiler);
             if (!(casilla instanceof Solar alquiler))
-                throw new TratoException(String.format("%s no es una propiedad, no se puede aceptar el trato", casillaAlquiler));
+                throw new TratoException(
+                        String.format("%s no es una propiedad, no se puede aceptar el trato", casillaAlquiler));
             if (!jugador2.es_propietario(alquiler))
-                throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorRecibe, casillaAlquiler));
+                throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato",
+                        jugadorRecibe, casillaAlquiler));
             alquiler.add_noAlquiler(jugador1, turnosAlquiler);
         }
 
-
-
-
-
-        //Ahora trataremos la parte de no pagar alquiler
+        // Ahora trataremos la parte de no pagar alquiler
         if (turnosAlquiler != 0) {
             Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(casillaAlquiler);
             if (!(casilla instanceof Solar alquiler))
-                throw new TratoException(String.format("%s no es una propiedad, no se puede aceptar el trato", casillaAlquiler));
+                throw new TratoException(
+                        String.format("%s no es una propiedad, no se puede aceptar el trato", casillaAlquiler));
             if (!jugador2.es_propietario(alquiler))
-                throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorRecibe, casillaAlquiler));
+                throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato",
+                        jugadorRecibe, casillaAlquiler));
             alquiler.add_noAlquiler(jugador1, turnosAlquiler);
         }
-
-
 
         if (recibe2.isEmpty() && da2.isEmpty())
-            System.out.format("has aceptado el siguiente trato con %s, le das %s y te da %s", jugadorPropone, recibe1,
+            cons.imprimir("has aceptado el siguiente trato con %s, le das %s y te da %s", jugadorPropone, recibe1,
                     da1);
         else if (recibe2.isEmpty())
-            System.out.format("has aceptado el siguiente trato con %s, le das %s y te da %s y %s", jugadorPropone,
+            cons.imprimir("has aceptado el siguiente trato con %s, le das %s y te da %s y %s", jugadorPropone,
                     recibe1, da1, da2);
         else if (da2.isEmpty())
-            System.out.format("has aceptado el siguiente trato con %s, le das %s y %s te da %s", jugadorPropone,
+            cons.imprimir("has aceptado el siguiente trato con %s, le das %s y %s te da %s", jugadorPropone,
                     recibe1, recibe2, da1);
         else
-            System.out.format("has aceptado el siguiente trato con %s, le das %s y %s y te da %s y %s", jugadorPropone,recibe1,recibe2,da1,da2);
-        if(turnosAlquiler!=0)
-            System.out.format(" y no paga alquiler en %s durante %d turnos", casillaAlquiler, turnosAlquiler);
+            cons.imprimir("has aceptado el siguiente trato con %s, le das %s y %s y te da %s y %s", jugadorPropone,
+                    recibe1, recibe2, da1, da2);
+        if (turnosAlquiler != 0)
+            cons.imprimir(" y no paga alquiler en %s durante %d turnos", casillaAlquiler, turnosAlquiler);
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         String alquiler = "";
-        if(turnosAlquiler!=0)
-        {
+        if (turnosAlquiler != 0) {
             alquiler = " y no pago alquiler en " + casillaAlquiler + " durante " + turnosAlquiler + " turnos";
         }
-        if(recibe2.isEmpty() && da2.isEmpty())
+        if (recibe2.isEmpty() && da2.isEmpty())
             return String.format("%s%s%s%s, te doy %s%s%s%s y me das %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, jugadorRecibe, Color.RESET,
-                    Color.AMARILLO,Color.BOLD,da1 , Color.RESET,
+                    Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET) + alquiler + "\n";
-        else if(recibe2.isEmpty())
+        else if (recibe2.isEmpty())
             return String.format("%s%s%s%s, te doy %s%s%s%s y %s%s%s%s y me das %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, jugadorRecibe, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da2, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET) + alquiler + "\n";
-        else if(da2.isEmpty())
+        else if (da2.isEmpty())
             return String.format("%s%s%s%s, te doy %s%s%s%s y me das %s%s%s%s y %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, jugadorRecibe, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da1, Color.RESET,
@@ -294,32 +304,36 @@ public class Trato {
                     Color.AMARILLO, Color.BOLD, recibe2, Color.RESET) + alquiler + "\n";
     }
 
-    public String representar(){
+    public String representar() {
         String alquiler = "";
-        if(turnosAlquiler!=0)
-            alquiler = ", y " + jugadorPropone + " no paga alquiler en " + casillaAlquiler + " durante " + turnosAlquiler + " turnos";
-        if(recibe2.isEmpty() && da2.isEmpty())
+        if (turnosAlquiler != 0)
+            alquiler = ", y " + jugadorPropone + " no paga alquiler en " + casillaAlquiler + " durante "
+                    + turnosAlquiler + " turnos";
+        if (recibe2.isEmpty() && da2.isEmpty())
             return String.format("id: %s%s%s%s\ntrato propuesto por: %s%s%s%s\ncambiar: obtienes %s%s%s%s por %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, id, Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, jugadorPropone, Color.RESET,
-                    Color.AMARILLO,Color.BOLD,da1 , Color.RESET,
+                    Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET) + alquiler + "\n";
-        else if(recibe2.isEmpty())
-            return String.format("id: %s%s%s%s\ntrato propuesto por: %s%s%s%s\ncambiar: obtienes %s%s%s%s y %s%s%s%s por %s%s%s%s",
+        else if (recibe2.isEmpty())
+            return String.format(
+                    "id: %s%s%s%s\ntrato propuesto por: %s%s%s%s\ncambiar: obtienes %s%s%s%s y %s%s%s%s por %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, id, Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, jugadorPropone, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da2, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET) + alquiler + "\n";
-        else if(da2.isEmpty())
-            return String.format("id: %s%s%s%s\ntrato propuesto por: %s%s%s%s\ncambiar: obtienes %s%s%s%s por %s%s%s%s y %s%s%s%s",
+        else if (da2.isEmpty())
+            return String.format(
+                    "id: %s%s%s%s\ntrato propuesto por: %s%s%s%s\ncambiar: obtienes %s%s%s%s por %s%s%s%s y %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, id, Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, jugadorPropone, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da1, Color.RESET,
                     Color.AMARILLO, Color.BOLD, recibe1, Color.RESET,
-                    Color.AMARILLO, Color.BOLD, recibe2, Color.RESET)  + alquiler + "\n";
+                    Color.AMARILLO, Color.BOLD, recibe2, Color.RESET) + alquiler + "\n";
         else
-            return String.format("id %s%s%s%s\ntrato propuesto por: %s%s%s%s\ncambiar: obtienes %s%s%s%s y %s%s%s%s por %s%s%s%s y %s%s%s%s",
+            return String.format(
+                    "id %s%s%s%s\ntrato propuesto por: %s%s%s%s\ncambiar: obtienes %s%s%s%s y %s%s%s%s por %s%s%s%s y %s%s%s%s",
                     Color.AZUL_CLARITO, Color.BOLD, id, Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, jugadorPropone, Color.RESET,
                     Color.AMARILLO, Color.BOLD, da1, Color.RESET,

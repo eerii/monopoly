@@ -1,6 +1,7 @@
 package monopoly.casilla.propiedad;
 
 import consola.Color;
+import consola.IConsola;
 import consola.excepciones.*;
 import monopoly.Jugador;
 import monopoly.Monopoly;
@@ -30,22 +31,23 @@ public abstract class Propiedad extends Casilla {
         super.add(jugador, ignorar);
         if (!ignorar) {
             Monopoly m = Monopoly.get();
+            IConsola cons = m.get_consola();
 
             Propiedad p = (Propiedad) this;
             if (p.en_venta()) {
                 if (jugador.get_fortuna() < this.get_precio() || !jugador.puede_comprar())
                     return;
 
-                System.out.format("¿Quieres comprar %s por %.0f? (s/N)\n", this.get_nombre(), this.get_precio());
+                cons.imprimir("¿Quieres comprar %s por %.0f? (s/N)\n", this.get_nombre(), this.get_precio());
                 String respuesta = m.get_consola().leer().trim();
                 if (respuesta.equalsIgnoreCase("s")) {
                     try {
                         p.comprar(jugador);
                     } catch (ComprarCasillaException e) {
-                        System.out.println(e.getMessage());
+                        cons.imprimir(e.getMessage());
                         return;
                     }
-                    System.out.format(
+                    cons.imprimir(
                             "el jugador %s%s%s%s compra la casilla %s%s%s%s por %s%s%.0f%s. Su fortuna actual es de %s%s%.0f%s\n",
                             Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                             Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET,

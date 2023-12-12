@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import consola.Color;
+import consola.IConsola;
 import consola.excepciones.ComprarEdificioException;
 import monopoly.Jugador;
+import monopoly.Monopoly;
 import monopoly.casilla.edificio.*;
 
 public class Solar extends Propiedad {
@@ -107,7 +109,7 @@ public class Solar extends Propiedad {
             if (e instanceof Casa)
                 contador++;
         }
-        System.out.format("numero de casas: %d\n", contador);
+        Monopoly.get().get_consola().imprimir("numero de casas: %d\n", contador);
         return contador;
     }
 
@@ -201,7 +203,8 @@ public class Solar extends Propiedad {
         jugador.add_fortuna(coste * -1.f);
         edificios.add(c);
 
-        System.out.format(
+        IConsola cons = Monopoly.get().get_consola();
+        cons.imprimir(
                 "el jugador %s%s%s%s compra una casa en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                 Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET, coste,
@@ -230,7 +233,8 @@ public class Solar extends Propiedad {
         jugador.add_fortuna(coste * -1.f);
         edificios.add(h);
 
-        System.out.format(
+        IConsola cons = Monopoly.get().get_consola();
+        cons.imprimir(
                 "el jugador %s%s%s%s compra un hotel en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                 Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET, coste,
@@ -253,7 +257,8 @@ public class Solar extends Propiedad {
         jugador.add_fortuna(coste * -1.f);
         edificios.add(t);
 
-        System.out.format(
+        IConsola cons = Monopoly.get().get_consola();
+        cons.imprimir(
                 "el jugador %s%s%s%s compra unas termas en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                 Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET, coste,
@@ -275,7 +280,8 @@ public class Solar extends Propiedad {
         jugador.add_fortuna(coste * -1.f);
         edificios.add(p);
 
-        System.out.format(
+        IConsola cons = Monopoly.get().get_consola();
+        cons.imprimir(
                 "el jugador %s%s%s%s compra un pabellón en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                 Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET, coste,
@@ -290,7 +296,9 @@ public class Solar extends Propiedad {
         float coste = (float) Math.floor(e.coste() * 0.8f);
         edificios.remove(e);
         jugador.add_fortuna(coste);
-        System.out.format(
+
+        IConsola cons = Monopoly.get().get_consola();
+        cons.imprimir(
                 "el jugador %s%s%s%s vende una casa en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                 Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET,
@@ -306,7 +314,9 @@ public class Solar extends Propiedad {
         float coste = (float) Math.floor(e.coste() * 0.8f);
         edificios.remove(e);
         jugador.add_fortuna(coste);
-        System.out.format(
+
+        IConsola cons = Monopoly.get().get_consola();
+        cons.imprimir(
                 "el jugador %s%s%s%s vende un hotel en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                 Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET,
@@ -322,7 +332,9 @@ public class Solar extends Propiedad {
         float coste = (float) Math.floor(e.coste() * 0.8f);
         edificios.remove(e);
         jugador.add_fortuna(coste);
-        System.out.format(
+
+        IConsola cons = Monopoly.get().get_consola();
+        cons.imprimir(
                 "el jugador %s%s%s%s vende unas termas en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                 Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET,
@@ -338,7 +350,9 @@ public class Solar extends Propiedad {
         float coste = (float) Math.floor(e.coste() * 0.8f);
         edificios.remove(e);
         jugador.add_fortuna(coste);
-        System.out.format(
+
+        IConsola cons = Monopoly.get().get_consola();
+        cons.imprimir(
                 "el jugador %s%s%s%s vende un pabellón en la casilla %s%s%s%s por %s. Su fortuna actual es de %s%s%.0f%s\n",
                 Color.ROJO, Color.BOLD, jugador.get_nombre(), Color.RESET,
                 Color.AZUL_OSCURO, Color.BOLD, this.get_nombre(), Color.RESET,

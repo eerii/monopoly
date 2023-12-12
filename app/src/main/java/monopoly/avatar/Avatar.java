@@ -1,15 +1,14 @@
 package monopoly.avatar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import consola.Color;
+import consola.IConsola;
 import monopoly.Jugador;
 import monopoly.Monopoly;
-import monopoly.Tablero;
-import monopoly.casilla.*;
+import monopoly.casilla.Casilla;
 
 public class Avatar {
     // ···········
@@ -20,12 +19,9 @@ public class Avatar {
     private boolean modo_avanzado = false;
     private static List<Character> ocupados;
 
-
-
     // ·············
     // Constructores
     // ·············
-
 
     public Avatar() {
         Random r = new Random();
@@ -35,7 +31,6 @@ public class Avatar {
         ocupados.add(id);
     }
 
-
     // ·······
     // Getters
     // ·······
@@ -43,7 +38,6 @@ public class Avatar {
     public char get_id() {
         return id;
     }
-
 
     Jugador get_jugador() {
         List<Jugador> jugadores = Monopoly.get().get_jugadores();
@@ -75,6 +69,7 @@ public class Avatar {
 
     public Casilla avanzar(Casilla actual, int movimiento) {
         Monopoly m = Monopoly.get();
+        IConsola cons = m.get_consola();
         List<Casilla> casillas = m.get_tablero().get_casillas();
         Jugador j = get_jugador();
 
@@ -88,7 +83,7 @@ public class Avatar {
             sig += casillas.size();
 
         Casilla siguiente = casillas.get(sig);
-        System.out.format("el avatar %s%s%s%s %s %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
+        cons.imprimir("el avatar %s%s%s%s %s %d posiciones, desde %s%s%s%s a %s%s%s%s\n",
                 Color.AZUL_CLARITO, Color.BOLD, j.representar(), Color.RESET,
                 movimiento < 0 ? "retrocede" : "avanza",
                 Math.abs(movimiento),

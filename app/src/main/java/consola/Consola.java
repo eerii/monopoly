@@ -9,10 +9,6 @@ import consola.excepciones.ConsolaException;
 import monopoly.Monopoly;
 
 public class Consola implements IConsola {
-    // TODO: Cambiar todos los System.out.println y System.out.format por Monopoly.get().get_consola().imprimir()
-    // Las dos funcionan igual con nuestro imprimir
-    // Para los System.out.print a secas, mirar si se puede cambiar por un println, si no hay que buscar alternativa
-
     // ···········
     // Propiedades
     // ···········
@@ -36,6 +32,12 @@ public class Consola implements IConsola {
     // Interfaz pública
     // ················
 
+    // Aquí no hace falta usar imprimir, llamamos directamente al sistema
+
+    public void imprimir(Object o) {
+        System.out.println(o);
+    }
+
     public void imprimir(String s, Object... args) {
         if (args.length == 0) {
             System.out.println(s);
@@ -56,9 +58,9 @@ public class Consola implements IConsola {
         limpiar_pantalla();
         System.out.println(Monopoly.get().get_tablero().representar());
 
-        System.out.println("\u001b[1B");
+        System.out.print("\u001b[1B");
         System.out.println(salida);
-        System.out.println("\u001b[36;0H> \u001b[K");
+        System.out.print("\u001b[36;0H> \u001b[K");
 
         String line = sc.nextLine();
         limpiar_resultado();
@@ -69,7 +71,7 @@ public class Consola implements IConsola {
     }
 
     public void limpiar_pantalla() {
-        System.out.println("\u001b[33;0H\u001b[1J\u001b[H");
+        System.out.print("\u001b[33;0H\u001b[1J\u001b[H");
     }
 
     public void limpiar_resultado() {
@@ -77,7 +79,7 @@ public class Consola implements IConsola {
     }
 
     public boolean entrada() {
-        System.out.println("> \u001b[K");
+        System.out.print("> \u001b[K");
         String line = sc.nextLine();
         limpiar_resultado();
 

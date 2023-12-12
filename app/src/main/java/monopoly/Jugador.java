@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import consola.Color;
+import consola.IConsola;
 import consola.excepciones.*;
 
 import monopoly.avatar.*;
@@ -72,7 +73,7 @@ public class Jugador {
 
     @Override
     public String toString() {
-        if(avatar instanceof Coche coche)
+        if (avatar instanceof Coche coche)
             return String.format(
                     "%s%s%s%s - avatar: %s%s%s (coche) - fortuna: %s%s%.0f%s\n" +
                             "propiedades: %s\nhipotecas: %s",
@@ -81,7 +82,7 @@ public class Jugador {
                     Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
                     propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
                     hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
-        else if(avatar instanceof Sombrero sombrero)
+        else if (avatar instanceof Sombrero sombrero)
             return String.format(
                     "%s%s%s%s - avatar: %s%s%s (sombrero) - fortuna: %s%s%.0f%s\n" +
                             "propiedades: %s\nhipotecas: %s",
@@ -90,7 +91,7 @@ public class Jugador {
                     Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
                     propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
                     hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
-        else if(avatar instanceof Esfinge esfinge)
+        else if (avatar instanceof Esfinge esfinge)
             return String.format(
                     "%s%s%s%s - avatar: %s%s%s (esfinge) - fortuna: %s%s%.0f%s\n" +
                             "propiedades: %s\nhipotecas: %s",
@@ -101,13 +102,13 @@ public class Jugador {
                     hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
         Pelota pelota = (Pelota) avatar;
         return String.format(
-                    "%s%s%s%s - avatar: %s%s%s (pelota) - fortuna: %s%s%.0f%s\n" +
-                            "propiedades: %s\nhipotecas: %s",
-                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                    Color.BOLD, representar(), Color.RESET,
-                    Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
-                    propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
-                    hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
+                "%s%s%s%s - avatar: %s%s%s (pelota) - fortuna: %s%s%.0f%s\n" +
+                        "propiedades: %s\nhipotecas: %s",
+                Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                Color.BOLD, representar(), Color.RESET,
+                Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
+                propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
+                hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
 
     }
 
@@ -217,6 +218,7 @@ public class Jugador {
 
     public void ir_a_carcel() {
         Tablero t = Monopoly.get().get_tablero();
+        IConsola cons = Monopoly.get().get_consola();
         Casilla c = t.buscar_casilla("Cárcel");
         Casilla actual = t.buscar_jugador(this);
 
@@ -225,7 +227,7 @@ public class Jugador {
         actual.remove(this);
         c.add(this, false);
 
-        System.out.format("el jugador %s ha ido a la cárcel!\n", nombre);
+        cons.imprimir("el jugador %s ha ido a la cárcel!\n", nombre);
         Monopoly.get().siguiente_turno();
     }
 
@@ -250,6 +252,7 @@ public class Jugador {
 
     public void bancarrota() throws ComprarCasillaException {
         Monopoly m = Monopoly.get();
+        IConsola cons = m.get_consola();
         Casilla caida = m.get_tablero().buscar_jugador(this);
         Propiedad p = null;
         if (caida instanceof Propiedad)
@@ -268,10 +271,10 @@ public class Jugador {
             otro.add_propiedad(h, 0);
 
         if (fortuna > 0 || p == null || p.get_propietario() == null) {
-            System.out.format("el jugador %s se ha declarado en bancarrota, todas sus propiedades pasan a la banca!\n",
+            cons.imprimir("el jugador %s se ha declarado en bancarrota, todas sus propiedades pasan a la banca!\n",
                     nombre);
         } else {
-            System.out.format(
+            cons.imprimir(
                     "el jugador %s se ha declarado en bancarrota, todas sus propiedades pasan al jugador %s!\n", nombre,
                     otro.get_nombre());
             otro.add_fortuna(this.get_fortuna()); // Esto resta el dinero que no le pudo pagar el deudor al otro jugador
@@ -346,13 +349,14 @@ public class Jugador {
         for (int i = 0; i < num; i++) {
             add_fortuna(media);
             m.comprobar_vueltas();
-            System.out.format("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
+            m.get_consola().imprimir("el jugador %s ha pasado por la salida, recibe %.0f\n", get_nombre(), media);
             m.get_stats().of(this).sumar_pasar_salida(media);
         }
     }
 
     public void paga_alquiler(Jugador propietario, Solar casilla) {
         Monopoly m = Monopoly.get();
+        IConsola cons = m.get_consola();
         float alquiler;
 
         alquiler = casilla.get_alquiler();
@@ -360,7 +364,7 @@ public class Jugador {
             alquiler *= 2;
 
         if (casilla.noPagaAlquiler(this)) {
-            System.out.format(
+            cons.imprimir(
                     "%s%s%s%s no paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s, %s%s%d%s turnos restantes de exencion %s%s%s%s\n",
                     Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                     casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
@@ -371,13 +375,13 @@ public class Jugador {
             add_fortuna(alquiler * -1.f);
             propietario.add_fortuna(alquiler);
             if (fortuna >= 0) {
-                System.out.format("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
+                cons.imprimir("%s%s%s%s paga %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
                         Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                         casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
                         casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
                         Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
             } else {
-                System.out.format("%s%s%s%s no puede permitirse pagar %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
+                cons.imprimir("%s%s%s%s no puede permitirse pagar %s%s%.0f%s de alquiler de %s%s%s%s a %s%s%s%s\n",
                         Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                         casilla.get_color(), Color.BOLD, alquiler, Color.RESET,
                         casilla.get_color(), Color.BOLD, casilla.get_nombre(), Color.RESET,
@@ -392,6 +396,7 @@ public class Jugador {
 
     public void paga_servicio_transporte(Jugador propietario, Propiedad casilla) {
         Monopoly m = Monopoly.get();
+        IConsola cons = m.get_consola();
         Dados d = m.get_dados();
         float media = m.get_tablero().precio_medio();
         float coste = 0;
@@ -406,13 +411,13 @@ public class Jugador {
         propietario.add_fortuna(coste);
 
         if (fortuna >= 0) {
-            System.out.format("%s%s%s%s paga %s%s%.0f%s por el uso de %s%s%s%s a %s%s%s%s\n",
+            cons.imprimir("%s%s%s%s paga %s%s%.0f%s por el uso de %s%s%s%s a %s%s%s%s\n",
                     Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                     Color.BOLD, coste, Color.RESET,
                     Color.BOLD, casilla.get_nombre(), Color.RESET,
                     Color.AZUL_CLARITO, Color.BOLD, propietario.get_nombre(), Color.RESET);
         } else {
-            System.out.format("%s%s%s%s no se puede permitir el coste de %s%s%.0f%s de uso de %s%s%s%s a %s%s%s%s\n",
+            cons.imprimir("%s%s%s%s no se puede permitir el coste de %s%s%.0f%s de uso de %s%s%s%s a %s%s%s%s\n",
                     Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                     Color.BOLD, coste, Color.RESET,
                     Color.BOLD, casilla.get_nombre(), Color.RESET,
@@ -426,35 +431,33 @@ public class Jugador {
 
     // String
 
-
-
     public String toStringMini() {
-        if(avatar instanceof Coche coche)
+        if (avatar instanceof Coche coche)
             return String.format("%s%s%s%s - avatar %s%s%s (coche)",
                     Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                     Color.BOLD, representar(), Color.RESET);
-        else if(avatar instanceof Sombrero sombrero)
+        else if (avatar instanceof Sombrero sombrero)
             return String.format("%s%s%s%s - avatar %s%s%s (sombrero)",
                     Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                     Color.BOLD, representar(), Color.RESET);
-        else if(avatar instanceof Esfinge esfinge)
+        else if (avatar instanceof Esfinge esfinge)
             return String.format("%s%s%s%s - avatar %s%s%s (esfinge)",
                     Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
                     Color.BOLD, representar(), Color.RESET);
 
         Pelota pelota = (Pelota) avatar;
         return String.format("%s%s%s%s - avatar %s%s%s (pelota)",
-                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                    Color.BOLD, representar(), Color.RESET);
+                Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
+                Color.BOLD, representar(), Color.RESET);
     }
 
     public String representar() {
         Avatar avatar = get_avatar();
-        if(avatar instanceof Coche coche)
+        if (avatar instanceof Coche coche)
             return coche.representar();
-        else if(avatar instanceof Sombrero sombrero)
+        else if (avatar instanceof Sombrero sombrero)
             return sombrero.representar();
-        else if(avatar instanceof Esfinge esfinge)
+        else if (avatar instanceof Esfinge esfinge)
             return esfinge.representar();
         Pelota pelota = (Pelota) avatar;
         return pelota.representar();

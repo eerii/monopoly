@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+import consola.IConsola;
+
 public class Comunidad extends Carta {
     // ···········
     // Propiedades
@@ -47,17 +49,20 @@ public class Comunidad extends Carta {
                         j -> viaje(j, "Ferrol", "viajas hasta %s para comprar antigüedades exóticas!\n")),
 
                 new Comunidad("Balneario", j -> {
-                    System.out.println("paga 50000 por un fin de semana en un balneario!\n");
+                    IConsola cons = Monopoly.get().get_consola();
+                    cons.imprimir("paga 50000 por un fin de semana en un balneario!\n");
                     j.add_fortuna(-50000);
                 }),
 
                 new Comunidad("Fraude", j -> {
-                    System.out.println("te investigan por fraude, vas a la carcel!\n");
+                    IConsola cons = Monopoly.get().get_consola();
+                    cons.imprimir("te investigan por fraude, vas a la carcel!\n");
                     j.ir_a_carcel();
                 }),
 
                 new Comunidad("Salida", j -> {
-                    System.out.println("ve a la salida para cobrar!\n");
+                    IConsola cons = Monopoly.get().get_consola();
+                    cons.imprimir("ve a la salida para cobrar!\n");
                     Casilla actual = Monopoly.get().get_tablero().buscar_jugador(j);
                     actual.remove(j);
                     Casilla c = Monopoly.get().get_tablero().buscar_casilla("Salida");
@@ -65,12 +70,14 @@ public class Comunidad extends Carta {
                 }),
 
                 new Comunidad("Hacienda", j -> {
-                    System.out.println("recibes una devolucion de hacienda de 50000!\n");
+                    IConsola cons = Monopoly.get().get_consola();
+                    cons.imprimir("recibes una devolucion de hacienda de 50000!\n");
                     j.add_fortuna(50000);
                 }),
 
                 new Comunidad("Beneficio", j -> {
-                    System.out.println("tu compañia de internet obtiene beneficios, recibes 20000!\n");
+                    IConsola cons = Monopoly.get().get_consola();
+                    cons.imprimir("tu compañia de internet obtiene beneficios, recibes 20000!\n");
                     j.add_fortuna(20000);
                 })));
     }
