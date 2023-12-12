@@ -30,8 +30,6 @@ public class Jugador {
     private int turnos_penalizacion = 0;
     private boolean ha_comprado = false;
 
-    private static final int turnos_carcel = 3;
-
     // ·············
     // Constructores
     // ·············
@@ -100,7 +98,6 @@ public class Jugador {
                     Color.AMARILLO, Color.BOLD, fortuna, Color.RESET,
                     propiedades.stream().map(p -> p.get_nombre()).collect(Collectors.toList()),
                     hipotecas.stream().map(h -> h.get_nombre()).collect(Collectors.toList()));
-        Pelota pelota = (Pelota) avatar;
         return String.format(
                 "%s%s%s%s - avatar: %s%s%s (pelota) - fortuna: %s%s%.0f%s\n" +
                         "propiedades: %s\nhipotecas: %s",
@@ -222,7 +219,7 @@ public class Jugador {
         Casilla c = t.buscar_casilla("Cárcel");
         Casilla actual = t.buscar_jugador(this);
 
-        contador_carcel = turnos_carcel;
+        contador_carcel = Monopoly.Config.turnos_carcel;
 
         actual.remove(this);
         c.add(this, false);

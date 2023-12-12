@@ -6,8 +6,7 @@ import monopoly.Monopoly;
 import monopoly.Tablero;
 import monopoly.casilla.Casilla;
 
-public class Sombrero extends Avatar{
-
+public class Sombrero extends Avatar {
 
     public final String nombre;
     public final String icono;
@@ -52,8 +51,7 @@ public class Sombrero extends Avatar{
     }
 
     public String representar() {
-        Monopoly.Config c = Monopoly.get().get_config();
-        if (c.get_iconos()) {
+        if (Monopoly.Config.usar_iconos) {
             return this.get_icono();
         }
         return String.valueOf(this.get_id());

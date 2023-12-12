@@ -92,7 +92,7 @@ public class Consola implements IConsola {
             System.out.println(e.getMessage());
         } catch (IllegalArgumentException e) {
             System.out.println("Comando no reconocido, " + e.getMessage());
-            // TODO: Arreglar esto para múltiples tipos de argumentos inválidos
+            // Arreglar esto para múltiples tipos de argumentos inválidos
             System.out
                     .println("Opciones: "
                             + String.join(", ", Arrays.stream(Cmd.values()).map(Cmd::toString).toArray(String[]::new)));

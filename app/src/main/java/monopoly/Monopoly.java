@@ -14,28 +14,12 @@ import monopoly.casilla.propiedad.*;
 import monopoly.carta.*;
 
 public class Monopoly {
-    // TODO: Usar modificadores abstract y final en las jerarquías
-
-    // TODO: Implementar métodos abstractos
-
-    // TODO: Declarar constantes (en config por ejemplo)
 
     public class Config {
-        boolean iconos = false;
-
-        public void procesar(String[] args) {
-            for (String arg : args) {
-                switch (arg) {
-                    case "iconos":
-                        iconos = true;
-                        break;
-                }
-            }
-        }
-
-        public boolean get_iconos() {
-            return iconos;
-        }
+        public static final boolean usar_iconos = true;
+        public static final int vueltas_subida_precio = 4;
+        public static final int max_jugadores = 6;
+        public static final int turnos_carcel = 3;
     }
 
     // ···········
@@ -157,8 +141,6 @@ public class Monopoly {
         m.consola.limpiar_pantalla();
         m.consola.limpiar_resultado();
 
-        m.config.procesar(args);
-
         // FIX: Jugadores temporales para pruebas, borrar
         m.add_jugador(new Jugador("Jugador1", new Esfinge()));
         m.add_jugador(new Jugador("Jugador2", new Pelota()));
@@ -181,7 +163,7 @@ public class Monopoly {
     // Adders
 
     public void add_jugador(Jugador jugador) {
-        if (jugadores.size() >= 6) {
+        if (jugadores.size() >= Config.max_jugadores) {
             throw new IllegalStateException("hay demasiados jugadores");
         }
 
@@ -270,14 +252,14 @@ public class Monopoly {
     }
 
     public void comprobar_vueltas() {
-        int min = 10000;
+        int min = Integer.MAX_VALUE;
         for (Jugador j : jugadores) {
             min = j.get_vueltas() < min ? j.get_vueltas() : min;
         }
         if (min > vueltas_totales) {
             vueltas_totales = min;
             consola.imprimir("todos los jugadores han completado %d vueltas!\n", vueltas_totales);
-            if (vueltas_totales % 4 == 0) {
+            if (vueltas_totales % Config.vueltas_subida_precio == 0) {
                 tablero.get_casillas().stream()
                         .filter(c -> c instanceof Propiedad && ((Propiedad) c).en_venta())
                         .forEach(c -> ((Propiedad) c).incrementar_precio());

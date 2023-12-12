@@ -8,9 +8,9 @@ public class Edificio {
     // Propiedades
     // ···········
 
-    private Solar casilla;
-    private String nombre;
-    private String icono;
+    private final Solar casilla;
+    private final String nombre;
+    private final String icono;
 
     // ·············
     // Constructores
@@ -43,8 +43,7 @@ public class Edificio {
     }
 
     public String representar() {
-        Monopoly.Config c = Monopoly.get().get_config();
-        if (c.get_iconos()) {
+        if (Monopoly.Config.usar_iconos) {
             return icono;
         }
         return nombre.substring(0, 1).toUpperCase();
