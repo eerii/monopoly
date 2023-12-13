@@ -244,18 +244,6 @@ public class Trato {
             alquiler.add_noAlquiler(jugador1, turnosAlquiler);
         }
 
-        // Ahora trataremos la parte de no pagar alquiler
-        if (turnosAlquiler != 0) {
-            Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(casillaAlquiler);
-            if (!(casilla instanceof Solar alquiler))
-                throw new TratoException(
-                        String.format("%s no es una propiedad, no se puede aceptar el trato", casillaAlquiler));
-            if (!jugador2.es_propietario(alquiler))
-                throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato",
-                        jugadorRecibe, casillaAlquiler));
-            alquiler.add_noAlquiler(jugador1, turnosAlquiler);
-        }
-
         if (recibe2.isEmpty() && da2.isEmpty())
             cons.imprimir("has aceptado el siguiente trato con %s, le das %s y te da %s", jugadorPropone, recibe1,
                     da1);
