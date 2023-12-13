@@ -30,7 +30,6 @@ public class Trato {
     // ·············
 
     public Trato(String trato, String jugadorPropone) {
-
         String[] dar = new String[0], recibir = new String[0], auxiliar;
         this.jugadorPropone = jugadorPropone;
         String[] partes = trato.split(":");
@@ -105,11 +104,11 @@ public class Trato {
             if (!da2.isEmpty()) {
                 Casilla casilla = Monopoly.get().get_tablero().buscar_casilla(da2);
                 if (!(casilla instanceof Propiedad))
-                    throw new RuntimeException(
+                    throw new TratoException(
                             String.format("%s no es una propiedad, no se puede aceptar el trato", da2));
                 propiedadDa1 = (Propiedad) casilla;
                 if (!jugador1.es_propietario(propiedadDa1))
-                    throw new RuntimeException(
+                    throw new TratoException(
                             String.format("%s no es dueño de %s, no se puede aceptar el trato", jugadorPropone, da2));
             }
 
@@ -126,17 +125,17 @@ public class Trato {
                 try {
                     dineroDa = Float.parseFloat(da2);
                     if (dineroDa > jugador1.get_fortuna())
-                        throw new RuntimeException(String
+                        throw new TratoException(String
                                 .format("%s no dispone de suficiente dinero para aceptar el trato", jugadorPropone));
 
                 } catch (NumberFormatException nfe2) {
                     casilla = Monopoly.get().get_tablero().buscar_casilla(da2);
                     if (!(casilla instanceof Propiedad))
-                        throw new RuntimeException(
+                        throw new TratoException(
                                 String.format("%s no es una propiedad, no se puede aceptar el trato", da2));
                     propiedadDa2 = (Propiedad) casilla;
                     if (!jugador1.es_propietario(propiedadDa2))
-                        throw new RuntimeException(String.format("%s no es dueño de %s, no se puede aceptar el trato",
+                        throw new TratoException(String.format("%s no es dueño de %s, no se puede aceptar el trato",
                                 jugadorPropone, da2));
 
                 }

@@ -7,9 +7,9 @@ import monopoly.Tablero;
 import monopoly.casilla.Casilla;
 
 public class Pelota extends Avatar {
-
     public final String nombre;
     public final String icono;
+
     // ·············
     // Constructores
     // ·············
@@ -40,7 +40,11 @@ public class Pelota extends Avatar {
 
     @Override
     public void siguiente_casilla(Casilla actual, int movimiento) {
-        super.siguiente_casilla(actual, movimiento);
+        if (!modo_avanzado) {
+            super.siguiente_casilla(actual, movimiento);
+            return;
+        }
+
         if (movimiento < 4) {
             avanzar(actual, -movimiento);
             return;

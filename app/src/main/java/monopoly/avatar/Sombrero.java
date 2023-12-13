@@ -7,9 +7,9 @@ import monopoly.Tablero;
 import monopoly.casilla.Casilla;
 
 public class Sombrero extends Avatar {
-
     public final String nombre;
     public final String icono;
+
     // ·············
     // Constructores
     // ·············
@@ -17,7 +17,7 @@ public class Sombrero extends Avatar {
     public Sombrero() {
         super();
         nombre = "Sombrero";
-        icono = "";
+        icono = "󰮤";
     }
 
     // ·········

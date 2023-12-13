@@ -329,12 +329,7 @@ public class Jugador {
     // Mover
 
     public void mover(Casilla actual, int movimiento) {
-        if (avatar instanceof Coche coche)
-            coche.siguiente_casilla(actual, movimiento);
-        else if (avatar instanceof Pelota pelota)
-            pelota.siguiente_casilla(actual, movimiento);
-        else
-            avatar.siguiente_casilla(actual, movimiento);
+        avatar.siguiente_casilla(actual, movimiento);
         turnos_extra = turnos_extra > 0 ? turnos_extra - 1 : 0;
     }
 
@@ -429,34 +424,12 @@ public class Jugador {
     // String
 
     public String toStringMini() {
-        if (avatar instanceof Coche coche)
-            return String.format("%s%s%s%s - avatar %s%s%s (coche)",
-                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                    Color.BOLD, representar(), Color.RESET);
-        else if (avatar instanceof Sombrero sombrero)
-            return String.format("%s%s%s%s - avatar %s%s%s (sombrero)",
-                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                    Color.BOLD, representar(), Color.RESET);
-        else if (avatar instanceof Esfinge esfinge)
-            return String.format("%s%s%s%s - avatar %s%s%s (esfinge)",
-                    Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                    Color.BOLD, representar(), Color.RESET);
-
-        Pelota pelota = (Pelota) avatar;
-        return String.format("%s%s%s%s - avatar %s%s%s (pelota)",
+        return String.format("%s%s%s%s - avatar %s%s%s (%s)",
                 Color.AZUL_CLARITO, Color.BOLD, nombre, Color.RESET,
-                Color.BOLD, representar(), Color.RESET);
+                Color.BOLD, representar(), Color.RESET, avatar.get_nombre());
     }
 
     public String representar() {
-        Avatar avatar = get_avatar();
-        if (avatar instanceof Coche coche)
-            return coche.representar();
-        else if (avatar instanceof Sombrero sombrero)
-            return sombrero.representar();
-        else if (avatar instanceof Esfinge esfinge)
-            return esfinge.representar();
-        Pelota pelota = (Pelota) avatar;
-        return pelota.representar();
+        return get_avatar().representar();
     }
 }

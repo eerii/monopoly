@@ -499,6 +499,8 @@ public class Comando {
                 }
                 break;
             case TRATO:
+                if (args.size() < 2)
+                    throw new IllegalArgumentException("argumentos incorrectos");
                 Trato t = new Trato(String.join(" ", args), Monopoly.get().get_turno().get_nombre());
                 cons.imprimir(t);
                 Monopoly.get().add_trato(t);

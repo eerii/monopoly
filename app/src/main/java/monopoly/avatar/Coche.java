@@ -7,9 +7,9 @@ import monopoly.Tablero;
 import monopoly.casilla.Casilla;
 
 public class Coche extends Avatar {
-
     public final String nombre;
     public final String icono;
+
     // ·············
     // Constructores
     // ·············
@@ -42,6 +42,10 @@ public class Coche extends Avatar {
         return icono;
     }
 
+    public String get_nombre() {
+        return nombre;
+    }
+
     public String representar() {
         if (Monopoly.Config.usar_iconos) {
             return this.get_icono();
@@ -51,7 +55,11 @@ public class Coche extends Avatar {
 
     @Override
     public void siguiente_casilla(Casilla actual, int movimiento) {
-        super.siguiente_casilla(actual, movimiento);
+        if (!modo_avanzado) {
+            super.siguiente_casilla(actual, movimiento);
+            return;
+        }
+
         Jugador j = get_jugador();
 
         if (movimiento < 4) {

@@ -7,9 +7,9 @@ import monopoly.Tablero;
 import monopoly.casilla.Casilla;
 
 public class Esfinge extends Avatar {
-
     public final String nombre;
     public final String icono;
+
     // ·············
     // Constructores
     // ·············
@@ -40,6 +40,10 @@ public class Esfinge extends Avatar {
 
     public String get_icono() {
         return icono;
+    }
+
+    public String get_nombre() {
+        return nombre;
     }
 
     public String representar() {

@@ -10,13 +10,13 @@ import monopoly.Jugador;
 import monopoly.Monopoly;
 import monopoly.casilla.Casilla;
 
-public class Avatar {
+public abstract class Avatar {
     // ···········
     // Propiedades
     // ···········
 
     private char id;
-    private boolean modo_avanzado = false;
+    protected boolean modo_avanzado = false;
     private static List<Character> ocupados;
 
     // ·············
@@ -48,6 +48,12 @@ public class Avatar {
         return null;
     }
 
+    public abstract String get_nombre();
+
+    public abstract String get_icono();
+
+    public abstract String representar();
+
     // ················
     // Interfaz pública
     // ················
@@ -61,10 +67,8 @@ public class Avatar {
     }
 
     public void siguiente_casilla(Casilla actual, int movimiento) {
-        if (!modo_avanzado) {
             avanzar(actual, movimiento);
-            return;
-        }
+
     }
 
     public Casilla avanzar(Casilla actual, int movimiento) {
